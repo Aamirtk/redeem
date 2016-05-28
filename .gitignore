@@ -1,3 +1,4 @@
+*.log
 /backend/runtime
 /frontend/runtime
 /frontend/runtime
@@ -5,7 +6,7 @@
 /frontend/web/assets
 /backend/runtime
 /backend/web/upload
-/backend/web/assets
+
 /frontend/webrc/upload
 /frontend/webrc/assets
 /frontend_shop/runtime

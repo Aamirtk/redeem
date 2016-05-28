@@ -676,3 +676,196 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1464399402.719
     'REQUEST_TIME' => 1464399402
 ]
+2016-05-28 10:54:22 [127.0.0.1][1][-][error][yii\web\HttpException:403] exception 'yii\web\ForbiddenHttpException' with message '您没有执行此操作的权限。' in E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php:151
+Stack trace:
+#0 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php(134): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\ActionFilter.php(71): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('login', Array)
+#8 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('', Array)
+#9 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 E:\wamp\www\mygit\redeem\backend\web\index.php(29): yii\base\Application->run()
+#11 {main}
+2016-05-28 10:54:22 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'pqa61pv69hki4or0fq8s2v5lq2'
+    '_csrf' => 'fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3\";}'
+    '_identity' => '8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea:2:{i:0;s:9:\"_identity\";i:1;s:24:\"[\"1\",\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => '1'
+    'msg' => 0
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => 'PHPSESSID=pqa61pv69hki4or0fq8s2v5lq2; _csrf=fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3%22%3B%7D; _identity=8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A24%3A%22%5B%221%22%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => 'C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\TortoiseSVN\\bin;'
+    'SystemRoot' => 'C:\\windows'
+    'COMSPEC' => 'C:\\windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win64) PHP/5.5.12 Server at www.redeem_back.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win64) PHP/5.5.12'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'SERVER_ADMIN' => '582609838@qq.com'
+    'SCRIPT_FILENAME' => 'E:/wamp/www/mygit/redeem/backend/web/index.php'
+    'REMOTE_PORT' => '62329'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464404062.026
+    'REQUEST_TIME' => 1464404062
+]
+2016-05-28 10:54:34 [127.0.0.1][1][-][error][yii\web\HttpException:403] exception 'yii\web\ForbiddenHttpException' with message '您没有执行此操作的权限。' in E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php:151
+Stack trace:
+#0 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php(134): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\ActionFilter.php(71): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('login', Array)
+#8 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('', Array)
+#9 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 E:\wamp\www\mygit\redeem\backend\web\index.php(29): yii\base\Application->run()
+#11 {main}
+2016-05-28 10:54:34 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'pqa61pv69hki4or0fq8s2v5lq2'
+    '_csrf' => 'fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3\";}'
+    '_identity' => '8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea:2:{i:0;s:9:\"_identity\";i:1;s:24:\"[\"1\",\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => '1'
+    'msg' => 0
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_COOKIE' => 'PHPSESSID=pqa61pv69hki4or0fq8s2v5lq2; _csrf=fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3%22%3B%7D; _identity=8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A24%3A%22%5B%221%22%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => 'C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\TortoiseSVN\\bin;'
+    'SystemRoot' => 'C:\\windows'
+    'COMSPEC' => 'C:\\windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win64) PHP/5.5.12 Server at www.redeem_back.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win64) PHP/5.5.12'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'SERVER_ADMIN' => '582609838@qq.com'
+    'SCRIPT_FILENAME' => 'E:/wamp/www/mygit/redeem/backend/web/index.php'
+    'REMOTE_PORT' => '62332'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464404074.829
+    'REQUEST_TIME' => 1464404074
+]
+2016-05-28 10:54:38 [127.0.0.1][1][-][error][yii\web\HttpException:403] exception 'yii\web\ForbiddenHttpException' with message '您没有执行此操作的权限。' in E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php:151
+Stack trace:
+#0 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\filters\AccessControl.php(134): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\ActionFilter.php(71): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('login', Array)
+#8 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('', Array)
+#9 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 E:\wamp\www\mygit\redeem\backend\web\index.php(29): yii\base\Application->run()
+#11 {main}
+2016-05-28 10:54:38 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'pqa61pv69hki4or0fq8s2v5lq2'
+    '_csrf' => 'fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3\";}'
+    '_identity' => '8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea:2:{i:0;s:9:\"_identity\";i:1;s:24:\"[\"1\",\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => '1'
+    'msg' => 0
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_COOKIE' => 'PHPSESSID=pqa61pv69hki4or0fq8s2v5lq2; _csrf=fbb4f0cb93b516a92c109524bc9319fbdf53377b1387fa87e11fbc64b0dcce4ca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22pm5KeALTqGP6EELRK4FrHk1cbD5PLVd3%22%3B%7D; _identity=8751ab65e11a0e183dd57e6841eba9c4329c436db4f5e23421dc4368ca4d246ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A24%3A%22%5B%221%22%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => 'C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\TortoiseSVN\\bin;'
+    'SystemRoot' => 'C:\\windows'
+    'COMSPEC' => 'C:\\windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win64) PHP/5.5.12 Server at www.redeem_back.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win64) PHP/5.5.12'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'SERVER_ADMIN' => '582609838@qq.com'
+    'SCRIPT_FILENAME' => 'E:/wamp/www/mygit/redeem/backend/web/index.php'
+    'REMOTE_PORT' => '62332'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464404078.018
+    'REQUEST_TIME' => 1464404078
+]
