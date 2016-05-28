@@ -7,7 +7,7 @@
  */
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=vsoucenter',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=vsoucenter_backup',
     'username' => 'root',
     'password' => '',
     'tablePrefix' => 'vso_user_',
