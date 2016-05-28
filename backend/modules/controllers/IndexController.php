@@ -24,7 +24,7 @@ class IndexController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-//                        'actions' => ['login', 'captcha'],
+                       'actions' => ['login', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],

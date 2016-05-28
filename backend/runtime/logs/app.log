@@ -619,3 +619,60 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1464399267.478
     'REQUEST_TIME' => 1464399267
 ]
+2016-05-28 09:36:42 [127.0.0.1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Trying to get property of non-object' in E:\wamp\www\mygit\redeem\backend\modules\controllers\IndexController.php:74
+Stack trace:
+#0 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\InlineAction.php(55): app\modules\controllers\IndexController->actionIndex()
+#1 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\InlineAction.php(55): ::call_user_func_array:{E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\InlineAction.php:55}()
+#2 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams()
+#3 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction()
+#4 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction()
+#5 E:\wamp\www\mygit\redeem\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest()
+#6 E:\wamp\www\mygit\redeem\backend\web\index.php(29): yii\base\Application->run()
+#7 {main}
+2016-05-28 09:36:42 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'PHPSESSID' => '8nidkkh0s80e7guvehbhp92ct1'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_COOKIE' => 'PHPSESSID=8nidkkh0s80e7guvehbhp92ct1'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'PATH' => 'C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\TortoiseSVN\\bin;'
+    'SystemRoot' => 'C:\\windows'
+    'COMSPEC' => 'C:\\windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win64) PHP/5.5.12 Server at www.redeem_back.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win64) PHP/5.5.12'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'E:/wamp/www/mygit/redeem/backend/web'
+    'SERVER_ADMIN' => '582609838@qq.com'
+    'SCRIPT_FILENAME' => 'E:/wamp/www/mygit/redeem/backend/web/index.php'
+    'REMOTE_PORT' => '60641'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464399402.719
+    'REQUEST_TIME' => 1464399402
+]
