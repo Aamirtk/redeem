@@ -24,7 +24,7 @@ class IndexController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'captcha'],
+                       'actions' => ['login', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -90,6 +90,7 @@ class IndexController extends Controller
         }
         //权限路由配置
         $menu = $this->_getMenuArr();
+
 
         //重新处理菜单
         $navArr = [];
@@ -189,6 +190,7 @@ class IndexController extends Controller
                 ['积分明细' => 'point/record/point-list']
             ],
         ];
+
         $menu[] = [
             'top' => ['信用体系' => 'home'],
             '规则管理' => [
@@ -202,6 +204,22 @@ class IndexController extends Controller
             ],
             '用户信用评分查询' => [
                 ['查询用户信用评分' => 'trust/user/trust-list']
+            ],
+        ];
+        $menu[] = [
+            'top' => ['商品中心' => 'home'],
+            '会员分类配置' => [
+                ['分类列表' => 'vip/group/list-view'],
+            ],
+            '会员管理' => [
+                ['会员列表' => 'vip/vip/list'],
+                //['会员录入' => 'vip/vip/add'],
+                ['我的录入' => 'vip/vip/list-info'],
+                ['财务审核' => 'vip/vip/list-finance'],
+                ['运营审核' => 'vip/vip/list-operate'],
+            ],
+            '用户管理' => [
+                ['用户列表' => 'user/user/list-view'],
             ],
         ];
         $menu[] = [
