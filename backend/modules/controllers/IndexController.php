@@ -178,21 +178,9 @@ class IndexController extends Controller
                 ['添加分组' => 'team/privilege/add-group']
             ]
         ];
+        
         $menu[] = [
-            'top' => ['积分配置' => 'home'],
-            '规则管理' => [
-                ['配比管理' => 'point/allocation/rule'],
-                ['频道管理' => 'point/channel/list-view'],
-                ['增加频道' => 'point/channel/add'],
-                ['等级管理' => 'point/level/list-view']
-            ],
-            '明细管理' => [
-                ['积分明细' => 'point/record/point-list']
-            ],
-        ];
-
-        $menu[] = [
-            'top' => ['信用体系' => 'home'],
+            'top' => ['用户管理' => 'home'],
             '规则管理' => [
                 ['权重分配' => 'trust/base/list-view'],
                 ['身份特征' => 'trust/identity/list-view'],
@@ -207,7 +195,7 @@ class IndexController extends Controller
             ],
         ];
         $menu[] = [
-            'top' => ['商品中心' => 'home'],
+            'top' => ['认证审核' => 'home'],
             '会员分类配置' => [
                 ['分类列表' => 'vip/group/list-view'],
             ],
@@ -223,27 +211,47 @@ class IndexController extends Controller
             ],
         ];
         $menu[] = [
-            'top' => ['会员中心' => 'home'],
-            '会员分类配置' => [
-                ['分类列表' => 'vip/group/list-view'],
-            ],
-            '会员管理' => [
-                ['会员列表' => 'vip/vip/list'],
-                //['会员录入' => 'vip/vip/add'],
-                ['我的录入' => 'vip/vip/list-info'],
-                ['财务审核' => 'vip/vip/list-finance'],
-                ['运营审核' => 'vip/vip/list-operate'],
-            ],
-            '用户管理' => [
-                ['用户列表' => 'user/user/list-view'],
-            ],
-        ];
-        $menu[] = [
-            'top' => ['商机库' => 'home'],
+            'top' => ['商品管理' => 'home'],
             '推送记录' => [
                 ['任务推送记录' => 'opportunity/task/list'],
                 ['用户推送记录' => 'opportunity/user/list']
             ]
+        ];
+        $menu[] = [
+            'top' => ['订单管理' => 'home'],
+            '规则管理' => [
+                ['配比管理' => 'point/allocation/rule'],
+                ['频道管理' => 'point/channel/list-view'],
+                ['增加频道' => 'point/channel/add'],
+                ['等级管理' => 'point/level/list-view']
+            ],
+            '明细管理' => [
+                ['积分明细' => 'point/record/point-list']
+            ],
+        ];
+        $menu[] = [
+            'top' => ['积分管理' => 'home'],
+            '规则管理' => [
+                ['配比管理' => 'point/allocation/rule'],
+                ['频道管理' => 'point/channel/list-view'],
+                ['增加频道' => 'point/channel/add'],
+                ['等级管理' => 'point/level/list-view']
+            ],
+            '明细管理' => [
+                ['积分明细' => 'point/record/point-list']
+            ],
+        ];
+        $menu[] = [
+            'top' => ['物流管理' => 'home'],
+            '规则管理' => [
+                ['配比管理' => 'point/allocation/rule'],
+                ['频道管理' => 'point/channel/list-view'],
+                ['增加频道' => 'point/channel/add'],
+                ['等级管理' => 'point/level/list-view']
+            ],
+            '明细管理' => [
+                ['积分明细' => 'point/record/point-list']
+            ],
         ];
 
         return $menu;

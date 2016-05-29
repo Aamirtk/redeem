@@ -39,6 +39,10 @@ class Page
             unset($_query['page']);
             $_url = $_par['path'] . '?' . http_build_query($_query);
         }
+        else
+        {
+            $_url = $_par['path'] . '?';
+        }
         return urldecode($_url);
     }     //数字目录
 
@@ -112,7 +116,7 @@ class Page
     }
 
     //分页信息
-    public function showpage()
+    public function showpage($_show_total = true)
     {
         if ($this->pagenum == 1)
         {
@@ -130,7 +134,10 @@ class Page
         {
             $_page .= $this->next();
         }
-        $_page .= $this->total();
+        if ($_show_total)
+        {
+            $_page .= $this->total();
+        }
         $_page .= '</ul>';
         return $_page;
     }

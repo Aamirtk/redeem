@@ -19,7 +19,8 @@ class Upload
     public static function ajax_upload($temp = '', $id = 'myfile')
     {
         $ymd = date("Ymd");
-        $path = Yii::getAlias('@upload') . "$temp/$ymd/";
+        //$path = Yii::getAlias('@upload') . "$temp/$ymd/";
+        $path = "/data/www/com_vsochina_maker/frontend/web/upload" . "$temp/$ymd/";
         $tmpath = "/upload" . $temp . "/$ymd/";
 
         if (!empty($_FILES))
