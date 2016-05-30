@@ -178,7 +178,7 @@ class IndexController extends Controller
             ]
         ];
         $menu[] = [
-            'top' => ['积分配置' => 'home'],
+            'top' => ['用户管理' => 'home'],
             '规则管理' => [
                 ['配比管理' => 'point/allocation/rule'],
                 ['频道管理' => 'point/channel/list-view'],
@@ -190,7 +190,7 @@ class IndexController extends Controller
             ],
         ];
         $menu[] = [
-            'top' => ['信用体系' => 'home'],
+            'top' => ['认证管理' => 'home'],
             '规则管理' => [
                 ['权重分配' => 'trust/base/list-view'],
                 ['身份特征' => 'trust/identity/list-view'],
@@ -202,6 +202,54 @@ class IndexController extends Controller
             ],
             '用户信用评分查询' => [
                 ['查询用户信用评分' => 'trust/user/trust-list']
+            ],
+        ];
+        $menu[] = [
+            'top' => ['商品管理' => 'home'],
+            '会员分类配置' => [
+                ['分类列表' => 'vip/group/list-view'],
+            ],
+            '会员管理' => [
+                ['会员列表' => 'vip/vip/list'],
+                //['会员录入' => 'vip/vip/add'],
+                ['我的录入' => 'vip/vip/list-info'],
+                ['财务审核' => 'vip/vip/list-finance'],
+                ['运营审核' => 'vip/vip/list-operate'],
+            ],
+            '用户管理' => [
+                ['用户列表' => 'user/user/list-view'],
+            ],
+        ];
+        $menu[] = [
+            'top' => ['订单管理' => 'home'],
+            '会员分类配置' => [
+                ['分类列表' => 'vip/group/list-view'],
+            ],
+            '会员管理' => [
+                ['会员列表' => 'vip/vip/list'],
+                //['会员录入' => 'vip/vip/add'],
+                ['我的录入' => 'vip/vip/list-info'],
+                ['财务审核' => 'vip/vip/list-finance'],
+                ['运营审核' => 'vip/vip/list-operate'],
+            ],
+            '用户管理' => [
+                ['用户列表' => 'user/user/list-view'],
+            ],
+        ];
+        $menu[] = [
+            'top' => ['物流管理' => 'home'],
+            '会员分类配置' => [
+                ['分类列表' => 'vip/group/list-view'],
+            ],
+            '会员管理' => [
+                ['会员列表' => 'vip/vip/list'],
+                //['会员录入' => 'vip/vip/add'],
+                ['我的录入' => 'vip/vip/list-info'],
+                ['财务审核' => 'vip/vip/list-finance'],
+                ['运营审核' => 'vip/vip/list-operate'],
+            ],
+            '用户管理' => [
+                ['用户列表' => 'user/user/list-view'],
             ],
         ];
         $menu[] = [
@@ -219,13 +267,6 @@ class IndexController extends Controller
             '用户管理' => [
                 ['用户列表' => 'user/user/list-view'],
             ],
-        ];
-        $menu[] = [
-            'top' => ['商机库' => 'home'],
-            '推送记录' => [
-                ['任务推送记录' => 'opportunity/task/list'],
-                ['用户推送记录' => 'opportunity/user/list']
-            ]
         ];
 
         return $menu;

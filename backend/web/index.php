@@ -24,6 +24,6 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main-local.php')
 );
 
-//error_reporting(E_ERROR);
+error_reporting(E_NOTICE);
 $application = new yii\web\Application($config);
 $application->run();
