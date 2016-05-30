@@ -21,6 +21,14 @@ class Cart extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\Connection the database connection used by this AR class.
+     */
+    public static function getDb()
+    {
+        return Yii::$app->get('db');
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()

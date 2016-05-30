@@ -56,6 +56,7 @@ return [
     'components' => [
         'db_uc' => require(__DIR__ . '/../../common/config/db_uc.php'),
         'db_keke' => require(__DIR__ . '/../../common/config/db_keke.php'),
+        'db' => require(__DIR__ . '/../../common/config/db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
