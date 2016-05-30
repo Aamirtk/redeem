@@ -1211,3 +1211,1571 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1464405978.363
     'REQUEST_TIME' => 1464405978
 ]
+2016-05-30 09:14:43 [10.0.2.2][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Connection refused' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=127....', 'root', '', NULL)
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /wwwroot/redeem/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#12 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#13 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#15 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#16 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#17 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#18 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#19 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#20 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#21 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#22 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#23 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#24 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#25 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#26 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [2002] Connection refused' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#10 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#11 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#12 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#13 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#15 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#16 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#17 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#18 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#19 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#20 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#21 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#22 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#23 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#24 {main}
+Additional Information:
+
+2016-05-30 09:14:41 [10.0.2.2][-][-][info][application] $_POST = [
+    '_csrf' => 'bG9RVTlrTTEmPjc4ThoqRCRcEjQBDXlZPzpkMVEaDHMqXzQ7dzQGRw=='
+    'UserForm' => [
+        'username' => 'admin'
+        'password' => 'dell_456'
+    ]
+    'submit-button' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'CONTENT_LENGTH' => '525'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/admin/index/login'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/admin/index/login'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'HTTP_CONTENT_LENGTH' => '525'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464570881.23
+    'REQUEST_TIME' => 1464570881
+]
+2016-05-30 09:16:02 [10.0.2.2][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [1045] Access denied for user 'root'@'192.168.50.176:59049' (using password: YES)' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=192....', 'root', '', NULL)
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /wwwroot/redeem/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#12 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#13 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#15 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#16 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#17 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#18 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#19 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#20 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#21 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#22 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#23 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#24 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#25 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#26 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [1045] Access denied for user 'root'@'192.168.50.176:59049' (using password: YES)' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#10 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#11 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#12 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#13 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#15 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#16 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#17 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#18 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#19 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#20 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#21 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#22 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#23 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#24 {main}
+Additional Information:
+
+2016-05-30 09:16:01 [10.0.2.2][-][-][info][application] $_POST = [
+    '_csrf' => 'bG9RVTlrTTEmPjc4ThoqRCRcEjQBDXlZPzpkMVEaDHMqXzQ7dzQGRw=='
+    'UserForm' => [
+        'username' => 'admin'
+        'password' => 'dell_456'
+    ]
+    'submit-button' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'CONTENT_LENGTH' => '525'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/admin/index/login'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/admin/index/login'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'HTTP_CONTENT_LENGTH' => '525'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464570961.4803
+    'REQUEST_TIME' => 1464570961
+]
+2016-05-30 09:16:41 [10.0.2.2][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S02]: Base table or view not found: 1146 Table 'com_vsochina_maker.vso_point_admin' doesn't exist' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#4 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#5 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#6 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#9 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#10 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#11 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#12 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#13 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#17 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#19 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S02]: Base table or view not found: 1146 Table 'com_vsochina_maker.vso_point_admin' doesn't exist
+The SQL being executed was: SELECT * FROM `vso_point_admin` WHERE (`username`='admin') AND (`password`='159d7c4984f1709980bfc6fb51cff98f')' in /wwwroot/redeem/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT * FROM `...')
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#2 /wwwroot/redeem/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#3 /wwwroot/redeem/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#4 /wwwroot/redeem/backend/models/UserForm.php(59): yii\db\ActiveQuery->one()
+#5 /wwwroot/redeem/backend/models/UserForm.php(44): app\models\UserForm->getUser()
+#6 [internal function]: app\models\UserForm->validatePassword('password', NULL)
+#7 /wwwroot/redeem/vendor/yiisoft/yii2/validators/InlineValidator.php(69): call_user_func(Array, 'password', NULL)
+#8 /wwwroot/redeem/vendor/yiisoft/yii2/validators/Validator.php(240): yii\validators\InlineValidator->validateAttribute(Object(app\models\UserForm), 'password')
+#9 /wwwroot/redeem/vendor/yiisoft/yii2/base/Model.php(351): yii\validators\Validator->validateAttributes(Object(app\models\UserForm), Array)
+#10 /wwwroot/redeem/backend/models/UserForm.php(70): yii\base\Model->validate()
+#11 /wwwroot/redeem/backend/modules/controllers/IndexController.php(280): app\models\UserForm->login()
+#12 [internal function]: app\modules\controllers\IndexController->actionLogin()
+#13 /wwwroot/redeem/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /wwwroot/redeem/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('admin/index/log...', Array)
+#17 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#19 {main}
+Additional Information:
+Array
+(
+    [0] => 42S02
+    [1] => 1146
+    [2] => Table 'com_vsochina_maker.vso_point_admin' doesn't exist
+)
+
+2016-05-30 09:16:41 [10.0.2.2][-][-][info][application] $_POST = [
+    '_csrf' => 'bG9RVTlrTTEmPjc4ThoqRCRcEjQBDXlZPzpkMVEaDHMqXzQ7dzQGRw=='
+    'UserForm' => [
+        'username' => 'admin'
+        'password' => 'dell_456'
+    ]
+    'submit-button' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'CONTENT_LENGTH' => '525'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/admin/index/login'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/admin/index/login'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'HTTP_CONTENT_LENGTH' => '525'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571001.2704
+    'REQUEST_TIME' => 1464571001
+]
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/models/UserForm.php:72
+    in /wwwroot/redeem/backend/modules/controllers/IndexController.php:280
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/models/UserForm.php:72
+    in /wwwroot/redeem/backend/modules/controllers/IndexController.php:280
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/models/UserForm.php:72
+    in /wwwroot/redeem/backend/modules/controllers/IndexController.php:280
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/controllers/IndexController.php:285
+2016-05-30 09:17:06 [10.0.2.2][1][-][info][application] $_POST = [
+    '_csrf' => 'bG9RVTlrTTEmPjc4ThoqRCRcEjQBDXlZPzpkMVEaDHMqXzQ7dzQGRw=='
+    'UserForm' => [
+        'username' => 'admin'
+        'password' => 'dell_456'
+    ]
+    'submit-button' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+    'msg' => 0
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'CONTENT_LENGTH' => '525'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/admin/index/login'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/admin/index/login'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_CONTENT_TYPE' => 'multipart/form-data; boundary=---------------------------8777954114741'
+    'HTTP_CONTENT_LENGTH' => '525'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571026.001
+    'REQUEST_TIME' => 1464571026
+]
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:17:07 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:17:07 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/admin/index/login'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571027.1832
+    'REQUEST_TIME' => 1464571027
+]
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/views/team/list.php:54
+    in /wwwroot/redeem/backend/modules/team/controllers/TeamController.php:56
+2016-05-30 09:17:10 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/views/team/list.php:59
+    in /wwwroot/redeem/backend/modules/team/controllers/TeamController.php:56
+2016-05-30 09:17:09 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/team/team/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571028.941
+    'REQUEST_TIME' => 1464571028
+]
+2016-05-30 09:17:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:10 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/opportunity/task/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571030.425
+    'REQUEST_TIME' => 1464571030
+]
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:12 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/rule'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571032.2358
+    'REQUEST_TIME' => 1464571032
+]
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:12 [10.0.2.2][1][-][info][application] $_POST = [
+    'start' => '0'
+    'pageSize' => '10'
+    'page' => '0'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'CONTENT_LENGTH' => '26'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/opportunity/task/list-data'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/opportunity/task/list'
+    'HTTP_CONTENT_LENGTH' => '26'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571032.2455
+    'REQUEST_TIME' => 1464571032
+]
+2016-05-30 09:17:14 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:14 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:14 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:14 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:13 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/vip/group/list-view'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59114'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571033.4745
+    'REQUEST_TIME' => 1464571033
+]
+2016-05-30 09:17:15 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:15 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:15 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:15 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:14 [10.0.2.2][1][-][info][application] $_POST = [
+    'start' => '0'
+    'pageSize' => '10'
+    'page' => '0'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'CONTENT_LENGTH' => '26'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59116'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_CONTENT_LENGTH' => '26'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571034.2879
+    'REQUEST_TIME' => 1464571034
+]
+2016-05-30 09:17:16 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:16 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:16 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:16 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:14 [10.0.2.2][1][-][info][application] $_GET = [
+    '_' => '1464571034008'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => '_=1464571034008'
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/get-channels?_=1464571034008'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571034.4975
+    'REQUEST_TIME' => 1464571034
+]
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:16 [10.0.2.2][1][-][info][application] $_POST = [
+    'start' => '0'
+    'pageSize' => '10'
+    'page' => '0'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'CONTENT_LENGTH' => '26'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/vip/group/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59114'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/vip/group/list-view'
+    'HTTP_CONTENT_LENGTH' => '26'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571036.0833
+    'REQUEST_TIME' => 1464571036
+]
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:17 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:17:15 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/trust/base/list-view'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571035.1534
+    'REQUEST_TIME' => 1464571035
+]
+2016-05-30 09:18:09 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:09 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:09 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:09 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:08 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/rule'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571088.5933
+    'REQUEST_TIME' => 1464571088
+]
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:10 [10.0.2.2][1][-][info][application] $_GET = [
+    '_' => '1464571089905'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => '_=1464571089905'
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/get-channels?_=1464571089905'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571090.114
+    'REQUEST_TIME' => 1464571090
+]
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:10 [10.0.2.2][1][-][info][application] $_POST = [
+    'start' => '0'
+    'pageSize' => '10'
+    'page' => '0'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'CONTENT_LENGTH' => '26'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59114'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_CONTENT_LENGTH' => '26'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571090.1269
+    'REQUEST_TIME' => 1464571090
+]
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:09 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/rule'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571089.7049
+    'REQUEST_TIME' => 1464571089
+]
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:11 [10.0.2.2][1][-][info][application] $_POST = [
+    'start' => '0'
+    'pageSize' => '10'
+    'page' => '0'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'POST'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'CONTENT_LENGTH' => '26'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '58993'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_CONTENT_LENGTH' => '26'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571091.8324
+    'REQUEST_TIME' => 1464571091
+]
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:18:12 [10.0.2.2][1][-][info][application] $_GET = [
+    '_' => '1464571091639'
+]
+
+$_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => '_=1464571091639'
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/point/allocation/get-channels?_=1464571091639'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59115'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'application/json, text/javascript, */*; q=0.01'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/point/allocation/rule'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571091.8434
+    'REQUEST_TIME' => 1464571091
+]
+2016-05-30 09:27:55 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:27:55 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:27:55 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+2016-05-30 09:27:55 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59337'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571675.1238
+    'REQUEST_TIME' => 1464571675
+]
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "trust/base/list/view.html".' in /wwwroot/redeem/vendor/yiisoft/yii2/base/Module.php:461
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('trust/base/list...', Array)
+#1 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message '页面未找到。' in /wwwroot/redeem/vendor/yiisoft/yii2/web/Application.php:96
+Stack trace:
+#0 /wwwroot/redeem/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /wwwroot/redeem/backend/web/index.php(29): yii\base\Application->run()
+#2 {main}
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:56 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/trust/base/list/view.html'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59382'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571676.4255
+    'REQUEST_TIME' => 1464571676
+]
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:74
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:57 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/models/Role.php:80
+    in /wwwroot/redeem/backend/base/CommonWebController.php:35
+2016-05-30 09:27:58 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/views/team/list.php:54
+    in /wwwroot/redeem/backend/modules/team/controllers/TeamController.php:56
+2016-05-30 09:27:58 [10.0.2.2][1][-][error][yii\web\Session::open] session_start(): Cannot find save handler 'memcached' - session startup failed
+    in /wwwroot/redeem/backend/modules/team/views/team/list.php:59
+    in /wwwroot/redeem/backend/modules/team/controllers/TeamController.php:56
+2016-05-30 09:27:56 [10.0.2.2][1][-][info][application] $_COOKIE = [
+    '_csrf' => '71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv\";}'
+    '_identity' => 'c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca:2:{i:0;s:9:\"_identity\";i:1;s:22:\"[1,\"test100key\",86400]\";}'
+]
+
+$_SESSION = [
+    '__id' => 1
+]
+
+$_SERVER = [
+    'USER' => 'vagrant'
+    'HOME' => '/home/vagrant'
+    'FCGI_ROLE' => 'RESPONDER'
+    'SCRIPT_FILENAME' => '/wwwroot/redeem/backend/web/index.php'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'CONTENT_TYPE' => ''
+    'CONTENT_LENGTH' => ''
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/team/team/list'
+    'DOCUMENT_URI' => '/index.php'
+    'DOCUMENT_ROOT' => '/wwwroot/redeem/backend/web'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_SOFTWARE' => 'nginx/1.6.2'
+    'REMOTE_ADDR' => '10.0.2.2'
+    'REMOTE_PORT' => '59337'
+    'SERVER_ADDR' => '10.0.2.15'
+    'SERVER_PORT' => '80'
+    'SERVER_NAME' => 'www.redeem_back.com'
+    'REDIRECT_STATUS' => '200'
+    'PATH_INFO' => ''
+    'PATH_TRANSLATED' => '/wwwroot/redeem/backend/web'
+    'HTTP_HOST' => 'www.redeem_back.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_DNT' => '1'
+    'HTTP_REFERER' => 'http://www.redeem_back.com/'
+    'HTTP_COOKIE' => '_csrf=71258bba95449c9d93965d81d4c2ee7fc8b67307d7111bfd60aafe63fd511030a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22JQfmwqguH3Ca8f4hSU5dhqABF0enN_Kv%22%3B%7D; _identity=c4a4b0fb1fbfa55be0f2350fed649824be4abd7f08f4e7a1b1643d8cf1e2fbdca%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A22%3A%22%5B1%2C%22test100key%22%2C86400%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1464571676.4415
+    'REQUEST_TIME' => 1464571676
+]

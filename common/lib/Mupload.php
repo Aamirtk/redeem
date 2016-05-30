@@ -5,10 +5,10 @@ use Yii;
 use yii\base\Exception;
 
 /**
- * 上传图片
+ * 手机端批量上传图片
  *
  */
-class Upload
+class Mupload
 {
     /**
      * 上传图片，默认路径为/frontend/web/upload/
@@ -16,7 +16,7 @@ class Upload
      * @return string 返回相对于/frontend/web/的图片路径
      *
      */
-    public static function ajax_upload($temp = '', $id = 'myfile')
+    public static function ajax_upload($temp = '', $id = 'myfile', $index = 0)
     {
         $ymd = date("Ymd");
         $path = Yii::getAlias('@upload') . "$temp/$ymd/";
@@ -25,13 +25,13 @@ class Upload
         if (!empty($_FILES))
         {
             //得到上传的临时文件流
-            $tempFile = $_FILES[$id]['tmp_name'];
+            $tempFile = $_FILES[$id]['tmp_name'][$index];
 
             //允许的文件后缀
-            $fileTypes = array('jpg', 'jpeg', 'gif', 'png');
+            $fileTypes = array('jpg', 'jpeg', 'pjpeg', 'gif', 'png');
 
             //得到文件原名
-            $fileName = iconv("UTF-8", "GB2312", $_FILES[$id]["name"]);
+            $fileName = iconv("UTF-8", "GB2312", $_FILES[$id]["name"][$index]);
 
             $filetype = substr(strrchr($fileName, '.'), 1); //扩展名
             $imgId = uniqid('images');
