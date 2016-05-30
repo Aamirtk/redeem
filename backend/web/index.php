@@ -23,6 +23,8 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main.php'),
     require(__DIR__ . '/../config/main-local.php')
 );
+//引入公用函数
+require_once(__DIR__.'/../../common/functions/tools.php');
 
 error_reporting(E_NOTICE);
 $application = new yii\web\Application($config);

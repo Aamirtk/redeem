@@ -3,10 +3,10 @@
 namespace backend\modules\user\controllers;
 
 use Yii;
-use app\base\CommonWebController;
+use app\base\BaseController;
 use common\api\VsoApi;
 
-class UserController extends CommonWebController
+class UserController extends BaseController
 {
 
     public $layout = 'layout';
@@ -34,12 +34,7 @@ class UserController extends CommonWebController
      */
     public function actionList()
     {
-        $search = $this->getHttpParam('search', false, null);
-        $page = $this->getHttpParam('page', false, 0);
-        $pageSize = $this->getHttpParam('pageSize', false, 10);
-        $offset = $page * $pageSize;
-        $res = VsoApi::send(yii::$app->params['usersearchapi'], ['search' => $search, 'offset' => $offset, 'pageSize' => $pageSize], "post");
-        $this->printSuccess($res);
+
     }
 
 

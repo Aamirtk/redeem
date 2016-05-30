@@ -2,7 +2,7 @@
 
 namespace app\base;
 
-use yii;
+use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
 use common\lib\Tools;
@@ -10,7 +10,7 @@ use yii\filters\AccessControl;
 use app\modules\team\models\Role;
 use app\modules\team\models\Privilege;
 
-class CommonWebController extends Controller
+class BaseController extends Controller
 {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
@@ -77,7 +77,7 @@ class CommonWebController extends Controller
     }
 
     /**
-     * 返回，限制action数组，用于权限过滤，子类可以重写
+     * 限制action数组，用于权限过滤，子类可以重写
      * @return array 限制actions数组
      */
     public function limitActions()
@@ -86,84 +86,37 @@ class CommonWebController extends Controller
     }
 
     /**
-     * 获取get或者post中的参数，默认先从get中取
-     * @param $key 参数名
-     * @param bool|true $required 必须字段 true的时候如果参数为空，将直接输出错误
-     * @param null $default 默认值，在$required=false时生效
-     * @return null
+     * 判断是否是POST请求
+     * @return string
      */
-    public function getHttpParam($key, $required = true, $default = null)
-    {
-        $p = isset($_GET[$key]) ? $_GET[$key] : (isset($_POST[$key]) ? $_POST[$key] : null);
-
-        if ($required && $p === null)
-        {
-            $message = "missing param:$key";
-            $this->printError($message);
-        }
-        if ($p === null)
-        {
-            $p = $default;
-        }
-        return $p;
-    }
-
     public function isPost()
     {
-        return \Yii::$app->request->isPost;
-    }
-
-    public function getYiiParam($key)
-    {
-        return \Yii::$app->params [$key];
-    }
-
-    public function getLoginUsername()
-    {
-        return \Yii::$app->user->getId();
-    }
-
-    public function printError($message = null, $code = null)
-    {
-        if ($message == null)
-        {
-            $message = \Yii::t('app', 'error');
-        }
-        $data = ["result" => false, "errorMessage" => $message, "code" => $code];
-        $this->_echoJson($data);
-    }
-
-    public function printSuccess($data = [], $code = null, $message = '')
-    {
-        $data = array_merge(["result" => true, "code" => $code, 'message' => $message], $data);
-        $this->_echoJson($data);
-    }
-
-    private function _echoJson($data)
-    {
-        // ie10以下不认识application/json
-        //if (strpos($_SERVER ['HTTP_USER_AGENT'], "MSIE 8.0") || strpos($_SERVER ['HTTP_USER_AGENT'], "MSIE 9.0"))
-        //{
-        //    header('Content-Type:text/html;');
-        //}
-        echo Json::encode($data);
-        exit;
+        return Yii::$app->request->isPost;
     }
 
     /**
-     * 判断是否是https请求
-     * @return boolean
+     * 判断是否是Get请求
+     * @return string
      */
-    public static function isHttpsRequest()
+    public function isGet()
     {
-        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on");
+        return Yii::$app->request->isGet;
+    }
+
+    /**
+     * 判断是否是Ajax请求
+     * @return string
+     */
+    public function isAjax()
+    {
+        return Yii::$app->request->isAjax;
     }
 
     /**
      * 获取浏览器类型
      * @return string
      */
-    public static function getBrowser()
+    public function getBrowser()
     {
         $agent = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : '';
         if (strpos($agent, 'MSIE') !== false || strpos($agent, 'rv:11')) //ie11判断
@@ -209,10 +162,9 @@ class CommonWebController extends Controller
      * @param int $ret
      * @param string $msg
      * @param bool $data
-     * @param bool $write_log
      * @return string
      */
-    public function _return_json($ret, $msg = '', $data = null, $write_log = false) {
+    public function _json($ret, $msg = '', $data = null) {
         @header('Content-Type:application/json;charset=utf-8');
         $r_data = [
             'ret' => $ret,
@@ -231,10 +183,6 @@ class CommonWebController extends Controller
 
         if ($data === null) {
             unset($r_data['data']);
-        }
-
-        if ($write_log || $ret < 0) {//强制记录和状态异常时（小于 0）自动记录
-            $this->_log_write($ret, $msg);
         }
 
         $_callback_fun_name = '';
@@ -264,6 +212,22 @@ class CommonWebController extends Controller
             return $default;
         }
         return $request[$key];
+    }
+
+    /**
+     * 获取值
+     * @param $data mixed 要判断是否存在的值
+     * @param $default mixed 当$data不存在时默认值
+     * @param $empty bool true-同时验证$data还不能为空, 默认不验证
+     * @return mixed mix
+     **/
+    public function _value($data, $default = '', $empty = false)
+    {
+        if ($empty) {
+            return !empty($data) ? $data : $default;
+        } else {
+            return isset($data) ? $data : $default;
+        }
     }
 
 }
