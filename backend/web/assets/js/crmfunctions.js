@@ -180,16 +180,13 @@ $(function(){
                         if (ACTMARK == 'listmy') {
                             return "<a class='button button-info' title='企业信息' href='javascript:void(0);' onclick='showCompanyBrief("+obj.id+")'>详情</a>" +
                             " <a class='button button-primary page-action'  title='编辑企业信息' href='/crm/company/update/?id="+obj.id+"' data-href='/crm/company/update/?id="+obj.id+"'>编辑</a>"+
-                                " <a class='button button-info' href='http://rc.vsochina.com/enterprise/default/index/" + obj.username + "'  target='_blank'>看空间</a>" +
                             " <a class='button button-danger' onclick='checkDeleteCompanys(" + obj.id + ")'>删除</a>"
                         }
                         else if (ACTMARK == 'listmark') {
                             return "<a class='button button-info' title='企业信息' href='javascript:void(0);' onclick='showCompanyBrief("+obj.id+")'>详情</a>" +
-                                " <a class='button button-info' href='http://rc.vsochina.com/enterprise/default/index/" + obj.username + "'  target='_blank'>看空间</a>" +
                             " <a class='button button-success page-action' href='#' data-href='/crm/company/add-mark/?id="+obj.id+"'>评分</a>"
                         } else {
                             return "<a class='button button-info' title='企业信息' href='javascript:void(0);' onclick='showCompanyBrief("+obj.id+")'>详情</a>" +
-                                " <a class='button button-info' href='http://rc.vsochina.com/enterprise/default/index/" + obj.username + "'  target='_blank'>看空间</a>" +
                             " <a class='button button-success page-action'  title='企业评分' href='#' data-href='/crm/company/add-mark/?id="+obj.id+"'>评分</a>"+
                             " <a class='button button-primary page-action'   title='编辑企业信息' href='/crm/company/update/?id="+obj.id+"' data-href='/crm/company/update/?id="+obj.id+"'>编辑</a>"+
                                 " <a class='button button-danger' onclick='checkDeleteCompanys(" + obj.id + ")'>删除</a>"

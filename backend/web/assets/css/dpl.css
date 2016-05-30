@@ -3589,15 +3589,3 @@ input[type="submit"].button.button-mini {
 .tips p {
   margin: 5px 0 0;
 }
-
-/*==upload img==*/
-.upload-icon #proj_banner0,
-.upload-icon #proj_banner1,
-.upload-icon #proj_banner2
-{
-  background-image: url(/Images/createNew/upload-img.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-  border: 1px solid #e0e0e0;
-}
-/*==/upload img==*/

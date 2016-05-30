@@ -1,0 +1,677 @@
+Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [text] => 影视行业
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 2
+                            [text] => 宣传片/广告片/纪录片
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 2
+                            [leaf] => 
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 3
+                            [text] => 电影/电视剧/网络节目
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 3
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 4
+                            [text] => 前期创作
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 4
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 5
+                            [text] => 后期制作
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 5
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 6
+                            [text] => 音频制作
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 6
+                            [leaf] => 1
+                        )
+
+                    [5] => Array
+                        (
+                            [id] => 7
+                            [text] => 宣传/发行
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 7
+                            [leaf] => 1
+                        )
+
+                    [6] => Array
+                        (
+                            [id] => 8
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 1
+                            [stype] => 8
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [1] => Array
+        (
+            [id] => 9
+            [text] => 动漫制作
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 10
+                            [text] => 漫画插画
+                            [level] => 1
+                            [ptype] => 9
+                            [stype] => 10
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 11
+                            [text] => 二维动画
+                            [level] => 1
+                            [ptype] => 9
+                            [stype] => 11
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 12
+                            [text] => 三维动画
+                            [level] => 1
+                            [ptype] => 9
+                            [stype] => 12
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 13
+                            [text] => 定格动画
+                            [level] => 1
+                            [ptype] => 9
+                            [stype] => 13
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 14
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 9
+                            [stype] => 14
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [2] => Array
+        (
+            [id] => 15
+            [text] => 互动/游戏行业
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 16
+                            [text] => VR虚拟现实
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 16
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 17
+                            [text] => AR增强现实
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 17
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 18
+                            [text] => 交互短片
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 18
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 19
+                            [text] => 交互动画
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 19
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 20
+                            [text] => 游戏策划
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 20
+                            [leaf] => 1
+                        )
+
+                    [5] => Array
+                        (
+                            [id] => 21
+                            [text] => 游戏设计
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 21
+                            [leaf] => 1
+                        )
+
+                    [6] => Array
+                        (
+                            [id] => 22
+                            [text] => 游戏开发
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 22
+                            [leaf] => 1
+                        )
+
+                    [7] => Array
+                        (
+                            [id] => 23
+                            [text] => 游戏代理/运营
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 23
+                            [leaf] => 1
+                        )
+
+                    [8] => Array
+                        (
+                            [id] => 24
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 15
+                            [stype] => 24
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [3] => Array
+        (
+            [id] => 25
+            [text] => 建筑/视觉可视化
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 26
+                            [text] => 效果图
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 26
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 27
+                            [text] => 建筑动画
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 27
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 28
+                            [text] => 建筑多媒体
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 28
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 29
+                            [text] => 展览展示
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 29
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 30
+                            [text] => BIM工程
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 30
+                            [leaf] => 1
+                        )
+
+                    [5] => Array
+                        (
+                            [id] => 31
+                            [text] => 建筑设计
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 31
+                            [leaf] => 1
+                        )
+
+                    [6] => Array
+                        (
+                            [id] => 32
+                            [text] => 智慧城市
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 32
+                            [leaf] => 1
+                        )
+
+                    [7] => Array
+                        (
+                            [id] => 33
+                            [text] => 演示动画
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 33
+                            [leaf] => 1
+                        )
+
+                    [8] => Array
+                        (
+                            [id] => 34
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 25
+                            [stype] => 34
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [4] => Array
+        (
+            [id] => 35
+            [text] => 工业设计
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 36
+                            [text] => 产品外观设计
+                            [level] => 1
+                            [ptype] => 35
+                            [stype] => 36
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 37
+                            [text] => 机械设计
+                            [level] => 1
+                            [ptype] => 35
+                            [stype] => 37
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 38
+                            [text] => 电子产品功能设计
+                            [level] => 1
+                            [ptype] => 35
+                            [stype] => 38
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 39
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 35
+                            [stype] => 39
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [5] => Array
+        (
+            [id] => 40
+            [text] => 创意产品设计
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 41
+                            [text] => 商标/VI设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 41
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 42
+                            [text] => 宣传品设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 42
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 43
+                            [text] => 服装设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 43
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 44
+                            [text] => 首饰设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 44
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 45
+                            [text] => 生活创意设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 45
+                            [leaf] => 1
+                        )
+
+                    [5] => Array
+                        (
+                            [id] => 46
+                            [text] => UI设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 46
+                            [leaf] => 1
+                        )
+
+                    [6] => Array
+                        (
+                            [id] => 47
+                            [text] => 卡片设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 47
+                            [leaf] => 1
+                        )
+
+                    [7] => Array
+                        (
+                            [id] => 48
+                            [text] => 照片处理
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 48
+                            [leaf] => 1
+                        )
+
+                    [8] => Array
+                        (
+                            [id] => 49
+                            [text] => 书籍装帧
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 49
+                            [leaf] => 1
+                        )
+
+                    [9] => Array
+                        (
+                            [id] => 50
+                            [text] => 工艺美术设计
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 50
+                            [leaf] => 1
+                        )
+
+                    [10] => Array
+                        (
+                            [id] => 51
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 40
+                            [stype] => 51
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [6] => Array
+        (
+            [id] => 52
+            [text] => 软件开发
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 53
+                            [text] => 网站开发
+                            [level] => 1
+                            [ptype] => 52
+                            [stype] => 53
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 54
+                            [text] => 桌面软件开发
+                            [level] => 1
+                            [ptype] => 52
+                            [stype] => 54
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 55
+                            [text] => APP开发
+                            [level] => 1
+                            [ptype] => 52
+                            [stype] => 55
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 56
+                            [text] => 微信开发
+                            [level] => 1
+                            [ptype] => 52
+                            [stype] => 56
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 57
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 52
+                            [stype] => 57
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [7] => Array
+        (
+            [id] => 58
+            [text] => 策划/营销/出版
+            [level] => 0
+            [leaf] => 
+            [children] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 59
+                            [text] => 电商策划
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 59
+                            [leaf] => 1
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 60
+                            [text] => 创意策划
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 60
+                            [leaf] => 1
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 61
+                            [text] => 互联网推广
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 61
+                            [leaf] => 1
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 62
+                            [text] => 文案写作
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 62
+                            [leaf] => 1
+                        )
+
+                    [4] => Array
+                        (
+                            [id] => 63
+                            [text] => 专业翻译
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 63
+                            [leaf] => 1
+                        )
+
+                    [5] => Array
+                        (
+                            [id] => 64
+                            [text] => 其他
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 64
+                            [leaf] => 1
+                        )
+
+                    [6] => Array
+                        (
+                            [id] => 65
+                            [text] => 出版
+                            [level] => 1
+                            [ptype] => 58
+                            [stype] => 65
+                            [leaf] => 1
+                        )
+
+                )
+
+        )
+
+    [8] => Array
+        (
+            [id] => 66
+            [text] => 其他行业
+            [level] => 0
+            [leaf] => 1
+        )
+
+)
