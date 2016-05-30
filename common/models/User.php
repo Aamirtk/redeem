@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -21,6 +22,18 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+
+    /**
+     * 用户类型
+     */
+    const TYPE_COMMON = 1;//普通用户
+    const TYPE_SELLER = 2;//销售
+    const TYPE_DESIGNER = 3;//家装设计师
+
+    const NO_DELETE = 1;//启用
+    const IS_DELETE = 2;//禁用
+
+
     /**
      * @inheritdoc
      */
@@ -70,4 +83,180 @@ class User extends \yii\db\ActiveRecord
             'create_at' => '创建时间',
         ];
     }
+
+    /**
+     * 获取信息
+     * @param $where array
+     * @return array|boolean
+     **/
+    public function _get_info($where = []) {
+        if (empty($where)) {
+            return false;
+        }
+
+        $obj = self::findOne($where);
+        if (!empty($obj)) {
+            return $obj->toArray();
+        }
+        return false;
+    }
+
+    /**
+     * 获取列表
+     * @param $where array
+     * @param $order string
+     * @return array|boolean
+     */
+    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 20) {
+        $_obj = self::find();
+        if (isset($where['sql']) || isset($where['params'])) {
+            $_obj->where($where['sql'], $where['params']);
+        } else if (is_array($where)) {
+            $_obj->where($where);
+        }
+
+        $_obj->orderBy($order);
+
+        if (!empty($limit)) {
+            $offset = max(($page - 1), 0) * $limit;
+            $_obj->offset($offset)->limit($limit);
+        }
+        return $_obj->asArray(true)->all();
+    }
+
+    //获取总条数
+    public function _get_count($where = []) {
+        $_obj = self::find();
+        if (isset($where['sql']) || isset($where['params'])) {
+            $_obj->where($where['sql'], $where['params']);
+        } else {
+            $_obj->where($where);
+        }
+        return intval($_obj->count());
+    }
+
+    /**
+     * 添加记录-返回新插入的自增id
+     **/
+    public static function _add($data) {
+        if (!empty($data) && !empty($data['username'])) {
+            try {
+                $_mdl = new self;
+
+                foreach ($data as $k => $v) {
+                    $_mdl->$k = $v;
+                }
+                if(!$_mdl->validate()) {//校验数据
+                    return false;
+                }
+                $ret = $_mdl->insert();
+                if ($ret !== false) {
+                    return self::getDb()->getLastInsertID();
+                }
+                return false;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 保存记录
+     * @param $data array
+     * @return array|boolean
+     */
+    public function _save($data) {
+        if (!empty($data)) {
+            $_mdl = new self();
+
+            try {
+                foreach ($data as $k => $v) {
+                    $_mdl->$k = $v;
+                }
+                if(!$_mdl->validate()) {//校验数据
+                    return false;
+                }
+
+                if (!empty($data['id'])) {//修改
+                    $id = $data['id'];
+                    $ret = $_mdl->updateAll($data, ['id' => $id]);
+                } else {//增加
+                    $ret = $_mdl->insert();
+                }
+
+                if ($ret !== false) {
+                    return true;
+                }
+                return false;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 删除记录
+     * @param $where array
+     * @return array|boolean
+     */
+    public static function _delete($where) {
+        if (empty($where)) {
+            return false;
+        }
+        try {
+            return (new self)->deleteAll($where);
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 用户类型
+     * @param $type int
+     * @return array|boolean
+     */
+    public static function _get_user_type($type = 1){
+        switch(intval($type)){
+            case self::TYPE_COMMON:
+                $_name = '普通用户';
+                break;
+            case self::TYPE_SELLER:
+                $_name = '销售';
+                break;
+            case self::TYPE_DESIGNER:
+                $_name = '家装设计师';
+                break;
+            default:
+                $_name = '销售';
+                break;
+        }
+        return $_name;
+    }
+
+    /**
+     * 用户状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_user_status($status = 1){
+        switch(intval($status)){
+            case self::NO_DELETE:
+                $_name = '启用';
+                break;
+            case self::TYPE_SELLER:
+                $_name = '禁用';
+                break;
+            default:
+                $_name = '启用';
+                break;
+        }
+        return $_name;
+    }
+
+
+
+
 }

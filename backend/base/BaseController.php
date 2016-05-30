@@ -150,7 +150,7 @@ class BaseController extends Controller
      * @param array $data
      * @return string
      */
-    private function _to_json($data) {
+    public function _to_json($data) {
         if (!empty($data)) {
             return json_encode($data);
         }
@@ -186,8 +186,8 @@ class BaseController extends Controller
         }
 
         $_callback_fun_name = '';
-        if (!empty($this->_request['jsonp'])) {
-            $_callback_fun_name = $this->_request['jsonp'];
+        if (!empty($this->_request('jsonp'))) {
+            $_callback_fun_name = $this->_request('jsonp');
         }
 
         if (!empty($_callback_fun_name)) {

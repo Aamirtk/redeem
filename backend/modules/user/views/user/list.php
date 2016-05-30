@@ -12,19 +12,15 @@ use yii\helpers\Html;
     <?= Html::jsFile('@web/Js/jquery.js') ?>
     <?= Html::jsFile('@web/assets/js/bui-min.js') ?>
     <?= Html::jsFile('@web/Js/common/common.js?v=1.0.0') ?>
-    <script>
-        var _PRIVILEGE = "<?= $privilege ?>";
-        var _ACTMARK="list";
-        var _BASE_LIST_URL = '';
-        if(_PRIVILEGE == 'info'){
-            _BASE_LIST_URL =  "<?= Yii::$app->urlManager->createUrl('vip/vip/list-info?ajax=1') ?>";
-        }else if(_PRIVILEGE == 'finance'){
-            _BASE_LIST_URL =  "<?= Yii::$app->urlManager->createUrl('vip/vip/list-finance?ajax=1') ?>";
-        }else if(_PRIVILEGE == 'operate'){
-            _BASE_LIST_URL =  "<?= Yii::$app->urlManager->createUrl('vip/vip/list-operate?ajax=1') ?>";
-        }else{
-            _BASE_LIST_URL =  "<?= Yii::$app->urlManager->createUrl('user/user/list?ajax=1') ?>";
+    <style>
+        .user_avatar {
+            height: auto;
+            width: 80px;
+            margin: 10px auto;
         }
+    </style>
+    <script>
+        _BASE_LIST_URL =  "<?php echo yiiUrl('user/user/list?ajax=1') ?>";
     </script>
 </head>
 
@@ -32,7 +28,7 @@ use yii\helpers\Html;
 <div class="container">
     <div class="row">
         <div class="search-bar form-horizontal well">
-            <form id="vipsearch" class="form-horizontal">
+            <form id="usersearch" class="form-horizontal">
                 <div class="row">
                     <div class="control-group span12">
                         <label class="control-label">时间范围：</label>
@@ -41,11 +37,11 @@ use yii\helpers\Html;
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <label class="control-label">会员等级：</label>
+                        <label class="control-label">用户等级：</label>
                         <div class="controls" >
                             <select name="grouptype" id="grouptype">
                                 <option value="">请选择</option>
-                                <?php foreach ($groupList as $key => $val): ?>
+                                <?php foreach ([] as $key => $val): ?>
                                     <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
                                 <?php endforeach ?>
                             </select>
@@ -77,7 +73,7 @@ use yii\helpers\Html;
                         <div class="controls" >
                             <select name="checkstatus" id="checkstatus">
                                 <option value="">请选择</option>
-                                <?php foreach ($checkSatus as $key => $name): ?>
+                                <?php foreach ([] as $key => $name): ?>
                                     <option value="<?= $key ?>"><?= $name ?></option>
                                 <?php endforeach ?>
                             </select>
@@ -88,25 +84,23 @@ use yii\helpers\Html;
                         <div class="controls" >
                             <select name="inputercompany" id="inputercompany">
                                 <option value="">请选择</option>
-                                <?php foreach ($companyList as $key => $name): ?>
+                                <?php foreach ([] as $key => $name): ?>
                                     <option value="<?= $key ?>"><?= $name ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchVips()">查询</button>
+                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchUsers()">查询</button>
                     </div>
                 </div>
             </form>
         </div>
-        <?php if($privilege == 'info'):?>
-            <div class="bui-grid-tbar">
-                <a class="button button-primary page-action" title="添加会员"  href="#" data-href="<?= Yii::$app->urlManager->createUrl('vip/vip/add') ?>" id="addVip1">会员录入</a>
-                <a class="button button-danger" href="javascript:void(0);" onclick="checkDeleteVips()">批量删除</a>
-            </div>
-        <?php endif ?>
-        <div id="vips_grid">
+        <div class="bui-grid-tbar">
+            <a class="button button-primary page-action" title="添加用户"  href="#" data-href="<?= Yii::$app->urlManager->createUrl('user/user/add') ?>" id="addUser1">用户录入</a>
+            <a class="button button-danger" href="javascript:void(0);" onclick="checkDeleteUsers()">批量删除</a>
+        </div>
+        <div id="users_grid">
         </div>
     </div>
 </div>
@@ -115,7 +109,7 @@ use yii\helpers\Html;
         BUI.use('common/page');
         BUI.use('bui/form', function (Form) {
             var form = new Form.HForm({
-                srcNode: '#vipsearch'
+                srcNode: '#usersearch'
             });
             form.render();
         });
@@ -138,60 +132,42 @@ use yii\helpers\Html;
                     pageIndexParam: 'page' //页码
                 },
                 autoLoad: true, //自动加载数据
-                params: { privilege : _PRIVILEGE
+                params: {
                 },
-                root: 'vipList',//数据返回字段,支持深成次属性root : 'data.records',
+                root: 'userList',//数据返回字段,支持深成次属性root : 'data.records',
                 totalProperty: 'totalCount',//总计字段
                 pageSize: 10// 配置分页数目,
             });
             var grid = new Grid.Grid({
-                render: '#vips_grid',
+                render: '#users_grid',
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '会员编号', dataIndex: 'id', width: 80},
-                    {title: '用户注册ID', dataIndex: 'username', width: 90},
-                    {title: '客户名称', dataIndex: 'name', width: 90},
-                    {title: '缴纳金额', dataIndex: 'pay', width: 80},
-                    {title: '售价', dataIndex: 'price', width: 80},
-                    {title: '会员等级', dataIndex: 'vipgroup', width: 80},
-                    {title: '联系人', dataIndex: 'contact', width: 80},
-                    {title: '联系方式', dataIndex: 'phone', width: 100},
-                    {title: '销售员', dataIndex: 'inputer', width: 80},
-                    {title: '所属会员', dataIndex: 'inputer_compamy', width: 120},
-                    {title: '录入时间', dataIndex: 'created_at', width: 130},
+                    {title: '用户编号', dataIndex: 'uid', width: 80},
+                    {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
+                    {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
+                    {
+                        title: '微信头像',
+                        width: 120,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<img class='user_avatar' src='"+ obj.avatar +"'>";
+                        }
+                    },
+                    {title: '手机号码', dataIndex: 'mobile', width: 90},
+                    {title: '积分', dataIndex: 'points', width: 80, elCls : 'center'},
+                    {title: '微信公众号', dataIndex: 'wechat', width: 120},
+                    {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
+                    {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
+                    {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
+                    {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {
                         title: '操作',
-                        width: 400,
+                        width: 300,
                         renderer: function (v, obj) {
-                            if (_PRIVILEGE == 'add') { //查看入口
-                                return "<a class='button button-info' title='会员信息' href='javascript:void(0);' onclick='showVipBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>";
-                            }
-                            else if (_PRIVILEGE == 'info') {//销售，录入人员入口
-                                var dom = '';
-                                dom += "<a class='button button-info' title='会员信息' href='javascript:void(0);' onclick='showVipBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>";
-                                //草稿状态或者财务审核驳回状态，可以编辑
-                                if(obj.check_status == 0 || obj.check_status == 2){
-                                    dom += " <a class='button button-primary page-action'  title='编辑会员信息' href='/vip/vip/update/?mid=" + obj.id + "' data-href='/vip/vip/update/?mid=" + obj.id + "'>修改</a>";
-                                }
-                                //运营审核通过，可以编辑行业分类
-                                if(obj.check_status == 5){
-                                    dom += " <a class='button button-primary page-action'  title='编辑会员行业信息' href='/vip/vip/edit-industries/?u=" + obj.username + "' data-href='/vip/vip/edit-industries/?u=" + obj.username + "'>编辑行业</a>";
-                                }
-                                dom += " <a class='button button-danger' onclick='checkDeleteVips(" + obj.id + ")'>删除</a>";
-                                return dom;
-                            }
-                            else if (_PRIVILEGE == 'finance') {//财务审核入口
-                                return "<a class='button button-primary' title='会员信息' href='javascript:void(0);' onclick='FinanceCheck(" + obj.id + ")'>查看</a>";
-                            }
-                            else if (_PRIVILEGE == 'operate') {//运营审核入口
-                                return "<a class='button button-primary' title='会员信息' href='javascript:void(0);' onclick='OperateCheck(" + obj.id + ")'>查看</a>";
-                            }
-                            else {
-                                return "<a class='button button-info' title='会员信息' href='javascript:void(0);' onclick='showVipBrief(" + obj.id + "," + obj.check_status + ")'>详情</a>" +
-                                " <a class='button button-primary page-action'   title='编辑会员信息' href='/vip/vip/update/?id=" + obj.id + "' data-href='/vip/vip/update/?id=" + obj.id + "'>编辑</a>" +
-                                " <a class='button button-danger' onclick='checkDeleteVips(" + obj.id + ")'>删除</a>"
-                            }
+                            return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>详情</a>" +
+                            " <a class='button button-primary page-action'   title='编辑用户信息' href='/user/user/update/?id=" + obj.id + "' data-href='/user/user/update/?id=" + obj.id + "'>编辑</a>" +
+                            " <a class='button button-danger' onclick='checkDeleteUsers(" + obj.id + ")'>删除</a>";
                         }
                     }
                 ],
@@ -202,50 +178,11 @@ use yii\helpers\Html;
                     // pagingBar:表明包含分页栏
                     pagingBar: true
                 },
-                plugins: [_ACTMARK == 'list' ? Grid.Plugins.CheckSelection : ''] // 插件形式引入多选表格
+                plugins: Grid.Plugins.CheckSelection,// 插件形式引入多选表格
             });
             grid.render();
-            $("#vips_grid").data("BGrid", grid);
-            if(_PRIVILEGE == 'info'){
-                grid.addColumn({
-                    title: '状态',
-                    dataIndex: 'checker',
-                    width: 130,
-                    renderer: function (v) {
-                        return v.check_status;
-                    }
-                }, 11);
-            }else if(_PRIVILEGE == 'finance'){
-                grid.addColumn({
-                    title: '财务审核',
-                    dataIndex: 'checker',
-                    width: 130,
-                    renderer: function (v) {
-                        return v.check_status;
-                    }
-                }, 11);
-            }else if(_PRIVILEGE == 'operate'){
-                grid.addColumn({
-                    title: '运营审核',
-                    dataIndex: 'checker',
-                    width: 130,
-                    renderer: function (v) {
-                        return v.check_status;
-                    }
-                }, 11);
+            $("#users_grid").data("BGrid", grid);
 
-            }
-            else if(_PRIVILEGE == 'add'){
-                grid.addColumn({
-                    title: '审核状态',
-                    dataIndex: 'checker',
-                    width: 130,
-                    renderer: function (v) {
-                        return v.check_status;
-                    }
-                }, 11);
-
-            }
         });
 
     });
@@ -253,17 +190,17 @@ use yii\helpers\Html;
 
 <script>
 /**
- * 搜索会员,刷新列表
+ * 搜索用户,刷新列表
  */
-function searchVips() {
+function searchUsers() {
     var search = {};
-    var fields = $("#vipsearch").serializeArray();//获取表单信息
+    var fields = $("#usersearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
         if (field.value != "") {
             search[field.name] = field.value;
         }
     });
-    var store = $("#vips_grid").data("BGrid").get('store');
+    var store = $("#users_grid").data("BGrid").get('store');
     var lastParams = store.get("lastParams");
     lastParams.search = search;
     store.load(lastParams);//刷新
@@ -271,7 +208,7 @@ function searchVips() {
 /**
  * 获取过滤项
  */
-function getVipGridSearchConditions() {
+function getUserGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -286,29 +223,29 @@ function getVipGridSearchConditions() {
 /**
  * 删除提示
  */
-function checkDeleteVips(vipId) {
+function checkDeleteUsers(userId) {
     //如果不传，表示删除勾选
-    var vipIds = [];
-    if (vipId) {
-        vipIds.push(vipId);
+    var userIds = [];
+    if (userId) {
+        userIds.push(userId);
     }
     else {
-        vipIds = $("#vips_grid").data("BGrid").getSelectionValues();
+        userIds = $("#users_grid").data("BGrid").getSelectionValues();
     }
-    if (vipIds.length == 0) {
+    if (userIds.length == 0) {
         return;
     }
     BUI.use('bui/overlay', function (Overlay) {
         BUI.Message.Show({
             title: '删除提示',
-            msg: '您确定要删除选中会员吗？',
+            msg: '您确定要删除选中用户吗？',
             icon: 'warning',
             buttons: [
                 {
                     text: '确定',
                     elCls: 'button button-primary',
                     handler: function () {
-                        deleteVips(vipIds);
+                        deleteUsers(userIds);
                         this.close();
                     }
                 },
@@ -324,17 +261,17 @@ function checkDeleteVips(vipId) {
     });
 }
 /**
- * 删除会员
+ * 删除用户
  */
-function deleteVips(vipIds) {
+function deleteUsers(userIds) {
     $.ajax({
         type: "post",
-        data: {ids: vipIds},
-        url: '/vip/vip/delete',
+        data: {ids: userIds},
+        url: '/user/user/delete',
         dataType: "json",
         success: function (json) {
             if (json.result) {
-                var grid = $("#vips_grid").data("BGrid");
+                var grid = $("#users_grid").data("BGrid");
                 grid.clearSelection();
                 grid.get('store').load();//刷新
                 BUI.Message.Alert('删除成功', 'success');
@@ -347,9 +284,9 @@ function deleteVips(vipIds) {
 }
 
 /**
- * 显示会员详情
+ * 显示用户详情
  */
-function showVipBrief(id, status) {
+function showUserBrief(id, status) {
     var width = 700;
     var height = 600;
     var Overlay = BUI.Overlay;
@@ -368,7 +305,7 @@ function showVipBrief(id, status) {
                 text:'修改',
                 elCls : 'button button-primary',
                 handler : function(){
-                    window.location.href = '/vip/vip/update/?mid=' + id;
+                    window.location.href = '/user/user/update/?mid=' + id;
                 }
             }
         ];
@@ -385,12 +322,12 @@ function showVipBrief(id, status) {
             ];
     }
     dialog = new Overlay.Dialog({
-        title: '会员信息',
+        title: '用户信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/vip/vip/detail",
+            url: "/user/user/detail",
             autoLoad: true, //不自动加载
             params: {id: id},//附加的参数
             lazyLoad: false, //不延迟加载
@@ -410,12 +347,12 @@ function FinanceCheck(id) {
     var height = 700;
     var Overlay = BUI.Overlay;
     dialog = new Overlay.Dialog({
-        title: '会员信息',
+        title: '用户信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/vip/vip/finance-check",
+            url: "/user/user/finance-check",
             autoLoad: true, //不自动加载
             params: {id: id},//附加的参数
             lazyLoad: false, //不延迟加载
@@ -434,12 +371,12 @@ function OperateCheck(id) {
     var height = 700;
     var Overlay = BUI.Overlay;
     dialog = new Overlay.Dialog({
-        title: '会员信息',
+        title: '用户信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/vip/vip/operate-check",
+            url: "/user/user/operate-check",
             autoLoad: true, //不自动加载
             params: {id: id},//附加的参数
             lazyLoad: false, //不延迟加载
