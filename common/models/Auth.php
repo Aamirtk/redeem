@@ -5,28 +5,28 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%user}}".
+ * This is the model class for table "{{%auth}}".
  *
+ * @property integer $auth_id
  * @property integer $uid
  * @property string $nick
  * @property string $name
  * @property string $avatar
  * @property integer $mobile
  * @property string $email
- * @property integer $points
  * @property integer $user_type
- * @property string $wechat_openid
- * @property integer $user_status
+ * @property integer $auth_status
+ * @property string $reason
  * @property integer $create_at
  */
-class User extends \yii\db\ActiveRecord
+class Auth extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%auth}}';
     }
 
     /**
@@ -35,11 +35,12 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mobile', 'points', 'user_type', 'user_status', 'create_at'], 'integer'],
+            [['uid', 'mobile', 'user_type', 'auth_status', 'create_at'], 'integer'],
+            [['auth_status'], 'required'],
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
-            [['wechat_openid'], 'string', 'max' => 50]
+            [['reason'], 'string', 'max' => 500]
         ];
     }
 
@@ -49,16 +50,16 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'auth_id' => '认证ID',
             'uid' => '用户ID',
-            'nick' => '用户微信昵称',
-            'name' => '用户真实姓名',
-            'avatar' => '用户微信头像',
-            'mobile' => '用户手机号码',
-            'email' => '用户邮箱',
-            'points' => '积分',
+            'nick' => '微信昵称',
+            'name' => '真实姓名',
+            'avatar' => '微信头像',
+            'mobile' => '手机号码',
+            'email' => '邮箱',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
-            'wechat_openid' => '微信Open Id',
-            'user_status' => '状态（1-启用；2-禁用）',
+            'auth_status' => '认证状态（1-待审核；2-审核通过；3-审核不通过）',
+            'reason' => '审核不通过的原因',
             'create_at' => '创建时间',
         ];
     }
