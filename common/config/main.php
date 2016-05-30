@@ -8,7 +8,6 @@ return [
     'timeZone' => 'Asia/Shanghai',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'redis' => require(__DIR__ . '/redis.php'),
         'cache' => [
             'class' => 'yii\caching\MemCache',
             'servers' => [
