@@ -104,6 +104,25 @@ use yii\helpers\Html;
         </div>
     </div>
 </div>
+
+<div id="reason_content" style="display: none" >
+    <form id="reason_form" class="form-horizontal">
+        <div class="control-group" >
+            <div class="control-group" style="height: 80px">
+                <label class="control-label"></label>
+                <div class="controls ">
+                    <textarea class="input-large" id="reason_text" style="height: 60px" data-rules="{required : true}" type="text"></textarea>
+                </div>
+            </div>
+            <div class="control-group style="">
+            <label class="control-label"></label>
+            <div class="controls">
+                <span><b>提示：</b>输入字数不能超过50个字</span>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script>
     $(function () {
         BUI.use('common/page');
@@ -166,8 +185,8 @@ use yii\helpers\Html;
                         width: 300,
                         renderer: function (v, obj) {
                             return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
-                            " <a class='button button-primary page-action'   title='编辑用户信息' href='/user/user/update/?id=" + obj.id + "' data-href='/user/user/update/?id=" + obj.id + "'>启用</a>" +
-                            " <a class='button button-danger' onclick='checkDeleteUsers(" + obj.id + ")'>禁用</a>";
+                            " <a class='button button-edit' onclick='enableUser(" + obj.id + ")'>启用</a>";
+                            " <a class='button button-danger' onclick='disableUser(" + obj.id + ")'>禁用</a>";
                         }
                     }
                 ],
