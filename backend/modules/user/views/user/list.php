@@ -165,9 +165,9 @@ use yii\helpers\Html;
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>详情</a>" +
-                            " <a class='button button-primary page-action'   title='编辑用户信息' href='/user/user/update/?id=" + obj.id + "' data-href='/user/user/update/?id=" + obj.id + "'>编辑</a>" +
-                            " <a class='button button-danger' onclick='checkDeleteUsers(" + obj.id + ")'>删除</a>";
+                            return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
+                            " <a class='button button-primary page-action'   title='编辑用户信息' href='/user/user/update/?id=" + obj.id + "' data-href='/user/user/update/?id=" + obj.id + "'>启用</a>" +
+                            " <a class='button button-danger' onclick='checkDeleteUsers(" + obj.id + ")'>禁用</a>";
                         }
                     }
                 ],

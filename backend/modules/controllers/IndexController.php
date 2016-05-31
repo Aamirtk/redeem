@@ -162,21 +162,25 @@ class IndexController extends Controller
         $menu = [];
         $menu[] = [
             'top' => ['权限配置' => 'home'], //顶部
-            '用户管理' => [//侧边分组
-                ['用户列表' => 'user/user/list'], //导航明细
+            '团队管理' => [//侧边分组
+                ['团队列表' => 'team/team/list'], //导航明细
                 ['添加成员' => 'team/team/add']
             ],
+            '角色管理' => [
+                ['角色列表' => 'team/role/list'],
+                ['添加角色' => 'team/role/add']
+            ],
+            '权限管理' => [
+                ['权限列表' => 'team/privilege/list'],
+                ['添加权限' => 'team/privilege/add'],
+                ['分组列表' => 'team/privilege/list-group'],
+                ['添加分组' => 'team/privilege/add-group']
+            ]
         ];
         $menu[] = [
             'top' => ['用户管理' => 'home'],
-            '规则管理' => [
-                ['配比管理' => 'point/allocation/rule'],
-                ['频道管理' => 'point/channel/list-view'],
-                ['增加频道' => 'point/channel/add'],
-                ['等级管理' => 'point/level/list-view']
-            ],
-            '明细管理' => [
-                ['积分明细' => 'point/record/point-list']
+            '用户管理' => [
+                ['用户列表' => 'user/user/list'],
             ],
         ];
         $menu[] = [
