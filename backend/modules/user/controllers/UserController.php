@@ -7,12 +7,24 @@ use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\api\VsoApi;
 use common\models\User;
+use common\models\Auth;
 use app\modules\team\models\Team;
 
 class UserController extends BaseController
 {
 
     public $layout = 'layout';
+    public $enableCsrfValidation = false;
+    public $checker_id = '';
+
+    /**
+     * 放置需要初始化的信息
+     */
+    public function init()
+    {
+        //后台登录人员ID
+        $this->checker_id = Yii::$app->user->identity->uid;
+    }
 
     /**
      * 路由权限控制
@@ -20,7 +32,12 @@ class UserController extends BaseController
      */
     public function limitActions()
     {
-        return ['list', 'list-view', 'export'];
+        return [
+            'list',
+            'list-view',
+            'export',
+            'ajax-change-status',
+        ];
     }
 
     /**
@@ -109,16 +126,19 @@ class UserController extends BaseController
                 'user_status' => function ($m) {
                     return User::_get_user_status($m->user_status);
                 },
+                'status' => 'user_status',
                 'inputer' => function ($m) {
                     return '录入人';
                 },
                 'checker' => function ($m) {
                     return '审核人';
                 },
+                'update_at' => function ($m) {
+                    return date('Y-m-d h:i:s', $m->update_at);
+                },
                 'create_at' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_at);
                 },
-
             ],
         ]);
         
@@ -127,8 +147,57 @@ class UserController extends BaseController
             'totalCount' => count($userList)
         ];
         exit(json_encode($_data));
-
     }
+
+    /**
+     * 路由权限控制
+     * @return array
+     */
+    function actionAjaxChangeStatus(){
+        $uid = intval($this->_request('uid'));
+        $status = intval($this->_request('status'));
+
+        $mdl = new User();
+        //检验参数是否合法
+        if(empty($uid)){
+            $this->_json(-20001, '用户编号id不能为空');
+        }
+        if(!in_array($status, [$mdl::IS_DELETE, $mdl::NO_DELETE])){
+            $this->_json(-20002, '用户状态错误');
+        }
+
+        //检验用户是否存在
+        $user = $mdl->_get_info(['uid' => $uid]);
+        if(!$user){
+            $this->_json(-20003, '用户信息不存在');
+        }
+
+        if($status == $mdl::NO_DELETE){
+            $rst = $mdl->_save([
+                'uid' => $uid,
+                'user_status' => $mdl::NO_DELETE,
+                'update_at' => time(),
+            ]);
+            if(!$rst){
+                $this->_json(-20004, '用户信息保存失败');
+            }
+        }else{
+            $rst = $mdl->_save([
+                'uid' => $uid,
+                'user_status' => $mdl::IS_DELETE,
+                'update_at' => time(),
+            ]);
+            if(!$rst){
+                $this->_json(-20005, '用户信息保存失败');
+            }
+        }
+
+        $this->_json(20000, '保存成功！');
+    }
+
+
+
+
 
 
 

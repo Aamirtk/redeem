@@ -9,9 +9,10 @@ use yii\helpers\Html;
     <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
     <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
     <?= Html::cssFile('@web/assets/css/page-min.css') ?>
-    <?= Html::jsFile('@web/Js/jquery.js') ?>
+    <?= Html::jsFile('@web/js/jquery.js') ?>
     <?= Html::jsFile('@web/assets/js/bui-min.js') ?>
-    <?= Html::jsFile('@web/Js/common/common.js?v=1.0.0') ?>
+    <?= Html::jsFile('@web/js/common/common.js?v=1.0.0') ?>
+    <?= Html::jsFile('@web/js/tools.js') ?>
     <style>
         .user_avatar {
             height: auto;
@@ -162,7 +163,7 @@ use yii\helpers\Html;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '用户编号', dataIndex: 'uid', width: 80},
+                    {title: '用户编号', dataIndex: 'uid', width: 80, elCls : 'center'},
                     {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
@@ -180,13 +181,19 @@ use yii\helpers\Html;
                     {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
                     {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
                     {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
+                    {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
-                            " <a class='button button-primary' onclick='enableUser(" + obj.id + ")'>启用</a>" +
-                            " <a class='button button-danger' onclick='disableUser(" + obj.id + ")'>禁用</a>";
+                            if(obj.status == 1){
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
+                                " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
+                            }else if(obj.status == 2){
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
+                                " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
+                            }
+
                         }
                     }
                 ],
@@ -361,13 +368,110 @@ function showUserBrief(id, status) {
 /**
  * 启用用户
  */
-function enableUser(id) {
+function enableUser(uid) {
     var msg = '您确定要启用此用户？';
     BUI.Message.Confirm(msg, function(){
-        changeUserSatatus(12, 1);
+        var param = param || {};
+        param.uid = uid;
+        param.status = 1;
+        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
+            if(json.code > 0){
+                BUI.Message.Alert(json.msg, function(){
+                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
+                }, 'success');
+
+            }else{
+                BUI.Message.Alert(json.msg, 'error');
+                this.close();
+            }
+        });
     }, 'success');
 
 }
+
+/**
+ * 启用用户
+ */
+function disableUser(uid) {
+    var msg = '您确定要禁用此用户？';
+    BUI.Message.Confirm(msg, function(){
+        var param = param || {};
+        param.uid = uid;
+        param.status = 2;
+        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
+            if(json.code > 0){
+                BUI.Message.Alert(json.msg, function(){
+                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
+                },  'success');
+            }else{
+                BUI.Message.Alert(json.msg, 'error');
+                this.close();
+            }
+        });
+    }, 'error');
+
+}
+
+
+
+/**
+ * 禁用用户
+ */
+function disableUser1(uid) {
+    var Overlay = BUI.Overlay;
+    var dialog_reason = new Overlay.Dialog({
+        title:'请填写禁用的原因',
+        width:380,
+        height:210,
+        closeAction: 'destroy',
+        contentId:'reason_content_forbid',
+        buttons: [
+            {
+                text: '保存',
+                elCls: 'button button-primary',
+                handler: function () {
+                    var param = {};
+                    var dom = $("#reason_text_forbid");
+                    var reason = $.trim(dom.val());
+                    if(reason == '' || reason == undefined){
+                        BUI.Message.Alert('原因不能为空', 'error');
+                        return;
+                    }
+                    if($._str_len(reason) > 100){
+                        BUI.Message.Alert('您的输入超过最大限制字数', 'error');
+                        return;
+                    }
+                    param.reason = reason;
+                    param.uid = uid;
+                    param.status = 2;
+                    $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
+                        if(json.code > 0){
+                            BUI.Message.Alert(json.msg, 'success');
+                            window.location.href = '<?php echo yiiUrl('subdomain/apply/list') ?>';
+                            dom._clear_form();
+                            this.close();
+                        }else{
+                            BUI.Message.Alert(json.msg, 'error');
+                            this.close();
+                        }
+                    });
+                }
+            },
+            {
+                text: '取消',
+                elCls: 'button button-danger',
+                handler: function () {
+                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
+                    this.close();
+                }
+            }
+        ],
+    });
+    dialog_reason.show();
+
+}
+
+
 
 function changeUserSatatus(uid, status){
     alert(uid);

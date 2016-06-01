@@ -18,6 +18,7 @@ use yii\base\Exception;
  * @property integer $user_type
  * @property string $wechat_openid
  * @property integer $user_status
+ * @property integer $update_at
  * @property integer $create_at
  */
 class User extends \yii\db\ActiveRecord
@@ -48,11 +49,12 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mobile', 'points', 'user_type', 'user_status', 'create_at'], 'integer'],
+            [['mobile', 'points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
-            [['wechat_openid'], 'string', 'max' => 50]
+            [['wechat_openid'], 'string', 'max' => 50],
+            [['create_at', 'update_at'], 'default', 'value' => time()]
         ];
     }
 
@@ -178,9 +180,9 @@ class User extends \yii\db\ActiveRecord
                     return false;
                 }
 
-                if (!empty($data['id'])) {//修改
-                    $id = $data['id'];
-                    $ret = $_mdl->updateAll($data, ['id' => $id]);
+                if (!empty($data['uid'])) {//修改
+                    $id = $data['uid'];
+                    $ret = $_mdl->updateAll($data, ['uid' => $id]);
                 } else {//增加
                     $ret = $_mdl->insert();
                 }

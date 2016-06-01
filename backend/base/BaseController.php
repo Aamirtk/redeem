@@ -159,21 +159,21 @@ class BaseController extends Controller
 
     /**
      * 返回格式化数据转json
-     * @param int $ret
+     * @param int $code
      * @param string $msg
      * @param bool $data
      * @return string
      */
-    public function _json($ret, $msg = '', $data = null) {
+    public function _json($code, $msg = '', $data = null) {
         @header('Content-Type:application/json;charset=utf-8');
         $r_data = [
-            'ret' => $ret,
+            'code' => $code,
             'msg' => $msg,
             'data' => $data,
             'request_ip' => Tools::_get_ip(),
         ];
 
-        if (empty($ret) && $ret != 0) {
+        if (empty($code) && $code != 0) {
             $r_data['ret'] = -40400;
         }
 
