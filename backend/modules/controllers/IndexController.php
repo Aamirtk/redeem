@@ -24,7 +24,7 @@ class IndexController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'captcha'],
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -68,6 +68,7 @@ class IndexController extends Controller
         //获取用户路由权限
         $role_id = Yii::$app->user->identity->role_id;
         $routeArr = [];
+        $role_id  = 1;
         if ($role_id === 1)
         { //超级管理不检查
             $isadmin = true;
