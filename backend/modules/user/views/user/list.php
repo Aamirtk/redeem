@@ -359,28 +359,19 @@ function showUserBrief(id, status) {
 }
 
 /**
- * 显示财务审核详情
+ * 启用用户
  */
-function FinanceCheck(id) {
-    var width = 800;
-    var height = 700;
-    var Overlay = BUI.Overlay;
-    dialog = new Overlay.Dialog({
-        title: '用户信息',
-        width: width,
-        height: height,
-        closeAction: 'destroy',
-        loader: {
-            url: "/user/user/finance-check",
-            autoLoad: true, //不自动加载
-            params: {id: id},//附加的参数
-            lazyLoad: false, //不延迟加载
-        },
-        buttons:[],
-        mask: true
-    });
-    dialog.show();
-    dialog.get('loader').load({id: id});
+function enableUser(id) {
+    var msg = '您确定要启用此用户？';
+    BUI.Message.Confirm(msg, function(){
+        changeUserSatatus(12, 1);
+    }, 'success');
+
+}
+
+function changeUserSatatus(uid, status){
+    alert(uid);
+
 }
 /**
  * 显示运营审核详情
