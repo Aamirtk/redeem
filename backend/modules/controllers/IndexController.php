@@ -182,21 +182,10 @@ class IndexController extends Controller
             '用户管理' => [
                 ['用户列表' => 'user/user/list'],
             ],
-        ];
-        $menu[] = [
-            'top' => ['认证管理' => 'home'],
-            '规则管理' => [
-                ['权重分配' => 'trust/base/list-view'],
-                ['身份特征' => 'trust/identity/list-view'],
-                ['近期履约' => 'trust/record/recent-view'],
-                ['历史信用' => 'trust/record/history-view'],
-                ['行为偏好' => 'trust/behavior/list-view'],
-                ['社交关系' => 'trust/social/list-view'],
-                ['负面影响' => 'trust/negative/list-view']
+            '认证管理' => [
+                ['认证列表' => 'user/user/list'],
             ],
-            '用户信用评分查询' => [
-                ['查询用户信用评分' => 'trust/user/trust-list']
-            ],
+
         ];
         $menu[] = [
             'top' => ['商品管理' => 'home'],

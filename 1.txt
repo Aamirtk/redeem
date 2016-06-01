@@ -1,6 +1,15 @@
 Array
 (
-    [/user/user/ajax-change-status] => 
     [uid] => 1
-    [status] => 1
+    [nick] => 波波
+    [name] => 黄波
+    [avatar] => /avatar/photo.jpg
+    [mobile] => 1595205555
+    [email] => 3121045133@qq.com
+    [points] => 12
+    [user_type] => 普通用户
+    [wechat_openid] => wehkds2334fdk
+    [user_status] => 启用
+    [update_at] => 2016-06-01 08:19:08
+    [create_at] => 1970-01-01 08:00:00
 )

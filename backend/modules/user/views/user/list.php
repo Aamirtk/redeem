@@ -98,8 +98,6 @@ use yii\helpers\Html;
             </form>
         </div>
         <div class="bui-grid-tbar">
-            <a class="button button-primary page-action" title="添加用户"  href="#" data-href="<?= Yii::$app->urlManager->createUrl('user/user/add') ?>" id="addUser1">用户录入</a>
-            <a class="button button-danger" href="javascript:void(0);" onclick="checkDeleteUsers()">批量删除</a>
         </div>
         <div id="users_grid">
         </div>
@@ -187,10 +185,12 @@ use yii\helpers\Html;
                         width: 300,
                         renderer: function (v, obj) {
                             if(obj.status == 1){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
+                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
                                 " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
                             }else if(obj.status == 2){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
+                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
                                 " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
                             }
 
@@ -246,124 +246,77 @@ function getUserGridSearchConditions() {
     }
     return search;
 }
-/**
- * 删除提示
- */
-function checkDeleteUsers(userId) {
-    //如果不传，表示删除勾选
-    var userIds = [];
-    if (userId) {
-        userIds.push(userId);
-    }
-    else {
-        userIds = $("#users_grid").data("BGrid").getSelectionValues();
-    }
-    if (userIds.length == 0) {
-        return;
-    }
-    BUI.use('bui/overlay', function (Overlay) {
-        BUI.Message.Show({
-            title: '删除提示',
-            msg: '您确定要删除选中用户吗？',
-            icon: 'warning',
-            buttons: [
-                {
-                    text: '确定',
-                    elCls: 'button button-primary',
-                    handler: function () {
-                        deleteUsers(userIds);
-                        this.close();
-                    }
-                },
-                {
-                    text: '取消',
-                    elCls: 'button',
-                    handler: function () {
-                        this.close();
-                    }
-                }
-            ]
-        });
-    });
-}
-/**
- * 删除用户
- */
-function deleteUsers(userIds) {
-    $.ajax({
-        type: "post",
-        data: {ids: userIds},
-        url: '/user/user/delete',
-        dataType: "json",
-        success: function (json) {
-            if (json.result) {
-                var grid = $("#users_grid").data("BGrid");
-                grid.clearSelection();
-                grid.get('store').load();//刷新
-                BUI.Message.Alert('删除成功', 'success');
-            }
-            else {
-                BUI.Message.Alert(json.message, 'error');
-            }
-        }
-    });
-}
+
 
 /**
  * 显示用户详情
  */
-function showUserBrief(id, status) {
+function showUserInfo(uid) {
     var width = 700;
-    var height = 600;
+    var height = 450;
     var Overlay = BUI.Overlay;
     var buttons = [];
-    if(_PRIVILEGE == 'info' && (status == 0 || status == 2)){
-        buttons =
-        [
-            {
-                text:'确认',
-                elCls : 'button button-success',
-                handler : function(){
-                    this.close();
-                }
-            },
-            {
-                text:'修改',
-                elCls : 'button button-primary',
-                handler : function(){
-                    window.location.href = '/user/user/update/?mid=' + id;
-                }
+    buttons = [
+        {
+            text:'确认',
+            elCls : 'button button-primary',
+            handler : function(){
+                this.close();
             }
-        ];
-    }else{
-        buttons =
-            [
-                {
-                    text:'确认',
-                    elCls : 'button button-success',
-                    handler : function(){
-                        this.close();
-                    }
-                },
-            ];
-    }
+        },
+//        {
+//            text:'修改',
+//            elCls : 'button button-primary',
+//            handler : function(){
+//                window.location.href = '/user/user/update/?mid=' + id;
+//            }
+//        }
+    ];
     dialog = new Overlay.Dialog({
         title: '用户信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/user/user/detail",
+            url: "/user/user/info",
             autoLoad: true, //不自动加载
-            params: {id: id},//附加的参数
+            params: {uid: uid},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({id: id});
+    dialog.get('loader').load({uid: uid});
 }
+
+/**
+ * 显示用户详情
+ */
+function updateUser(uid) {
+    var width = 400;
+    var height = 400;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '用户信息',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/user/user/update",
+            autoLoad: true, //不自动加载
+            params: {uid: uid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        buttons: buttons,
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({uid: uid});
+}
+
+
 
 /**
  * 启用用户
@@ -410,96 +363,6 @@ function disableUser(uid) {
         });
     }, 'error');
 
-}
-
-
-
-/**
- * 禁用用户
- */
-function disableUser1(uid) {
-    var Overlay = BUI.Overlay;
-    var dialog_reason = new Overlay.Dialog({
-        title:'请填写禁用的原因',
-        width:380,
-        height:210,
-        closeAction: 'destroy',
-        contentId:'reason_content_forbid',
-        buttons: [
-            {
-                text: '保存',
-                elCls: 'button button-primary',
-                handler: function () {
-                    var param = {};
-                    var dom = $("#reason_text_forbid");
-                    var reason = $.trim(dom.val());
-                    if(reason == '' || reason == undefined){
-                        BUI.Message.Alert('原因不能为空', 'error');
-                        return;
-                    }
-                    if($._str_len(reason) > 100){
-                        BUI.Message.Alert('您的输入超过最大限制字数', 'error');
-                        return;
-                    }
-                    param.reason = reason;
-                    param.uid = uid;
-                    param.status = 2;
-                    $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-                        if(json.code > 0){
-                            BUI.Message.Alert(json.msg, 'success');
-                            window.location.href = '<?php echo yiiUrl('subdomain/apply/list') ?>';
-                            dom._clear_form();
-                            this.close();
-                        }else{
-                            BUI.Message.Alert(json.msg, 'error');
-                            this.close();
-                        }
-                    });
-                }
-            },
-            {
-                text: '取消',
-                elCls: 'button button-danger',
-                handler: function () {
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                    this.close();
-                }
-            }
-        ],
-    });
-    dialog_reason.show();
-
-}
-
-
-
-function changeUserSatatus(uid, status){
-    alert(uid);
-
-}
-/**
- * 显示运营审核详情
- */
-function OperateCheck(id) {
-    var width = 800;
-    var height = 700;
-    var Overlay = BUI.Overlay;
-    dialog = new Overlay.Dialog({
-        title: '用户信息',
-        width: width,
-        height: height,
-        closeAction: 'destroy',
-        loader: {
-            url: "/user/user/operate-check",
-            autoLoad: true, //不自动加载
-            params: {id: id},//附加的参数
-            lazyLoad: false, //不延迟加载
-        },
-        buttons:[],
-        mask: true
-    });
-    dialog.show();
-    dialog.get('loader').load({id: id});
 }
 
 
