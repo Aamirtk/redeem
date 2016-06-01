@@ -185,7 +185,7 @@ use yii\helpers\Html;
                         width: 300,
                         renderer: function (v, obj) {
                             return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserBrief(" + obj.id + "," + obj.check_status + ")'>查看</a>" +
-                            " <a class='button button-edit' onclick='enableUser(" + obj.id + ")'>启用</a>";
+                            " <a class='button button-primary' onclick='enableUser(" + obj.id + ")'>启用</a>" +
                             " <a class='button button-danger' onclick='disableUser(" + obj.id + ")'>禁用</a>";
                         }
                     }
