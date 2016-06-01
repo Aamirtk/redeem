@@ -1,14 +1,15 @@
-/backend/runtime/
-/frontend/runtime
-/frontend/runtime
-/frontend/web/upload
-/frontend/web/assets
-/backend/runtime
-/backend/web/upload
+*.idea
+*.log
+*.data
 
-/frontend/webrc/upload
+/frontend/runtime
+/frontend/web/assets
 /frontend/webrc/assets
-/frontend_shop/runtime
-*.idea/
-*.log
-*.log
+
+/backend/runtime/
+/backend/web/assets
+
+backend/runtime/debug/index.data
+backend/runtime/logs/app.log
+
+backend/*
