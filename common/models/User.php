@@ -212,7 +212,6 @@ class User extends \yii\db\ActiveRecord
         } catch (Exception $e) {
             return false;
         }
-        return false;
     }
 
     /**

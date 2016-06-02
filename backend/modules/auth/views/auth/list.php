@@ -21,7 +21,7 @@ use yii\helpers\Html;
         }
     </style>
     <script>
-        _BASE_LIST_URL =  "<?php echo yiiUrl('user/user/list?ajax=1') ?>";
+        _BASE_LIST_URL =  "<?php echo yiiUrl('auth/auth/list') ?>";
     </script>
 </head>
 
@@ -29,7 +29,7 @@ use yii\helpers\Html;
 <div class="container">
     <div class="row">
         <div class="search-bar form-horizontal well">
-            <form id="usersearch" class="form-horizontal">
+            <form id="authsearch" class="form-horizontal">
                 <div class="row">
                     <div class="control-group span12">
                         <label class="control-label">时间范围：</label>
@@ -99,7 +99,7 @@ use yii\helpers\Html;
         </div>
         <div class="bui-grid-tbar">
         </div>
-        <div id="users_grid">
+        <div id="auths_grid">
         </div>
     </div>
 </div>
@@ -127,7 +127,7 @@ use yii\helpers\Html;
         BUI.use('common/page');
         BUI.use('bui/form', function (Form) {
             var form = new Form.HForm({
-                srcNode: '#usersearch'
+                srcNode: '#authsearch'
             });
             form.render();
         });
@@ -157,11 +157,11 @@ use yii\helpers\Html;
                 pageSize: 10// 配置分页数目,
             });
             var grid = new Grid.Grid({
-                render: '#users_grid',
+                render: '#auths_grid',
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '用户编号', dataIndex: 'uid', width: 80, elCls : 'center'},
+                    {title: '用户编号', dataIndex: 'auth_id', width: 80, elCls : 'center'},
                     {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
@@ -173,27 +173,21 @@ use yii\helpers\Html;
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
-                    {title: '积分', dataIndex: 'points', width: 80, elCls : 'center'},
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
-                    {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
                     {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
-                    {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
                     {
-                        title: '操作',
+                        title: '审核',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.status == 1){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
-                            }else if(obj.status == 2){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
+                            if(obj.auth_status == 1){
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>查看</a>" +
+                                " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>"+
+                                " <a class='button button-danger' onclick='checkUnPass(" + obj.auth_id + ")'>不通过</a>";
+                            }else{
+                                return "<a class='button button-success'>已审核</a>";
                             }
-
                         }
                     }
                 ],
@@ -207,7 +201,7 @@ use yii\helpers\Html;
                 plugins: Grid.Plugins.CheckSelection,// 插件形式引入多选表格
             });
             grid.render();
-            $("#users_grid").data("BGrid", grid);
+            $("#auths_grid").data("BGrid", grid);
 
         });
 
@@ -220,13 +214,13 @@ use yii\helpers\Html;
  */
 function searchUsers() {
     var search = {};
-    var fields = $("#usersearch").serializeArray();//获取表单信息
+    var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
         if (field.value != "") {
             search[field.name] = field.value;
         }
     });
-    var store = $("#users_grid").data("BGrid").get('store');
+    var store = $("#auths_grid").data("BGrid").get('store');
     var lastParams = store.get("lastParams");
     lastParams.search = search;
     store.load(lastParams);//刷新
@@ -251,7 +245,7 @@ function getUserGridSearchConditions() {
 /**
  * 显示用户详情
  */
-function showUserInfo(uid) {
+function showCheckInfo(auth_id) {
     var width = 700;
     var height = 450;
     var Overlay = BUI.Overlay;
@@ -280,76 +274,46 @@ function showUserInfo(uid) {
         loader: {
             url: "/user/user/info",
             autoLoad: true, //不自动加载
-            params: {uid: uid},//附加的参数
+            params: {auth_id: auth_id},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({uid: uid});
+    dialog.get('loader').load({auth_id: auth_id});
 }
 
+
 /**
- * 显示用户详情
+ * 审核通过
  */
-function updateUser(uid) {
-    var width = 400;
-    var height = 400;
-    var Overlay = BUI.Overlay;
-    var buttons = [];
-    dialog = new Overlay.Dialog({
-        title: '用户信息',
-        width: width,
-        height: height,
-        closeAction: 'destroy',
-        loader: {
-            url: "/user/user/update",
-            autoLoad: true, //不自动加载
-            params: {uid: uid},//附加的参数
-            lazyLoad: false, //不延迟加载
-        },
-        buttons: buttons,
-        mask: false
+function checkPass(auth_id) {
+    var param = param || {};
+    param.auth_id = auth_id;
+    param.auth_status = 2;
+    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check-pass') ?>', param, 'POST','JSON', function(json){
+        if(json.code > 0){
+            BUI.Message.Alert(json.msg, function(){
+                window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
+            }, 'success');
+
+        }else{
+            BUI.Message.Alert(json.msg, 'error');
+            this.close();
+        }
     });
-    dialog.show();
-    dialog.get('loader').load({uid: uid});
-}
-
-
-
-/**
- * 启用用户
- */
-function enableUser(uid) {
-    var msg = '您确定要启用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.uid = uid;
-        param.status = 1;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                }, 'success');
-
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
-            }
-        });
-    }, 'success');
 
 }
 
 /**
  * 启用用户
  */
-function disableUser(uid) {
+function checkUnPass(auth_id) {
     var msg = '您确定要禁用此用户？';
     BUI.Message.Confirm(msg, function(){
         var param = param || {};
-        param.uid = uid;
+        param.auth_id = auth_id;
         param.status = 2;
         $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
             if(json.code > 0){

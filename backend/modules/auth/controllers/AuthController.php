@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\user\controllers;
+namespace backend\modules\auth\controllers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -39,7 +39,7 @@ class AuthController extends BaseController
             'info',
             'update',
             'ajax-save',
-            'ajax-change-status',
+            'ajax-check-pass',
         ];
     }
 
@@ -60,7 +60,7 @@ class AuthController extends BaseController
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new User();
+        $mdl = new Auth();
         $query = $mdl::find();
         $search = $this->_request('search');
         $page = $this->_request('page', 0);
@@ -103,47 +103,39 @@ class AuthController extends BaseController
             }
         }
 
-        $_order_by = 'uid ASC';
+        $_order_by = 'auth_id ASC';
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
             ->all();
-        $userList = ArrayHelper::toArray($userArr, [
-            'common\models\User' => [
-                'uid',
+        $authList = ArrayHelper::toArray($userArr, [
+            'common\models\Auth' => [
+                'auth_id',
                 'nick',
                 'name',
                 'mobile',
                 'avatar',
                 'email',
-                'points',
+                'auth_status',
                 'wechat' => 'wechat_openid',
                 'user_type' => function ($m) {
                     return User::_get_user_type($m->user_type);
                 },
-                'user_status' => function ($m) {
-                    return User::_get_user_status($m->user_status);
-                },
-                'status' => 'user_status',
                 'inputer' => function ($m) {
                     return '录入人';
                 },
                 'checker' => function ($m) {
                     return '审核人';
                 },
-                'update_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->update_at);
-                },
                 'create_at' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_at);
                 },
             ],
         ]);
-
         $_data = [
-            'userList' => $userList,
-            'totalCount' => count($userList)
+            'userList' => $authList,
+            'totalCount' => count($authList)
         ];
         exit(json_encode($_data));
     }
@@ -152,30 +144,30 @@ class AuthController extends BaseController
      * 改变用户状态
      * @return array
      */
-    function actionAjaxChangeStatus()
+    function actionAjaxCheckPass()
     {
-        $uid = intval($this->_request('uid'));
-        $status = intval($this->_request('status'));
+        $auth_id = intval($this->_request('auth_id'));
+        $auth_status = intval($this->_request('auth_status'));
 
-        $mdl = new User();
+        $mdl = new Auth();
         //检验参数是否合法
-        if (empty($uid)) {
+        if (empty($auth_id)) {
             $this->_json(-20001, '用户编号id不能为空');
         }
-        if (!in_array($status, [$mdl::IS_DELETE, $mdl::NO_DELETE])) {
-            $this->_json(-20002, '用户状态错误');
+        if (!in_array($auth_status, [$mdl::CHECK_PASS, $mdl::CHECK_UNPASS])) {
+            $this->_json(-20002, '认证状态错误');
         }
 
         //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
+        $user = $mdl->_get_info(['auth_id' => $auth_id]);
         if (!$user) {
             $this->_json(-20003, '用户信息不存在');
         }
 
-        if ($status == $mdl::NO_DELETE) {
+        if ($auth_status == $mdl::CHECK_PASS) {
             $rst = $mdl->_save([
-                'uid' => $uid,
-                'user_status' => $mdl::NO_DELETE,
+                'auth_id' => $auth_id,
+                'auth_status' => $mdl::CHECK_PASS,
                 'update_at' => time(),
             ]);
             if (!$rst) {
@@ -183,8 +175,8 @@ class AuthController extends BaseController
             }
         } else {
             $rst = $mdl->_save([
-                'uid' => $uid,
-                'user_status' => $mdl::IS_DELETE,
+                'auth_id' => $auth_id,
+                'auth_status' => $mdl::CHECK_UNPASS,
                 'update_at' => time(),
             ]);
             if (!$rst) {
@@ -201,20 +193,20 @@ class AuthController extends BaseController
      */
     function actionInfo()
     {
-        $uid = intval($this->_request('uid'));
+        $auth_id = intval($this->_request('auth_id'));
 
         $mdl = new User();
         //检验参数是否合法
-        if (empty($uid)) {
+        if (empty($auth_id)) {
             $this->_json(-20001, '用户编号id不能为空');
         }
 
         //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
+        $user = $mdl->_get_info(['auth_id' => $auth_id]);
         if (!$user) {
             $this->_json(-20003, '用户信息不存在');
         }
-        $user['user_status'] = User::_get_user_status($user['user_status']);
+        $user['auth_status'] = User::_get_auth_status($user['auth_status']);
         $user['user_type'] = User::_get_user_type($user['user_type']);
         $user['update_at'] = date('Y-m-d h:i:s', $user['update_at']);
         $user['create_at'] = date('Y-m-d h:i:s', $user['create_at']);
@@ -230,16 +222,16 @@ class AuthController extends BaseController
      */
     function actionUpdate()
     {
-        $uid = intval($this->_request('uid'));
+        $auth_id = intval($this->_request('auth_id'));
 
         $mdl = new User();
         //检验参数是否合法
-        if (empty($uid)) {
+        if (empty($auth_id)) {
             $this->_json(-20001, '用户编号id不能为空');
         }
 
         //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
+        $user = $mdl->_get_info(['auth_id' => $auth_id]);
         if (!$user) {
             $this->_json(-20003, '用户信息不存在');
         }
@@ -256,13 +248,13 @@ class AuthController extends BaseController
      */
     function actionAjaxSave()
     {
-        $uid = intval($this->_request('uid'));
+        $auth_id = intval($this->_request('auth_id'));
         $nick = trim($this->_request('nick'));
         $mobile = trim($this->_request('mobile'));
 
         $mdl = new User();
         //检验参数是否合法
-        if (empty($uid)) {
+        if (empty($auth_id)) {
             $this->_json(-20001, '用户编号id不能为空');
         }
         if (empty($nick)) {
@@ -273,13 +265,13 @@ class AuthController extends BaseController
         }
 
         //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
+        $user = $mdl->_get_info(['auth_id' => $auth_id]);
         if (!$user) {
             $this->_json(-20004, '用户信息不存在');
         }
 
         $rst = $mdl->_save([
-            'uid' => $uid,
+            'auth_id' => $auth_id,
             'nick' => $nick,
             'mobile' => $mobile,
             'update_at' => time(),
