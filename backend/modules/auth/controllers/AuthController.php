@@ -128,8 +128,8 @@ class AuthController extends BaseController
                 'checker' => function ($m) {
                     return '审核人';
                 },
-                'create_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->create_at);
+                'update_at' => function ($m) {
+                    return date('Y-m-d h:i:s', $m->update_at);
                 },
             ],
         ]);
@@ -173,23 +173,23 @@ class AuthController extends BaseController
     {
         $auth_id = intval($this->_request('auth_id'));
 
-        $mdl = new User();
+        $mdl = new Auth();
         //检验参数是否合法
         if (empty($auth_id)) {
-            $this->_json(-20001, '用户编号id不能为空');
+            $this->_json(-20001, '审核编号id不能为空');
         }
 
         //检验用户是否存在
-        $user = $mdl->_get_info(['auth_id' => $auth_id]);
-        if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
+        $auth = $mdl->_get_info(['auth_id' => $auth_id]);
+        if (!$auth) {
+            $this->_json(-20003, '审核信息不存在');
         }
-        $user['auth_status'] = User::_get_auth_status($user['auth_status']);
-        $user['user_type'] = User::_get_user_type($user['user_type']);
-        $user['update_at'] = date('Y-m-d h:i:s', $user['update_at']);
-        $user['create_at'] = date('Y-m-d h:i:s', $user['create_at']);
+        $auth['auth_status'] = User::_get_user_status($auth['auth_status']);
+        $auth['user_type'] = User::_get_user_type($auth['user_type']);
+        $auth['update_at'] = date('Y-m-d h:i:s', $auth['update_at']);
+        $auth['create_at'] = date('Y-m-d h:i:s', $auth['create_at']);
         $_data = [
-            'user' => $user
+            'auth' => $auth
         ];
         return $this->render('info', $_data);
     }

@@ -20,13 +20,13 @@
             <div class="control-group span8">
                 <label class="control-label">微信昵称：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['nick'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['nick'] ?></span>
                 </div>
             </div>
             <div class="control-group span8">
                 <label class="control-label">真实姓名：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['name'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['name'] ?></span>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="control-group span8 avatar_content" >
                 <label class="control-label">微信头像：</label>
                 <div class="controls ">
-                    <img class="avatar_img" src="<?php echo $user['avatar'] ?>">
+                    <img class="avatar_img" src="<?php echo $auth['avatar'] ?>">
                 </div>
             </div>
         </div>
@@ -44,53 +44,41 @@
             <div class="control-group span8">
                 <label class="control-label">手机号码：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['mobile']?></span>
+                    <span  class="control-text" ><?php echo $auth['mobile']?></span>
                 </div>
             </div>
             <div class="control-group span8">
                 <label class="control-label">邮箱：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['email'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['email'] ?></span>
                 </div>
             </div>
-            <div class="control-group span8">
-                <label class="control-label">积分：</label>
-                <div class="controls">
-                    <span  class="control-text" ><?php echo $user['points'] ?></span>
-                </div>
-            </div>
+
             <div class="control-group span8">
                 <label class="control-label">微信公众号：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['wechat_openid'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['wechat_openid'] ?></span>
                 </div>
             </div>
             <div class="control-group span8">
                 <label class="control-label">用户类型：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['user_type'] ?></span>
-                </div>
-            </div>
-            <div class="control-group span8">
-                <label class="control-label">用户状态：</label>
-                <div class="controls">
-                    <span  class="control-text" ><?php echo $user['user_status'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['user_type'] ?></span>
                 </div>
             </div>
 
             <div class="control-group span8">
                 <label class="control-label">申请时间：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['create_at'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['create_at'] ?></span>
                 </div>
             </div>
             <div class="control-group span8">
                 <label class="control-label">更新时间：</label>
                 <div class="controls">
-                    <span  class="control-text" ><?php echo $user['update_at'] ?></span>
+                    <span  class="control-text" ><?php echo $auth['update_at'] ?></span>
                 </div>
             </div>
-
 
         </div>
 

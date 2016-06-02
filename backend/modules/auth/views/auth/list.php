@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>用户信息列表</title>
+    <title>用户审核信息列表</title>
     <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
     <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
     <?= Html::cssFile('@web/assets/css/page-min.css') ?>
@@ -92,7 +92,7 @@ use yii\helpers\Html;
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchUsers()">查询</button>
+                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchAuth()">查询</button>
                     </div>
                 </div>
             </form>
@@ -187,7 +187,8 @@ use yii\helpers\Html;
                                 " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>"+
                                 " <a class='button button-danger' onclick='checkUnPass(" + obj.auth_id + ")'>不通过</a>";
                             }else{
-                                return "<a class='button button-success'>已审核</a>";
+                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>查看</a>" +
+                                " <a class='button button-success' >已审核</a>";
                             }
                         }
                     }
@@ -213,7 +214,7 @@ use yii\helpers\Html;
 /**
  * 搜索用户,刷新列表
  */
-function searchUsers() {
+function searchAuth() {
     var search = {};
     var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -229,7 +230,7 @@ function searchUsers() {
 /**
  * 获取过滤项
  */
-function getUserGridSearchConditions() {
+function getAuthGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -242,7 +243,6 @@ function getUserGridSearchConditions() {
     return search;
 }
 
-
 /**
  * 显示用户详情
  */
@@ -250,8 +250,7 @@ function showCheckInfo(auth_id) {
     var width = 700;
     var height = 450;
     var Overlay = BUI.Overlay;
-    var buttons = [];
-    buttons = [
+    var buttons = [
         {
             text:'确认',
             elCls : 'button button-primary',
@@ -259,13 +258,6 @@ function showCheckInfo(auth_id) {
                 this.close();
             }
         },
-//        {
-//            text:'修改',
-//            elCls : 'button button-primary',
-//            handler : function(){
-//                window.location.href = '/user/user/update/?mid=' + id;
-//            }
-//        }
     ];
     dialog = new Overlay.Dialog({
         title: '用户信息',
@@ -273,7 +265,7 @@ function showCheckInfo(auth_id) {
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/user/user/info",
+            url: "/auth/auth/info",
             autoLoad: true, //不自动加载
             params: {auth_id: auth_id},//附加的参数
             lazyLoad: false, //不延迟加载
@@ -308,7 +300,7 @@ function checkPass(auth_id) {
 }
 
 /**
- * 启用用户
+ * 审核不通过
  */
 function checkUnPass(auth_id) {
     var Overlay = BUI.Overlay;
@@ -361,9 +353,7 @@ function checkUnPass(auth_id) {
         ],
     });
     dialog_reason.show();
-
 }
-
 
 </script>
 
