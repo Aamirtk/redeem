@@ -28,4 +28,8 @@ return [
     'usersearchapi' => 'http://api.vsochina.com/user/user/search-users',
     //获得新老分类对应数据接口
     'categoryapi' => 'https://api.vsochina.com/category/category/map',
+
+    //审核不通过的原因字数限制
+    'checkdeny_reason_limit' => 500,
+
 ];

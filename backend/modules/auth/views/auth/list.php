@@ -116,7 +116,7 @@ use yii\helpers\Html;
             <div class="control-group style="">
             <label class="control-label"></label>
             <div class="controls">
-                <span><b>提示：</b>输入字数不能超过50个字</span>
+                <span><b>提示：</b>输入字数不能超过<?php echo yiiParams('checkdeny_reason_limit') ?>个字</span>
             </div>
         </div>
     </form>
@@ -173,6 +173,7 @@ use yii\helpers\Html;
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
+                    {title: '电子邮箱', dataIndex: 'email', width: 130},
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
                     {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
@@ -292,7 +293,7 @@ function checkPass(auth_id) {
     var param = param || {};
     param.auth_id = auth_id;
     param.auth_status = 2;
-    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check-pass') ?>', param, 'POST','JSON', function(json){
+    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
         if(json.code > 0){
             BUI.Message.Alert(json.msg, function(){
                 window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
@@ -310,22 +311,56 @@ function checkPass(auth_id) {
  * 启用用户
  */
 function checkUnPass(auth_id) {
-    var msg = '您确定要禁用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.auth_id = auth_id;
-        param.status = 2;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                },  'success');
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
+    var Overlay = BUI.Overlay;
+    var dialog_reason = new Overlay.Dialog({
+        title:'请填写审核不通过的原因',
+        width:380,
+        height:210,
+        closeAction: 'destroy',
+        contentId:'reason_content',
+        buttons: [
+            {
+                text: '保存',
+                elCls: 'button button-primary',
+                handler: function () {
+                    var param = {};
+                    var dom = $("#reason_text");
+                    var reason = $.trim(dom.val());
+                    if(reason == '' || reason == undefined){
+                        BUI.Message.Alert('原因不能为空', 'error');
+                        return;
+                    }
+                    if($._str_len(reason) > 100){
+                        BUI.Message.Alert('您的输入超过最大限制字数', 'error');
+                        return;
+                    }
+                    param.reason = reason;
+                    param.auth_id = auth_id;
+                    param.auth_status = 3;
+                    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
+                        if(json.code > 0){
+                            BUI.Message.Alert(json.msg, 'success');
+                            window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
+                            dom._clear_form();
+                            this.close();
+                        }else{
+                            BUI.Message.Alert(json.msg, 'error');
+                            this.close();
+                        }
+                    });
+                }
+            },
+            {
+                text: '取消',
+                elCls: 'button button-danger',
+                handler: function () {
+                    window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
+                    this.close();
+                }
             }
-        });
-    }, 'error');
+        ],
+    });
+    dialog_reason.show();
 
 }
 

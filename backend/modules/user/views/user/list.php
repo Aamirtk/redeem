@@ -173,6 +173,7 @@ use yii\helpers\Html;
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
+                    {title: '电子邮箱', dataIndex: 'email', width: 130},
                     {title: '积分', dataIndex: 'points', width: 80, elCls : 'center'},
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},

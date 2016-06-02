@@ -39,7 +39,7 @@ class AuthController extends BaseController
             'info',
             'update',
             'ajax-save',
-            'ajax-check-pass',
+            'ajax-check',
         ];
     }
 
@@ -144,47 +144,25 @@ class AuthController extends BaseController
      * 改变用户状态
      * @return array
      */
-    function actionAjaxCheckPass()
+    function actionAjaxCheck()
     {
+
         $auth_id = intval($this->_request('auth_id'));
         $auth_status = intval($this->_request('auth_status'));
+        $reason = trim($this->_request('reason'));
 
-        $mdl = new Auth();
         //检验参数是否合法
         if (empty($auth_id)) {
-            $this->_json(-20001, '用户编号id不能为空');
+            $this->_json(-20001, '审核编号id不能为空');
         }
-        if (!in_array($auth_status, [$mdl::CHECK_PASS, $mdl::CHECK_UNPASS])) {
-            $this->_json(-20002, '认证状态错误');
-        }
-
-        //检验用户是否存在
-        $user = $mdl->_get_info(['auth_id' => $auth_id]);
-        if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
+        if (!in_array($auth_status, [Auth::CHECK_PASS, Auth::CHECK_UNPASS])) {
+            $this->_json(-20002, '审核状态错误');
         }
 
-        if ($auth_status == $mdl::CHECK_PASS) {
-            $rst = $mdl->_save([
-                'auth_id' => $auth_id,
-                'auth_status' => $mdl::CHECK_PASS,
-                'update_at' => time(),
-            ]);
-            if (!$rst) {
-                $this->_json(-20004, '用户信息保存失败');
-            }
-        } else {
-            $rst = $mdl->_save([
-                'auth_id' => $auth_id,
-                'auth_status' => $mdl::CHECK_UNPASS,
-                'update_at' => time(),
-            ]);
-            if (!$rst) {
-                $this->_json(-20005, '用户信息保存失败');
-            }
-        }
+        //保存状态及原因
+        $reslut = Auth::_save_check($auth_id, $auth_status, $reason);
 
-        $this->_json(20000, '保存成功！');
+        $this->_json($reslut['code'], $reslut['msg']);
     }
 
     /**
@@ -215,76 +193,6 @@ class AuthController extends BaseController
         ];
         return $this->render('info', $_data);
     }
-
-    /**
-     * 编辑用户信息
-     * @return array
-     */
-    function actionUpdate()
-    {
-        $auth_id = intval($this->_request('auth_id'));
-
-        $mdl = new User();
-        //检验参数是否合法
-        if (empty($auth_id)) {
-            $this->_json(-20001, '用户编号id不能为空');
-        }
-
-        //检验用户是否存在
-        $user = $mdl->_get_info(['auth_id' => $auth_id]);
-        if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
-        }
-
-        $_data = [
-            'user' => $user
-        ];
-        return $this->render('edit', $_data);
-    }
-
-    /**
-     * 编辑用户信息
-     * @return array
-     */
-    function actionAjaxSave()
-    {
-        $auth_id = intval($this->_request('auth_id'));
-        $nick = trim($this->_request('nick'));
-        $mobile = trim($this->_request('mobile'));
-
-        $mdl = new User();
-        //检验参数是否合法
-        if (empty($auth_id)) {
-            $this->_json(-20001, '用户编号id不能为空');
-        }
-        if (empty($nick)) {
-            $this->_json(-20002, '用户昵称不能为空');
-        }
-        if (empty($mobile)) {
-            $this->_json(-20003, '用户手机号码不能为空');
-        }
-
-        //检验用户是否存在
-        $user = $mdl->_get_info(['auth_id' => $auth_id]);
-        if (!$user) {
-            $this->_json(-20004, '用户信息不存在');
-        }
-
-        $rst = $mdl->_save([
-            'auth_id' => $auth_id,
-            'nick' => $nick,
-            'mobile' => $mobile,
-            'update_at' => time(),
-        ]);
-        if (!$rst) {
-            $this->_json(-20005, '用户信息保存失败');
-        }
-
-        $this->_json(20000, '用户信息保存成功！');
-    }
-
-
-
 
 
 
