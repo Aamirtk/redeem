@@ -15,7 +15,7 @@ return [
     'modules' => require(__DIR__ . '/../../common/config/modules.php'),
     'components' => [
         'db_uc' => require(__DIR__ . '/../../common/config/db_uc.php'),
-        'db_keke' => require(__DIR__ . '/../../common/config/db_keke.php'),
+        'db_keke' => require(__DIR__ . '/../../common/config/db_keke.php'), 
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
