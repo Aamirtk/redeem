@@ -221,6 +221,12 @@ class IndexController extends Controller
             ],
         ];
         $menu[] = [
+            'top' => ['积分配置' => 'home'],
+            '用户管理' => [
+                ['用户列表' => 'user/user/list'],
+            ],
+        ];
+        $menu[] = [
             'top' => ['物流管理' => 'home'],
             '会员分类配置' => [
                 ['分类列表' => 'vip/group/list-view'],

@@ -18,6 +18,16 @@ use Yii;
 class Points extends \yii\db\ActiveRecord
 {
     /**
+     * 积分类型
+     */
+    const POINTS_CONCERN = 1; //关注
+    const POINTS_IDAUTH = 2;  //身份认证
+    const POINTS_MOBILEAUTH = 3; //手机认证
+    const POINTS_SIGNIN = 4; //每日签到
+    const POINTS_WECHAT = 5; //分享微信
+    const POINTS_PRAISE = 6; //奖励积分
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -53,7 +63,7 @@ class Points extends \yii\db\ActiveRecord
         return [
             'pid' => 'Pid',
             'name' => '积分规则名称',
-            'type' => '积分类型（1-关注；2-认证；3-手机认证；4-每日签到；5-分享微信；6-奖励积分）',
+            'type' => '积分类型（1-关注；2-身份认证；3-手机认证；4-每日签到；5-分享微信；6-奖励积分）',
             'goods_id' => '商品编号',
             'goods_name' => '商品名称',
             'points' => '积分数',
