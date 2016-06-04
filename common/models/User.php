@@ -126,7 +126,11 @@ class User extends \yii\db\ActiveRecord
         return $_obj->asArray(true)->all();
     }
 
-    //获取总条数
+    /**
+     * 获取总条数
+     * @param $where array
+     * @return int
+     */
     public function _get_count($where = []) {
         $_obj = self::find();
         if (isset($where['sql']) || isset($where['params'])) {

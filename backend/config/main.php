@@ -21,8 +21,8 @@ return [
             'class' => 'backend\modules\user\Module',
         ],
         // 积分
-        'point' => [
-            'class' => 'backend\modules\point\Module',
+        'points' => [
+            'class' => 'backend\modules\points\Module',
         ],
         // 任务
         'task' => [

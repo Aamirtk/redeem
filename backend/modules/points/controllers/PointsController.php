@@ -8,6 +8,7 @@ use app\base\BaseController;
 use common\api\VsoApi;
 use common\models\User;
 use common\models\Auth;
+use common\models\PointsConfig;
 use app\modules\team\models\Team;
 
 class PointsController extends BaseController
@@ -40,6 +41,7 @@ class PointsController extends BaseController
             'update',
             'ajax-save',
             'ajax-change-status',
+            'types-list',
         ];
     }
 
@@ -291,6 +293,18 @@ class PointsController extends BaseController
         $this->_json(20000, '用户信息保存成功！');
     }
 
+
+    /**
+     * 编辑用户信息
+     * @return array
+     */
+    function actionTypesList()
+    {
+        $_list = PointsConfig::_get_list();
+        lg($_list);
+
+
+    }
 
 
 
