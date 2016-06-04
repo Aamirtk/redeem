@@ -1,4 +1,57 @@
 Array
 (
-    [0] => 16
+    [points] => Array
+        (
+            [pid] => 1
+            [name] => 奖励积分
+            [type] => 6
+            [goods_id] => 
+            [goods_name] => 
+            [points] => 1021
+            [create_at] => 1970-01-01 08:00:00
+            [update_at] => 2016-06-04 10:27:20
+            [type_name] => 关注
+        )
+
+    [typeList] => Array
+        (
+            [1] => Array
+                (
+                    [id] => 1
+                    [name] => 关注
+                )
+
+            [2] => Array
+                (
+                    [id] => 2
+                    [name] => 身份认证
+                )
+
+            [3] => Array
+                (
+                    [id] => 3
+                    [name] => 手机认证
+                )
+
+            [4] => Array
+                (
+                    [id] => 4
+                    [name] => 每日签到
+                )
+
+            [5] => Array
+                (
+                    [id] => 5
+                    [name] => 分享微信
+                )
+
+            [6] => Array
+                (
+                    [id] => 6
+                    [name] => 奖励积分
+                )
+
+        )
+
+    [is_goods] => 1
 )

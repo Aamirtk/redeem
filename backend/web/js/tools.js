@@ -214,12 +214,12 @@
 
     //方式实现异步请求
     $._ajax = function (url, data, reqtype, rettype, callback) {
-        if(url == '' || url == undefined){
-            return
-        }
-        if ($(document).data(url) == false) {
-            return
-        }
+        // if(url == '' || url == undefined){
+        //     return
+        // }
+        // if ($(document).data(url) == false) {
+        //     return
+        // }
         $(document).data(url, false);
         $.ajax({
             url: url,
@@ -227,7 +227,7 @@
             type: reqtype,
             dataType: rettype,
             success: function (d) {
-                $(document).data(url, true);
+                // $(document).data(url, true);
                 if (typeof callback == "function") {
                     callback(d);
                 }
@@ -328,6 +328,32 @@
         },
 
     }
+
+    //添加错误提示
+    $.fn._errorTips = function(msg){
+        $(this).siblings('.x-field-error').remove();
+        if(msg == undefined || msg == false){
+            return
+        }
+        var tips =
+        '<span class="x-field-error">'+
+        '    <span class="x-icon x-icon-mini x-icon-error">!</span>'+
+        '    <label class="x-field-error-text">'+ msg +'</label>'+
+        '</span>';
+        $(this).after(tips);
+    }
+
+    //添加等待和删除等待
+    $.fn._waiting = function(on){
+        if(on === true){
+            $(this).siblings('.loading_img').remove();
+            var html = '<img class="loading_img" src="/images/loading.gif" alt="loading">';
+            $(this).after(html);
+        }else{
+            $(this).siblings('.loading_img').remove();
+        }
+    }
+
 
 
 

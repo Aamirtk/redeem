@@ -22,7 +22,7 @@
 <form class="form-horizontal bui-form bui-form-field-container" id="points_form" aria-disabled="false"
       onsubmit="return false;" aria-pressed="false">
     <input name="pid" v-role="proj-id" type="hidden" class="bui-form-field" aria-disabled="false"
-           value="<?php echo $points['pid'] ?>" style="display: none;">
+           value="" style="display: none;">
 
     <div class="control-group ">
         <label class="control-label">类型：</label>
@@ -30,7 +30,7 @@
             <select name="type" id="points_type">
                 <option value="">请选择</option>
                 <?php foreach ($typeList as $key => $val): ?>
-                    <option value="<?php echo $val['id'] ?>" <?php echo $val['id'] == ($points['type']) ? 'selected="selected"' : '' ?> >
+                    <option value="<?php echo $val['id'] ?>" >
                         <?php echo $val['name'] ?>
                     </option>
                 <?php endforeach ?>
@@ -42,25 +42,25 @@
         <label class="control-label">积分数量：</label>
         <div class="controls">
             <input name="points" class="input-normal control-text bui-form-field" data-rules="{required:true}"
-                   type="text"  aria-disabled="false" value="<?php echo $points['points'] ?>">
+                   type="text"  aria-disabled="false" value="">
         </div>
 
     </div>
 
-    <div class="control-group goods-info" style="display: <?php echo $is_goods ? 'block' : 'none' ?>">
+    <div class="control-group goods-info" style="display: none">
         <label class="control-label">商品编号：</label>
         <div class="controls">
             <input name="goods_id"  class="input-normal control-text bui-form-field" data-rules="{required:true}"
-                   type="text"  aria-disabled="true" value="<?php echo $points['goods_id'] ?>">
+                   type="text"  aria-disabled="true" value="">
         </div>
     </div>
 
-    <div class="control-group goods-info" style="display: <?php echo $is_goods ? 'block' : 'none' ?>">
+    <div class="control-group goods-info" style="display: none">
         <label class="control-label">商品名称：</label>
         <div class="controls">
             <input name="goods_name_show" disabled="disabled" class="input-normal control-text " data-rules="{required:true}"
-                   type="text"  aria-disabled="true" value="<?php echo $points['goods_name'] ?>">
-            <input name ="goods_name" type="hidden" value="<?php echo $points['goods_name'] ?>">
+                   type="text"  aria-disabled="true" value="">
+            <input name ="goods_name" type="hidden" value="">
         </div>
     </div>
 

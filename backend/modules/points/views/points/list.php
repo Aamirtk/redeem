@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>用户信息列表</title>
+    <title>积分数值列表</title>
     <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
     <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
     <?= Html::cssFile('@web/assets/css/page-min.css') ?>
@@ -21,7 +21,7 @@ use yii\helpers\Html;
         }
     </style>
     <script>
-        _BASE_LIST_URL =  "<?php echo yiiUrl('user/user/list?ajax=1') ?>";
+        _BASE_LIST_URL =  "<?php echo yiiUrl('points/points/list') ?>";
     </script>
 </head>
 
@@ -92,14 +92,18 @@ use yii\helpers\Html;
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchUsers()">查询</button>
+                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchPoints()">查询</button>
                     </div>
                 </div>
             </form>
         </div>
         <div class="bui-grid-tbar">
+            <a class="button button-primary" title="添加积分类型"  href="#" onclick="addPoints()" id="addVip1">添加积分类型</a>
+            <a class="button button-danger" href="javascript:void(0);" onclick="deletePoints()">批量删除</a>
         </div>
-        <div id="users_grid">
+        <div class="bui-grid-tbar">
+        </div>
+        <div id="points_grid">
         </div>
     </div>
 </div>
@@ -152,32 +156,20 @@ use yii\helpers\Html;
                 autoLoad: true, //自动加载数据
                 params: {
                 },
-                root: 'userList',//数据返回字段,支持深成次属性root : 'data.records',
+                root: 'pointList',//数据返回字段,支持深成次属性root : 'data.records',
                 totalProperty: 'totalCount',//总计字段
                 pageSize: 10// 配置分页数目,
             });
             var grid = new Grid.Grid({
-                render: '#users_grid',
+                render: '#points_grid',
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '用户编号', dataIndex: 'uid', width: 80, elCls : 'center'},
-                    {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
-                    {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
-                    {
-                        title: '微信头像',
-                        width: 120,
-                        elCls : 'center',
-                        renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.avatar +"'>";
-                        }
-                    },
-                    {title: '手机号码', dataIndex: 'mobile', width: 90},
-                    {title: '电子邮箱', dataIndex: 'email', width: 130},
-                    {title: '积分', dataIndex: 'points', width: 80, elCls : 'center'},
-                    {title: '微信公众号', dataIndex: 'wechat', width: 120},
-                    {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
-                    {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
+                    {title: '积分编号', dataIndex: 'pid', width: 80, elCls : 'center'},
+                    {title: '积分名称', dataIndex: 'name', width: 90, elCls : 'center'},
+                    {title: '积分数量', dataIndex: 'points', width: 90, elCls : 'center'},
+                    {title: '商品编号', dataIndex: 'goods_id', width: 130, elCls : 'center'},
+                    {title: '商品名称', dataIndex: 'goods_name', width: 130, elCls : 'center'},
                     {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
                     {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
@@ -185,16 +177,8 @@ use yii\helpers\Html;
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.status == 1){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
-                            }else if(obj.status == 2){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
-                            }
-
+                            return " <a class='button button-primary' onclick='updatePoints(" + obj.pid + ")'>编辑</a>"+
+                            " <a class='button button-danger' onclick='deletePoints(" + obj.pid + ")'>删除</a>";
                         }
                     }
                 ],
@@ -205,10 +189,10 @@ use yii\helpers\Html;
                     // pagingBar:表明包含分页栏
                     pagingBar: true
                 },
-                plugins: Grid.Plugins.CheckSelection,// 插件形式引入多选表格
+                plugins: [ Grid.Plugins.CheckSelection] // 插件形式引入多选表格
             });
             grid.render();
-            $("#users_grid").data("BGrid", grid);
+            $("#points_grid").data("BGrid", grid);
 
         });
 
@@ -219,7 +203,7 @@ use yii\helpers\Html;
 /**
  * 搜索用户,刷新列表
  */
-function searchUsers() {
+function searchPoints() {
     var search = {};
     var fields = $("#usersearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -227,7 +211,7 @@ function searchUsers() {
             search[field.name] = field.value;
         }
     });
-    var store = $("#users_grid").data("BGrid").get('store');
+    var store = $("#points_grid").data("BGrid").get('store');
     var lastParams = store.get("lastParams");
     lastParams.search = search;
     store.load(lastParams);//刷新
@@ -235,7 +219,7 @@ function searchUsers() {
 /**
  * 获取过滤项
  */
-function getUserGridSearchConditions() {
+function getPointGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -250,9 +234,9 @@ function getUserGridSearchConditions() {
 
 
 /**
- * 显示用户详情
+ * 显示积分数值
  */
-function showUserInfo(uid) {
+function showPointInfo(pid) {
     var width = 700;
     var height = 450;
     var Overlay = BUI.Overlay;
@@ -274,97 +258,117 @@ function showUserInfo(uid) {
 //        }
     ];
     dialog = new Overlay.Dialog({
-        title: '用户信息',
+        title: '积分数值',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
             url: "/user/user/info",
             autoLoad: true, //不自动加载
-            params: {uid: uid},//附加的参数
+            params: {pid: pid},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({uid: uid});
+    dialog.get('loader').load({pid: pid});
 }
 
 /**
- * 显示用户详情
+ * 添加积分数值
  */
-function updateUser(uid) {
+function addPoints(id){
     var width = 400;
     var height = 400;
     var Overlay = BUI.Overlay;
     var buttons = [];
     dialog = new Overlay.Dialog({
-        title: '用户信息',
+        title: '积分数值信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/user/user/update",
+            url: "/points/points/add",
             autoLoad: true, //不自动加载
-            params: {uid: uid},//附加的参数
+            params: {id: id},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({uid: uid});
-}
-
-
-
-/**
- * 启用用户
- */
-function enableUser(uid) {
-    var msg = '您确定要启用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.uid = uid;
-        param.status = 1;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                }, 'success');
-
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
-            }
-        });
-    }, 'success');
+    dialog.get('loader').load({id: id});
 
 }
 
 /**
- * 启用用户
+ * 显示积分数值
  */
-function disableUser(uid) {
-    var msg = '您确定要禁用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.uid = uid;
-        param.status = 2;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                },  'success');
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
-            }
-        });
-    }, 'error');
+function updatePoints(pid) {
+    var width = 400;
+    var height = 400;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '积分数值',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/points/points/update",
+            autoLoad: true, //不自动加载
+            params: {pid: pid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        buttons: buttons,
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({pid: pid});
+}
+
+
+/**
+ * 更新积分类型
+ */
+function deletePoints(pointId){
+    //如果不传，表示删除勾选
+    var pointIds = [];
+    if (pointId) {
+        pointIds.push(pointId);
+    }
+    else {
+        pointIds = $("#points_grid").data("BGrid").getSelectionValues();
+    }
+    if (pointIds.length == 0) {
+        return;
+    }
+
+    BUI.Message.Confirm('您确定要删除的积分类型吗？', function(){
+        doDeletePoints(pointIds);
+    }, 'question');
 
 }
+
+/**
+ * 删除会员
+ */
+function doDeletePoints(pointIds) {
+    $._ajax('/points/points/delete', {ids: pointIds}, 'POST', 'JSON', function(json){
+        if(json.code > 0){
+            BUI.Message.Alert(json.msg, function(){
+                window.location.href = '<?php echo yiiUrl('points/points/list') ?>';
+            }, 'success');
+
+        }else{
+            BUI.Message.Alert(json.msg, 'error');
+            this.close();
+        }
+    });
+}
+
+
 
 
 </script>

@@ -25,6 +25,22 @@ function yiiUrl($params) {
 }
 
 /**
+ * 获取值
+ * @param $data mixed 要判断是否存在的值
+ * @param $default mixed 当$data不存在时默认值
+ * @param $empty bool true-同时验证$data还不能为空, 默认不验证
+ * @return mixed mix
+ **/
+function _value($data, $default = '', $empty = false)
+{
+    if ($empty) {
+        return !empty($data) ? $data : $default;
+    } else {
+        return isset($data) ? $data : $default;
+    }
+}
+
+/**
  * 判断客户端是否为移动端
  * @param nothing
  * @return boolean

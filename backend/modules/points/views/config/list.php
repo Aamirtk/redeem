@@ -129,37 +129,7 @@ use yii\helpers\Html;
 </script>
 
 <script>
-/**
- * 搜索会员,刷新列表
- */
-function searchDoms() {
-    var search = {};
-    var fields = $("#vipsearch").serializeArray();//获取表单信息
-    jQuery.each(fields, function (i, field) {
-        if (field.value != "") {
-            search[field.name] = field.value;
-        }
-    });
-    var store = $("#config_grid").data("BGrid").get('store');
-    var lastParams = store.get("lastParams");
-    lastParams.search = search;
-    store.load(lastParams);//刷新
-}
-/**
- * 获取过滤项
- */
-function getDomGridSearchConditions() {
-    var search = {};
-    var upusername = $("#upusername").val();
-    if (upusername != "") {
-        search.upusername = upusername;
-    }
-    var username = $("#username").val();
-    if (username != "") {
-        search.username = username;
-    }
-    return search;
-}
+
 
 /**
  * 添加积分类型

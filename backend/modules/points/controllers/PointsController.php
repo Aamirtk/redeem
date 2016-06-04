@@ -2,12 +2,14 @@
 
 namespace backend\modules\points\controllers;
 
+use common\models\Points;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\api\VsoApi;
 use common\models\User;
 use common\models\Auth;
+use common\models\Goods;
 use common\models\PointsConfig;
 use app\modules\team\models\Team;
 
@@ -38,15 +40,17 @@ class PointsController extends BaseController
             'list-view',
             'export',
             'info',
+            'add',
             'update',
+            'delete',
             'ajax-save',
-            'ajax-change-status',
+            'ajax-check-goods',
             'types-list',
         ];
     }
 
     /**
-     * 用户列表
+     * 积分列表
      * @return type
      */
     public function actionListView()
@@ -55,14 +59,14 @@ class PointsController extends BaseController
     }
 
     /**
-     * 用户数据
+     * 积分数据
      */
     public function actionList()
     {
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new User();
+        $mdl = new Points();
         $query = $mdl::find();
         $search = $this->_request('search');
         $page = $this->_request('page', 0);
@@ -84,10 +88,10 @@ class PointsController extends BaseController
                 $query = $query->andWhere(['group_id' => $search['grouptype']]);
             }
             if (isset($search['filtertype']) && !empty($search['filtercontent'])) {
-                if ($search['filtertype'] == 2)//按照用户名称筛选
+                if ($search['filtertype'] == 2)//按照积分名称筛选
                 {
                     $query = $query->andWhere(['like', $memTb . '.name', trim($search['filtercontent'])]);
-                } elseif ($search['filtertype'] == 1)//按照用户ID筛选
+                } elseif ($search['filtertype'] == 1)//按照积分ID筛选
                 {
                     $query = $query->andWhere([$memTb . '.username' => trim($search['filtercontent'])]);
                 }
@@ -105,116 +109,60 @@ class PointsController extends BaseController
             }
         }
 
-        $_order_by = 'uid ASC';
-        $userArr = $query
+        $_order_by = 'pid ASC';
+        $query_count = clone($query);
+
+        $pointsArr = $query
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
             ->all();
-        $userList = ArrayHelper::toArray($userArr, [
-            'common\models\User' => [
-                'uid',
-                'nick',
-                'name',
-                'mobile',
-                'avatar',
-                'email',
-                'points',
-                'wechat' => 'wechat_openid',
-                'user_type' => function ($m) {
-                    return User::_get_user_type($m->user_type);
-                },
-                'user_status' => function ($m) {
-                    return User::_get_user_status($m->user_status);
-                },
-                'status' => 'user_status',
-                'inputer' => function ($m) {
-                    return '录入人';
-                },
-                'checker' => function ($m) {
-                    return '审核人';
-                },
-                'update_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->update_at);
-                },
-                'create_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->create_at);
-                },
-            ],
-        ]);
+        $totalCount = $query_count->count();
 
+        $typeList = PointsConfig::_get_list();
+        $pointsList = [];
+        if(!empty($pointsArr)){
+            foreach($pointsArr as $key => $point){
+                $pointsList[] = [
+                    'pid' => $point->pid,
+                    'name' => $point->name,
+                    'points' => $point->points,
+                    'goods_id' => $point->goods_id,
+                    'goods_name' => $point->goods_name,
+                    'type' => $point->type,
+                    'type_name' => _value($typeList[$point->pid]['name'], ''),
+                    'update_at' => date('Y-m-d h:i:s', $point->update_at),
+                    'create_at' => date('Y-m-d h:i:s', $point->create_at),
+                ];
+            }
+        }
         $_data = [
-            'userList' => $userList,
-            'totalCount' => count($userList)
+            'pointList' => $pointsList,
+            'totalCount' => $totalCount
         ];
         exit(json_encode($_data));
     }
 
-    /**
-     * 改变用户状态
-     * @return array
-     */
-    function actionAjaxChangeStatus()
-    {
-        $uid = intval($this->_request('uid'));
-        $status = intval($this->_request('status'));
-
-        $mdl = new User();
-        //检验参数是否合法
-        if (empty($uid)) {
-            $this->_json(-20001, '用户编号id不能为空');
-        }
-        if (!in_array($status, [$mdl::IS_DELETE, $mdl::NO_DELETE])) {
-            $this->_json(-20002, '用户状态错误');
-        }
-
-        //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
-        if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
-        }
-
-        if ($status == $mdl::NO_DELETE) {
-            $rst = $mdl->_save([
-                'uid' => $uid,
-                'user_status' => $mdl::NO_DELETE,
-                'update_at' => time(),
-            ]);
-            if (!$rst) {
-                $this->_json(-20004, '用户信息保存失败');
-            }
-        } else {
-            $rst = $mdl->_save([
-                'uid' => $uid,
-                'user_status' => $mdl::IS_DELETE,
-                'update_at' => time(),
-            ]);
-            if (!$rst) {
-                $this->_json(-20005, '用户信息保存失败');
-            }
-        }
-
-        $this->_json(20000, '保存成功！');
-    }
+    
 
     /**
-     * 加载用户详情
+     * 加载积分详情
      * @return array
      */
     function actionInfo()
     {
-        $uid = intval($this->_request('uid'));
+        $pid = intval($this->_request('pid'));
 
         $mdl = new User();
         //检验参数是否合法
-        if (empty($uid)) {
-            $this->_json(-20001, '用户编号id不能为空');
+        if (empty($pid)) {
+            $this->_json(-20001, '积分编号id不能为空');
         }
 
-        //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
+        //检验积分是否存在
+        $user = $mdl->_get_info(['pid' => $pid]);
         if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
+            $this->_json(-20003, '积分信息不存在');
         }
         $user['user_status'] = User::_get_user_status($user['user_status']);
         $user['user_type'] = User::_get_user_type($user['user_type']);
@@ -227,83 +175,169 @@ class PointsController extends BaseController
     }
 
     /**
-     * 编辑用户信息
+     * 添加积分信息
+     * @return array
+     */
+    function actionAdd(){
+        $typeList = PointsConfig::_get_list();
+        $_data = [
+            'typeList' => $typeList,
+        ];
+        return $this->render('add', $_data);
+    }
+
+    /**
+     * 添加积分信息
+     * @return array
+     */
+    function actionAjaxAdd(){
+
+    }
+
+
+
+    /**
+     * 编辑积分信息
      * @return array
      */
     function actionUpdate()
     {
-        $uid = intval($this->_request('uid'));
+        $pid = intval($this->_request('pid'));
 
-        $mdl = new User();
+        $mdl = new Points();
         //检验参数是否合法
-        if (empty($uid)) {
-            $this->_json(-20001, '用户编号id不能为空');
+        if (empty($pid)) {
+            $this->_json(-20001, '积分编号id不能为空');
         }
 
-        //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
-        if (!$user) {
-            $this->_json(-20003, '用户信息不存在');
+        //检验积分是否存在
+        $points = $mdl->_get_info(['pid' => $pid]);
+        if (!$points) {
+            $this->_json(-20003, '积分信息不存在');
         }
+
+        $typeList = PointsConfig::_get_list();
+
+        $points['type_name'] = _value($typeList[$points['pid']]['name'], '');
+        $points['update_at'] = date('Y-m-d h:i:s', $points['update_at']);
+        $points['create_at'] = date('Y-m-d h:i:s', $points['create_at']);
 
         $_data = [
-            'user' => $user
+            'points' => $points,
+            'typeList' => $typeList,
+            'is_goods' => $points['type'] == $mdl::POINTS_PRAISE ? true : false
         ];
+        lg($_data);
         return $this->render('edit', $_data);
     }
 
     /**
-     * 编辑用户信息
+     * 编辑积分信息
      * @return array
      */
     function actionAjaxSave()
     {
-        $uid = intval($this->_request('uid'));
-        $nick = trim($this->_request('nick'));
-        $mobile = trim($this->_request('mobile'));
+        $pid = intval($this->_request('pid'));
+        $type = intval($this->_request('type'));
+        $points = intval($this->_request('points'));
+        $goods_id = trim($this->_request('goods_id'));
+        $goods_name = trim($this->_request('goods_name'));
 
-        $mdl = new User();
+        if(empty($pid)){//添加
+            $mdl = new Points();
+        }else{
+            $mdl = Points::findOne(['pid' => $pid]);
+            //检验积分是否存在
+            $point_info = $mdl->_get_info(['pid' => $pid]);
+            if (!$point_info) {
+                $this->_json(-20002, '积分信息不存在');
+            }
+        }
+
         //检验参数是否合法
-        if (empty($uid)) {
-            $this->_json(-20001, '用户编号id不能为空');
-        }
-        if (empty($nick)) {
-            $this->_json(-20002, '用户昵称不能为空');
-        }
-        if (empty($mobile)) {
-            $this->_json(-20003, '用户手机号码不能为空');
+        if($points < 0){
+            $this->_json(-20005, '积分数量必须为大于0的整数');
         }
 
-        //检验用户是否存在
-        $user = $mdl->_get_info(['uid' => $uid]);
-        if (!$user) {
-            $this->_json(-20004, '用户信息不存在');
+        //检验积分类型
+        $config = (new PointsConfig())->_get_info(['id' => $type]);
+        if(!$config){
+            $this->_json( -20003, '积分类型不存在');
+        }
+        $mdl->type = $type;
+        $mdl->name = $config['name'];
+
+
+        //如果是奖励积分，校验商品是否存在
+        $mdl->goods_id = $goods_id;
+        if($type == Points::POINTS_PRAISE){
+            if(!$mdl->validate(['goods_id'])){
+                $msg = $mdl->errors['goods_id'][0];//获取错误信息
+                $this->_json( -20004, $msg);
+            }
+            $mdl->goods_id = '';
+            $mdl->goods_name = '';
+        }else{
+            $mdl->goods_id = $goods_id;
+            $mdl->goods_name = $goods_name;
+        }
+        $mdl->points = $points;
+        $mdl->update_at = time();
+
+        //保存
+        if (!$mdl->save()) {
+            $this->_json(-20000, '积分信息保存失败');
         }
 
-        $rst = $mdl->_save([
-            'uid' => $uid,
-            'nick' => $nick,
-            'mobile' => $mobile,
-            'update_at' => time(),
-        ]);
-        if (!$rst) {
-            $this->_json(-20005, '用户信息保存失败');
-        }
-
-        $this->_json(20000, '用户信息保存成功！');
+        $this->_json(20000, '积分信息保存成功！');
     }
 
 
     /**
-     * 编辑用户信息
+     * 异步校验商品信息
      * @return array
      */
-    function actionTypesList()
+    public function actionAjaxCheckGoods()
     {
-        $_list = PointsConfig::_get_list();
-        lg($_list);
+        $goods_id = trim($this->_request('goods_id'));
+        if(empty($goods_id)){
+            $this->_json(-20001, '商品编号不能为空');
+        }
+        $mdl = new Goods();
+        $goods = $mdl->_get_info(['goods_id' => $goods_id]);
+        if(!$goods){
+            $this->_json( -20002, '商品编号不存在');
+        }
+        $_data = [
+            'goods_id' => $goods_id,
+            'goods_name' => $goods['name'],
+        ];
+        $this->_json(20000, '校验成功！', $_data);
+    }
 
+    /**
+     * 删除积分类型
+     * @return array
+     */
+    public function actionDelete()
+    {
+        $ids = $this->_request('ids');
+        $mdl = new Points();
+        $id_arry = array_values($ids);
+        lg($this->_request());
 
+        //参数检验
+        if (empty($id_arry))
+        {
+            $this->_json(-20001, '你没有选中任何对象');
+        }
+
+        //删除
+        $res = $mdl->_delete(['in', 'pid', $id_arry]);
+        if($res === false){
+            $this->_json(-20001, '删除失败');
+        }
+        $this->_json(20000, '删除成功');
     }
 
 
