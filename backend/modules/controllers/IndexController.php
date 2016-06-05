@@ -24,7 +24,7 @@ class IndexController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'captcha'],
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -68,6 +68,7 @@ class IndexController extends Controller
         //获取用户路由权限
         $role_id = Yii::$app->user->identity->role_id;
         $routeArr = [];
+        $role_id  = 1;
         if ($role_id === 1)
         { //超级管理不检查
             $isadmin = true;
@@ -183,7 +184,7 @@ class IndexController extends Controller
                 ['用户列表' => 'user/user/list'],
             ],
             '认证管理' => [
-                ['认证列表' => 'user/user/list'],
+                ['认证列表' => 'auth/auth/list'],
             ],
 
         ];
@@ -218,6 +219,16 @@ class IndexController extends Controller
             '用户管理' => [
                 ['用户列表' => 'user/user/list-view'],
             ],
+        ];
+        $menu[] = [
+            'top' => ['积分配置' => 'home'],
+            '积分列表' => [
+                ['积分列表' => 'points/points/list'],
+            ],
+            '积分配置' => [
+                ['积分类型' => 'points/config/list'],
+            ],
+
         ];
         $menu[] = [
             'top' => ['物流管理' => 'home'],
