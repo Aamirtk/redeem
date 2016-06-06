@@ -116,9 +116,9 @@
             auto: true,
             fileVal: 'attachment',
             swf: '/plugins/webuploader/Uploader.swf',
-            server: '/upload_file',
+            server: "<?php echo yiiParams('uploader_url') ?>",
             pick: '#upload_img',
-            fileNumLimit: 1,
+            fileNumLimit: 2,
             fileSizeLimit: 2 * 1024 * 1024,
             accept: {
                 title: 'Images',
@@ -126,8 +126,8 @@
                 mimeTypes: ''
             },
             formData: {
-                objtype: 'rc',
-                username: ''
+                objtype: 'user',
+                username: '1221'
             }
         });
         picUploader.on('error', function (handler) {
