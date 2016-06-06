@@ -257,7 +257,7 @@ class UserController extends BaseController
     function actionAjaxSave()
     {
         $uid = intval($this->_request('uid'));
-        $nick = trim($this->_request('nick'));
+        $email = trim($this->_request('email'));
         $mobile = trim($this->_request('mobile'));
 
         $mdl = new User();
@@ -265,8 +265,8 @@ class UserController extends BaseController
         if (empty($uid)) {
             $this->_json(-20001, '用户编号id不能为空');
         }
-        if (empty($nick)) {
-            $this->_json(-20002, '用户昵称不能为空');
+        if (empty($email)) {
+            $this->_json(-20002, '电子邮箱不能为空');
         }
         if (empty($mobile)) {
             $this->_json(-20003, '用户手机号码不能为空');
@@ -280,7 +280,7 @@ class UserController extends BaseController
 
         $rst = $mdl->_save([
             'uid' => $uid,
-            'nick' => $nick,
+            'email' => $email,
             'mobile' => $mobile,
             'update_at' => time(),
         ]);

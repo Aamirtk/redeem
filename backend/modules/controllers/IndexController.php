@@ -184,7 +184,7 @@ class IndexController extends Controller
                 ['用户列表' => 'user/user/list'],
             ],
             '认证管理' => [
-                ['认证列表' => 'auth/auth/list'],
+                ['审核列表' => 'auth/auth/list'],
             ],
 
         ];
