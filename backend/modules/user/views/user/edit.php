@@ -1,36 +1,7 @@
-
-<style>
-    .avatar_content{
-        height: 120px;
-        width: 140px;
-        display: block;
-        margin-bottom: 20px;
-    }
-    .avatar_img{
-        height: auto;
-        width: 100px;
-        margin: 0 auto 80px 120px;
-    }
-    .save-info{
-        margin: 50px 0 10px 0px;
-        text-align: center;
-        display: block;
-    }
-
-
-</style>
 <form class="form-horizontal bui-form bui-form-field-container" id="user_info_form" aria-disabled="false"
       onsubmit="return false;" aria-pressed="false">
     <input name="uid" v-role="proj-id" type="hidden" class="bui-form-field" aria-disabled="false"
            value="<?php echo $user['uid'] ?>" style="display: none;">
-
-    <div class="control-group">
-        <label class="control-label">微信昵称：</label>
-        <div class="controls">
-            <input name="nick" class="input-normal control-text bui-form-field" data-rules="{required:true}"
-                   type="text" v-role="proj-name" aria-disabled="false" value="<?php echo $user['nick'] ?>">
-        </div>
-    </div>
 
     <div class="control-group">
         <label class="control-label">手机号码：</label>
@@ -40,14 +11,11 @@
         </div>
     </div>
 
-    <div class="row">
-
-        <div class="control-group span8 avatar_content" >
-            <label class="control-label">微信头像：</label>
-            <div class="controls ">
-                <img class="avatar_img" src="<?php echo $user['avatar'] ?>">
-                <input type="hidden" name="avatar" value="<?php echo $user['avatar'] ?>">
-            </div>
+    <div class="control-group">
+        <label class="control-label">电子邮箱：</label>
+        <div class="controls">
+            <input name="email" class="input-normal control-text bui-form-field" data-rules="{required:true}"
+                   type="text" v-role="proj-name" aria-disabled="false" value="<?php echo $user['email'] ?>">
         </div>
     </div>
 

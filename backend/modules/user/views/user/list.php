@@ -296,7 +296,7 @@ function showUserInfo(uid) {
  */
 function updateUser(uid) {
     var width = 400;
-    var height = 400;
+    var height = 300;
     var Overlay = BUI.Overlay;
     var buttons = [];
     dialog = new Overlay.Dialog({
