@@ -9,6 +9,7 @@ use common\api\VsoApi;
 use common\models\User;
 use common\models\Auth;
 use app\modules\team\models\Team;
+use common\lib\Upload;
 
 class AuthController extends BaseController
 {
@@ -40,6 +41,7 @@ class AuthController extends BaseController
             'update',
             'ajax-save',
             'ajax-check',
+            'upload',
         ];
     }
 
@@ -192,6 +194,23 @@ class AuthController extends BaseController
             'auth' => $auth
         ];
         return $this->render('info', $_data);
+    }
+
+    /**
+     * 上传图片
+     * @return array
+     */
+    public function actionUpload() {
+        $objtype = trim($this->_request('objtype'));
+
+        $up_mdl = new Upload();
+        $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
+
+        if (!empty($ret)) {
+            $this->_json(20000, '上传成功', []);
+        } else {
+            $this->_json(-20000, '上传失败');
+        }
     }
 
 

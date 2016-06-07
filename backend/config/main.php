@@ -16,6 +16,10 @@ return [
         'admin' => 'app\modules\admin',//默认模块
         'team' => 'app\modules\team\TeamModule',//后台用户管理
         'treemanager' => ['class' => '\kartik\tree\Module'],//后台分类管理插件模块引用，
+        // 公用
+        'common' => [
+            'class' => 'backend\modules\common\Module',
+        ],
         // 用户
         'user' => [
             'class' => 'backend\modules\user\Module',
