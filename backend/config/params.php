@@ -32,7 +32,7 @@ return [
     //审核不通过的原因字数限制
     'checkdeny_reason_limit' => 500,
     //后端上传图片方法
-    'uploader_url' => '/site/index',
+    'uploader_url' => '/common/upload/upload',
     //后端上传图片路径
     'img_save_dir' => '/upload/',
 

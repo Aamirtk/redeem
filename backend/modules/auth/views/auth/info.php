@@ -116,7 +116,7 @@
             auto: true,
             fileVal: 'attachment',
             swf: '/plugins/webuploader/Uploader.swf',
-            server: "/common/upload/upload",
+            server: "<?php echo yiiParams('uploader_url') ?>",
             pick: '#upload_img',
             fileNumLimit: 2,
             fileSizeLimit: 2 * 1024 * 1024,

@@ -18,6 +18,7 @@ class Upload
     function upload($path, $objtype = 'user')
     {
         $file = $_FILES['attachment'];
+        lg($file, false);
 
         //允许上传的 文件类型
         $type = array("jpg", "gif", "bmp", "jpeg", "png", "doc", "docx", "pdf", "txt");

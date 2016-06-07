@@ -2,7 +2,6 @@
 namespace backend\modules\common\controllers;
 
 use Yii;
-use yii\web\Controller;
 use common\lib\Upload;
 use app\base\BaseController;
 
@@ -25,7 +24,7 @@ class UploadController extends BaseController
      * @return array
      */
     public function actionUpload() {
-        $objtype = trim($this->_request('objtype'));
+        $objtype = trim($this->_request('objtype'), 'user');
 
         $up_mdl = new Upload();
         $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
