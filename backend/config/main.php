@@ -28,13 +28,13 @@ return [
         'points' => [
             'class' => 'backend\modules\points\Module',
         ],
-        // 任务
-        'task' => [
-            'class' => 'backend\modules\task\Module',
+        // 商品
+        'goods' => [
+            'class' => 'backend\modules\goods\Module',
         ],
-        // 财务
-        'finance' => [
-            'class' => 'backend\modules\finance\Module',
+        // 订单
+        'order' => [
+            'class' => 'backend\modules\order\Module',
         ],
         // 信用
         'trust' => [

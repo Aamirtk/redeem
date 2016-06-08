@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Exception;
+use common\lib\Filter;
 
 /**
  * This is the model class for table "{{%goods}}".
@@ -46,7 +47,8 @@ class Goods extends \yii\db\ActiveRecord
             [['redeem_pionts', 'goods_status', 'create_at'], 'integer'],
             [['goods_id'], 'string', 'max' => 40],
             [['name'], 'string', 'max' => 50],
-            [['thumb'], 'string', 'max' => 120]
+            [['thumb'], 'string', 'max' => 120],
+            [['create_at'], 'default', 'value' => time()],
         ];
     }
 
@@ -166,9 +168,9 @@ class Goods extends \yii\db\ActiveRecord
                     return false;
                 }
 
-                if (!empty($data['id'])) {//修改
-                    $id = $data['id'];
-                    $ret = $_mdl->updateAll($data, ['id' => $id]);
+                if (!empty($data['gid'])) {//修改
+                    $id = $data['gid'];
+                    $ret = $_mdl->updateAll($data, ['gid' => $id]);
                 } else {//增加
                     $ret = $_mdl->insert();
                 }
@@ -199,4 +201,49 @@ class Goods extends \yii\db\ActiveRecord
         }
         return false;
     }
+
+    /**
+     * 添加商品
+     * @param $goods array
+     * @return array|boolean
+     */
+    public function _add_goods($goods) {
+        //参数校验
+        if(empty($goods['name']) || empty($goods['redeem_pionts']) || empty($goods['description'])){
+            return ['code' => -20001, 'msg' => '商品信息不全！'];
+        }
+        $name = Filter::filters_title($goods['name']);
+        $redeem_pionts = intval($goods['redeem_pionts']);
+        $description = Filter::filters_outcontent($goods['description']);
+
+        if(empty($name) || strlen($name) > 50){
+            return ['code' => -20002, 'msg' => '商品名称不符合规范！'];
+        }
+        if(empty($redeem_pionts) || $redeem_pionts < 0){
+            return ['code' => -20003, 'msg' => '兑换积分不正确！'];
+        }
+        if(empty($description)){
+            return ['code' => -20004, 'msg' => '商品描述不能为空！'];
+        }
+
+        //保存信息
+        $res = (new self)->_save([
+            'goods_id' => static::_gen_goods_id(),
+            'name' => $name,
+            'redeem_pionts' => $redeem_pionts,
+            'description' => $description,
+        ]);
+        if(!$res){
+            return ['code' => -20000, 'msg' => '商品信息保存失败'];
+        }
+        return ['code' => 20000, 'msg' => '商品信息保存成功'];
+
+    }
+
+    public static function _gen_goods_id(){
+        return date('YmdHis', time()) . substr(md5(microtime() . rand(0, 10000)), 0, 5);
+    }
+
+
+
 }
