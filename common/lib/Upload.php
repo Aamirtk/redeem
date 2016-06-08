@@ -27,12 +27,11 @@ class Upload
         $gen_dir = $this->_gen_dir();
 
         //文件完整路径-用于保存文件
-        $fileDir =  $_SERVER['DOCUMENT_ROOT'] . rtrim($path, '/') . DIRECTORY_SEPARATOR . $objtype . $gen_dir;
+        $fileDir =  $_SERVER['DOCUMENT_ROOT'] . rtrim($path, '/') . '/' . $objtype . $gen_dir;
         //文件相对路径-用于web访问
-        $filePath = rtrim($path, '/') . DIRECTORY_SEPARATOR . $objtype . $gen_dir;
+        $filePath = rtrim($path, '/') . '/' . $objtype . $gen_dir;
         //文件名
         $fileName = $this->_gen_img_name($objtype) . '.' . $filetype;
-
         if (!in_array(strtolower($filetype), $type)) {
             $text = implode(",", $type);
             $result = [
@@ -83,7 +82,7 @@ class Upload
      * @return string
      */
     protected function _gen_dir() {
-        return DIRECTORY_SEPARATOR . date('Y', time()) . DIRECTORY_SEPARATOR . date('m', time()). DIRECTORY_SEPARATOR . date('d', time()) . DIRECTORY_SEPARATOR;
+        return '/' . date('Y', time()) . '/' . date('m', time()). '/' . date('d', time()) . '/';
     }
 
 }
