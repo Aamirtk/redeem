@@ -18,45 +18,54 @@ class Upload
     function upload($path, $objtype = 'user')
     {
         $file = $_FILES['attachment'];
-        lg($file, false);
 
         //允许上传的 文件类型
         $type = array("jpg", "gif", "bmp", "jpeg", "png", "doc", "docx", "pdf", "txt");
         $filetype = substr(strrchr($file['name'], '.'), 1); //扩展名
         $filename = $file['name'];//原文件名
 
-        $filePath =  $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . rtrim($path, '/') . DIRECTORY_SEPARATOR . $objtype . DIRECTORY_SEPARATOR . $this->_gen_dir();
-        $fileName = $this->_gen_img_name($objtype) . '.' . $filetype; //新文件名
+        $gen_dir = $this->_gen_dir();
+
+        //文件完整路径-用于保存文件
+        $fileDir =  $_SERVER['DOCUMENT_ROOT'] . rtrim($path, '/') . DIRECTORY_SEPARATOR . $objtype . $gen_dir;
+        //文件相对路径-用于web访问
+        $filePath = rtrim($path, '/') . DIRECTORY_SEPARATOR . $objtype . $gen_dir;
+        //文件名
+        $fileName = $this->_gen_img_name($objtype) . '.' . $filetype;
 
         if (!in_array(strtolower($filetype), $type)) {
             $text = implode(",", $type);
-            $result = array(
-                'code' => 407,
-                'uploaded' => FALSE,
-                'message' => "您只能上传以下类型文件: ,$text,");
+            $result = [
+                'code' => -20001,
+                'msg' => "您只能上传以下类型文件: ,$text,"
+            ];
             return $result;
-        }
-        if (!is_dir($filePath)) {
-            @mkdir($filePath, 0777, true);
         }
 
-        if (@move_uploaded_file($file['tmp_name'], $filePath . $fileName)) {
-            $result = array(
-                'code' => 200,
-                'uploaded' => TRUE,
-                'message' => '上传成功',
-                'fileName' => $fileName, //file现在的名称
-                'orgname' => $filename,//file原来的名称
-                'filePath' => $filePath,
-                'fileDir' => $path . $fileName,
-                'url' => 'http://' . $_SERVER['SERVER_NAME'] . $path . $fileName
-            );
+        //判断路径
+        if (!is_dir($fileDir)) {
+            @mkdir($fileDir, 0777, true);
+        }
+
+        if (@move_uploaded_file($file['tmp_name'], $fileDir . $fileName)) {
+            $result = [
+                'code' => 20000,
+                'msg' => '上传成功',
+                'data' => [
+                    'fileName' => $fileName, //file现在的名称
+                    'orgname' => $filename,//file原来的名称
+                    'fileDir' => $fileDir . $fileName,
+                    'filePath' => $filePath . $fileName,
+//                    'url' => 'http://' . $_SERVER['SERVER_NAME'] . $fileDir . $fileName,
+                    'url' => $fileDir . $fileName
+                ],
+            ];
             return $result;
         } else {
-            $result = array(
-                'code' => 207,
-                'uploaded' => FALSE,
-                'message' => '上传失败');
+            $result = [
+                'code' => -20000,
+                'msg' => '上传失败'
+            ];
             return $result;
         }
     }

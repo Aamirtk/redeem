@@ -24,15 +24,14 @@ class UploadController extends BaseController
      * @return array
      */
     public function actionUpload() {
-        $objtype = trim($this->_request('objtype'), 'user');
+        $objtype = trim($this->_request('objtype', 'true'));
 
         $up_mdl = new Upload();
         $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
-
-        if (!empty($ret)) {
-            $this->_json(20000, '上传成功', []);
+        if ($ret['code'] > 0) {
+            $this->_json(20000, $ret['msg'], $ret['data']);
         } else {
-            $this->_json(-20000, '上传失败');
+            $this->_json(-20000, $ret['msg']);
         }
     }
 

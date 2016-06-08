@@ -34,7 +34,7 @@ return [
     //后端上传图片方法
     'uploader_url' => '/common/upload/upload',
     //后端上传图片路径
-    'img_save_dir' => '/upload/',
+    'img_save_dir' => '/upload',
 
 
 
