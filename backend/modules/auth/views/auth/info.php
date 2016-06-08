@@ -1,18 +1,22 @@
+<?php
+use common\models\Auth;
+?>
 <style>
     .avatar_content{
         height: 120px;
         width: 140px;
         display: block;
         margin-bottom: 20px;
-        margin-right: 80px;
+        margin-right: 160px;
     }
     .avatar_img{
-        height: auto;
-        width: 100px;
-        margin: 0 auto 80px 120px;
+        height: 100px;
+        width: 120px;
+        margin: 10px 40px;
     }
+
 </style>
-<link rel="stylesheet" href="/plugins/webuploader/webuploader.css" type="text/css"/>
+<!--<link rel="stylesheet" href="/plugins/webuploader/webuploader.css" type="text/css"/>-->
 <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
 <div id="content" style="display: block" >
     <form id="form" class="form-horizontal">
@@ -31,19 +35,22 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
 
             <div class="control-group span10 avatar_content" >
                 <label class="control-label">微信头像：</label>
-                <div class="controls ">
+                <div class="controls">
                     <img class="avatar_img" src="<?php echo $auth['avatar'] ?>">
                 </div>
             </div>
-            <div id="upload_img" class="control-group span10 avatar_content " >
-                <label class="control-label">名片：点击更改</label>
-                <div class="controls ">
-                    <img id="name_card" class="avatar_img" src="<?php echo $auth['avatar'] ?>">
-                    <input type="hidden" id="name_card_input" value="<?php echo $auth['avatar'] ?>">
+            <div  class="control-group span10 avatar_content" >
+                <label class="control-label <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>">
+                    名片：<?php echo $auth['auth_status'] != Auth::CHECK_PASS ? '【点击更改】' : ''  ?>
+                </label>
+                <div  class="controls <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>" >
+                    <img id="name_card_img" class="avatar_img" src="<?php echo $auth['name_card'] ?>">
+                    <input id="name_card_input" type="hidden" value="<?php echo $auth['name_card'] ?>">
                 </div>
             </div>
         </div>
@@ -74,6 +81,13 @@
                     <span  class="control-text" ><?php echo $auth['user_type'] ?></span>
                 </div>
             </div>
+            <div class="control-group span8">
+                <label class="control-label">审核状态：</label>
+                <div class="controls">
+                    <span  class="control-text" ><?php echo $auth['status_name'] ?></span>
+                </div>
+            </div>
+
 
             <div class="control-group span8">
                 <label class="control-label">申请时间：</label>
@@ -87,20 +101,14 @@
                     <span  class="control-text" ><?php echo $auth['update_at'] ?></span>
                 </div>
             </div>
-
         </div>
-
-        <!--dom结构部分-->
-        <div id="uploader-demo">
-            <!--用来存放item-->
-            <div id="fileList" class="uploader-list"></div>
-            <div id="filePicker">选择图片</div>
-        </div>
-        Javas
-
     </form>
 </div>
-
+<style>
+    .webuploader-element-invisible{
+        display: none;
+    }
+</style>
 <script>
 
     var _file_upload_notice = function (handler) {
@@ -117,9 +125,6 @@
         }
     };
 
-    $(document).on('click', '.webuploader-pick', function () {
-        $('.webuploader-element-invisible').trigger('click');
-    });
     $(function () {
         // 初始化Web Uploader
         var uploader = WebUploader.create({
@@ -130,78 +135,63 @@
             // swf文件路径
             swf: '/plugins/webuploader/Uploader.swf',
             // 文件接收服务端。
-            server: "<?php echo yiiParams('uploader_url') ?>",
+            server: "/auth/auth/upload-name-card",
             // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#filePicker',
+            pick: '.upload_name_card',
+            fileNumLimit: 1,
+            fileSizeLimit: 2 * 1024 * 1024,
             // 只允许选择图片文件。
             accept: {
                 title: 'Images',
                 extensions: 'gif,jpg,jpeg,bmp,png',
                 mimeTypes: 'image/*'
+            },
+            formData: {
+                objtype: 'auth',
+                auth_id: <?php echo $auth['auth_id'] ?>
             }
         });
+
+        // 当有文件添加进来之前
+        uploader.on('beforeFileQueued', function (handler) {
+//            uploader.reset();
+        });
+
         // 当有文件添加进来的时候
         uploader.on( 'fileQueued', function( file ) {
-            var $li = $(
-                    '<div id="' + file.id + '" class="file-item thumbnail">' +
-                    '<img>' +
-                    '<div class="info">' + file.name + '</div>' +
-                    '</div>'
-                ),
-                $img = $li.find('img');
 
-
-            // $list为容器jQuery实例
-            $list = $("#fileList");
-            $list.append( $li );
-
-            // 创建缩略图
-            // 如果为非图片文件，可以不用调用此方法。
-            // thumbnailWidth x thumbnailHeight 为 100 x 100
-            uploader.makeThumb( file, function( error, src ) {
-                if ( error ) {
-                    $img.replaceWith('<span>不能预览</span>');
-                    return;
-                }
-
-                $img.attr( 'src', src );
-            }, 100, 80 );
         });
+
         // 文件上传过程中创建进度条实时显示。
         uploader.on( 'uploadProgress', function( file, percentage ) {
-            var $li = $( '#'+file.id ),
-                $percent = $li.find('.progress span');
 
-            // 避免重复创建
-            if ( !$percent.length ) {
-                $percent = $('<p class="progress"><span></span></p>')
-                    .appendTo( $li )
-                    .find('span');
-            }
-
-            $percent.css( 'width', percentage * 100 + '%' );
         });
 
         // 文件上传成功，给item添加成功class, 用样式标记上传成功。
         uploader.on('uploadSuccess', function (file, response) {
             $('#' + file.id).addClass('upload-state-done');
             if(response.code > 0){
-                alert('成功');
+                var data = response.data;
+                $("#name_card_img").attr('src', data.filePath);
+                $("#name_card_input").val(data.filePath);
+            }else{
+                BUI.Message.Alert('上传失败！');
             }
+        });
+
+        // 文件上传完后都触发事件
+        uploader.on('uploadComplete', function (file, response) {
+            uploader.reset();
+        });
+
+        //文件出错
+        uploader.on('error', function (handler) {
+            _file_upload_notice(handler);
         });
 
         // 文件上传失败，显示上传出错。
         uploader.on('uploadError', function (file) {
-            var $li = $('#' + file.id),
-                $error = $li.find('div.error');
-
-            // 避免重复创建
-            if (!$error.length) {
-                $error = $('<div class="error"></div>').appendTo($li);
-            }
-
-            $error.text('上传失败');
+            alert('上传失败！');
         });
 
         // 完成上传完了，成功或者失败，先删除进度条。

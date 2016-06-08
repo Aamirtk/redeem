@@ -17,6 +17,7 @@ use common\models\User;
  * @property string $avatar
  * @property integer $mobile
  * @property string $email
+ * @property string $name_card
  * @property integer $user_type
  * @property string $wechat_openid
  * @property integer $auth_status
@@ -60,9 +61,8 @@ class Auth extends \yii\db\ActiveRecord
     {
         return [
             [['uid', 'mobile', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
-            [['auth_status'], 'required'],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
             [['reason'], 'string'],
@@ -83,6 +83,7 @@ class Auth extends \yii\db\ActiveRecord
             'avatar' => '微信头像',
             'mobile' => '手机号码',
             'email' => '邮箱',
+            'name_card' => '名片',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
             'auth_status' => '认证状态（1-待审核；2-审核通过；3-审核不通过）',
             'reason' => '审核不通过的原因',
@@ -185,9 +186,6 @@ class Auth extends \yii\db\ActiveRecord
                 foreach ($data as $k => $v) {
                     $_mdl->$k = $v;
                 }
-                if (!$_mdl->validate()) {//校验数据
-                    return false;
-                }
 
                 if (!empty($data['auth_id'])) {//修改
                     $id = $data['auth_id'];
@@ -249,6 +247,29 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
+     * 审核状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_auth_status($status = 1){
+        switch(intval($status)){
+            case self::CHECK_WAITING:
+                $_name = '待审核';
+                break;
+            case self::CHECK_PASS:
+                $_name = '审核通过';
+                break;
+            case self::CHECK_UNPASS:
+                $_name = '审核未通过';
+                break;
+            default:
+                $_name = '待审核';
+                break;
+        }
+        return $_name;
+    }
+
+    /**
      * 保存审核状态
      * @param $auth_id int 审核记录id
      * @param $auth_status int 认证记录id
@@ -266,24 +287,6 @@ class Auth extends \yii\db\ActiveRecord
         }
         //审核通过
         if ($auth_status == $mdl::CHECK_PASS) {
-            $rst = $mdl->_save([
-                'auth_id' => $auth_id,
-                'auth_status' => $mdl::CHECK_PASS,
-                'reason' => '',
-                'update_at' => time(),
-            ]);
-            if (!$rst) {
-                return ['code' => -20004, 'msg' => '审核信息保存失败'];
-            }
-            return ['code' => 20000, 'msg' => '用户信息保存成功'];
-
-        } else {//审核不通过
-            if (empty($reason)) {
-                return ['code' => -20005, 'msg' => '审核不通过的原因不能为空'];
-            }
-            if (strlen($reason) > yiiParams('checkdeny_reason_limit')) {
-                return ['code' => -20006, 'msg' => '审核不通过的原因超过字数限制'];
-            }
 
             //开启事务
             $transaction = yii::$app->db->beginTransaction();
@@ -291,8 +294,8 @@ class Auth extends \yii\db\ActiveRecord
                 //保存审核信息
                 $rst = $mdl->_save([
                     'auth_id' => $auth_id,
-                    'auth_status' => $mdl::CHECK_UNPASS,
-                    'reason' => $reason,
+                    'auth_status' => $mdl::CHECK_PASS,
+                    'reason' => '',
                     'update_at' => time(),
                 ]);
                 if (!$rst) {
@@ -306,18 +309,21 @@ class Auth extends \yii\db\ActiveRecord
                     'nick' => $auth['nick'],
                     'name' => $auth['name'],
                     'avatar' => $auth['avatar'],
+                    'name_card' => $auth['name_card'],
                     'mobile' => $auth['mobile'],
                     'email' => $auth['email'],
                     'user_type' => $auth['user_type'],
                     'wechat_openid' => $auth['wechat_openid'],
                     'update_at' => time(),
                 ]);
+
                 if (!$res) {
                     $transaction->rollBack();
                     throw new Exception('用户信息保存失败');
                 }
 
                 //待完成：发送微信通知
+
 
                 //执行
                 $transaction->commit();
@@ -327,6 +333,25 @@ class Auth extends \yii\db\ActiveRecord
                 $transaction->rollBack();
                 return ['code' => -20000, 'msg' => $e->getMessage()];
             }
+
+        } else {//审核不通过
+            if (empty($reason)) {
+                return ['code' => -20005, 'msg' => '审核不通过的原因不能为空'];
+            }
+            if (strlen($reason) > yiiParams('checkdeny_reason_limit')) {
+                return ['code' => -20006, 'msg' => '审核不通过的原因超过字数限制'];
+            }
+
+            $rst = $mdl->_save([
+                'auth_id' => $auth_id,
+                'auth_status' => $mdl::CHECK_UNPASS,
+                'reason' => $reason,
+                'update_at' => time(),
+            ]);
+            if (!$rst) {
+                return ['code' => -20004, 'msg' => '审核信息保存失败'];
+            }
+            return ['code' => 20000, 'msg' => '用户信息保存成功'];
 
         }
     }

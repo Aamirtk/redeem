@@ -24,8 +24,7 @@ class UploadController extends BaseController
      * @return array
      */
     public function actionUpload() {
-        $objtype = trim($this->_request('objtype', 'true'));
-
+        $objtype = trim($this->_request('objtype', 'pictures', true));
         $up_mdl = new Upload();
         $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
         if ($ret['code'] > 0) {

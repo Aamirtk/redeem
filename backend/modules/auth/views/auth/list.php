@@ -15,8 +15,8 @@ use yii\helpers\Html;
     <?= Html::jsFile('@web/js/tools.js') ?>
     <style>
         .user_avatar {
-            height: auto;
-            width: 80px;
+            width: 120px;
+            height: 80px;
             margin: 10px auto;
         }
     </style>
@@ -166,16 +166,25 @@ use yii\helpers\Html;
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
                         title: '微信头像',
-                        width: 120,
+                        width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
                             return "<img class='user_avatar' src='"+ obj.avatar +"'>";
+                        }
+                    },
+                    {
+                        title: '名片',
+                        width: 140,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
                     {title: '电子邮箱', dataIndex: 'email', width: 130},
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
+                    {title: '审核状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
                     {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
                     {
@@ -183,12 +192,15 @@ use yii\helpers\Html;
                         width: 300,
                         renderer: function (v, obj) {
                             if(obj.auth_status == 1){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>查看</a>" +
+                                return "<a class='button button-primary' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>编辑</a>" +
                                 " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>"+
                                 " <a class='button button-danger' onclick='checkUnPass(" + obj.auth_id + ")'>不通过</a>";
-                            }else{
+                            }else if(obj.auth_status == 2){
                                 return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>查看</a>" +
                                 " <a class='button button-success' >已审核</a>";
+                            }else if(obj.auth_status == 3){
+                                return "<a class='button button-primary' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>编辑</a>" +
+                                " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>";
                             }
                         }
                     }
@@ -255,6 +267,7 @@ function showCheckInfo(auth_id) {
             text:'确认',
             elCls : 'button button-primary',
             handler : function(){
+                window.location.href = '/auth/auth/list';
                 this.close();
             }
         },

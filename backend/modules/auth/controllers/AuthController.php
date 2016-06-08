@@ -41,7 +41,7 @@ class AuthController extends BaseController
             'update',
             'ajax-save',
             'ajax-check',
-            'upload',
+            'upload-name-card',
         ];
     }
 
@@ -118,12 +118,17 @@ class AuthController extends BaseController
                 'name',
                 'mobile',
                 'avatar',
+                'name_card',
                 'email',
                 'auth_status',
                 'wechat' => 'wechat_openid',
                 'user_type' => function ($m) {
                     return User::_get_user_type($m->user_type);
                 },
+                'status_name' => function ($m) {
+                    return Auth::_get_auth_status($m->auth_status);;
+                },
+
                 'inputer' => function ($m) {
                     return '录入人';
                 },
@@ -186,7 +191,7 @@ class AuthController extends BaseController
         if (!$auth) {
             $this->_json(-20003, '审核信息不存在');
         }
-        $auth['auth_status'] = User::_get_user_status($auth['auth_status']);
+        $auth['status_name'] = Auth::_get_auth_status($auth['auth_status']);
         $auth['user_type'] = User::_get_user_type($auth['user_type']);
         $auth['update_at'] = date('Y-m-d h:i:s', $auth['update_at']);
         $auth['create_at'] = date('Y-m-d h:i:s', $auth['create_at']);
@@ -197,22 +202,41 @@ class AuthController extends BaseController
     }
 
     /**
-     * 上传图片
+     * 上传名片，并且更新
      * @return array
      */
-    public function actionUpload() {
-        $objtype = trim($this->_request('objtype'));
+    public function actionUploadNameCard() {
+        $objtype = trim($this->_request('objtype', 'pictures', true));
+        $auth_id = intval($this->_request('auth_id'));
+
+        //检验参数是否合法
+        if (empty($auth_id)) {
+            $this->_json(-20001, '审核编号id不能为空');
+        }
+        //检验用户是否存在
+        $mdl = new Auth();
+        $auth = $mdl->_get_info(['auth_id' => $auth_id]);
+        if (!$auth) {
+            $this->_json(-20003, '审核信息不存在');
+        }
 
         $up_mdl = new Upload();
-        $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
-
-        if (!empty($ret)) {
-            $this->_json(20000, '上传成功', []);
-        } else {
-            $this->_json(-20000, '上传失败');
+        $result = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
+        //上传失败
+        if($result['code'] < 0){
+            $this->_json(-20000, $result['msg']);
         }
+        //保存名片
+        $res = $mdl->_save([
+            'auth_id' => $auth_id,
+            'name_card' => $result['data']['filePath'],
+        ]);
+        if(!$res){
+            $this->_json(-20004, '保存名片失败');
+        }
+
+        //成功返回
+        $this->_json(20000, $result['msg'], $result['data']);
     }
-
-
 
 }

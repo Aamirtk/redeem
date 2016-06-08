@@ -15,8 +15,8 @@ use yii\helpers\Html;
     <?= Html::jsFile('@web/js/tools.js') ?>
     <style>
         .user_avatar {
-            height: auto;
-            width: 80px;
+            width: 120px;
+            height: 80px;
             margin: 10px auto;
         }
     </style>
@@ -166,10 +166,18 @@ use yii\helpers\Html;
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
                         title: '微信头像',
-                        width: 120,
+                        width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
                             return "<img class='user_avatar' src='"+ obj.avatar +"'>";
+                        }
+                    },
+                    {
+                        title: '名片',
+                        width: 140,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
