@@ -160,6 +160,7 @@ class GoodsController extends BaseController
         }
         $goods = $this->_request('goods', []);
         $mdl = new Goods();
+        lg($this->_request());
         $res = $mdl->_add_goods($goods);
         $this->_json($res['code'], $res['msg']);
     }

@@ -209,29 +209,30 @@ class Goods extends \yii\db\ActiveRecord
      */
     public function _add_goods($goods) {
         //参数校验
-        if(empty($goods['name']) || empty($goods['redeem_pionts']) || empty($goods['description'])){
-            return ['code' => -20001, 'msg' => '商品信息不全！'];
-        }
-        $name = Filter::filters_title($goods['name']);
-        $redeem_pionts = intval($goods['redeem_pionts']);
-        $description = Filter::filters_outcontent($goods['description']);
-
-        if(empty($name) || strlen($name) > 50){
+        if(empty($goods['name']) || strlen($goods['name']) > 50){
             return ['code' => -20002, 'msg' => '商品名称不符合规范！'];
         }
-        if(empty($redeem_pionts) || $redeem_pionts < 0){
+        if(empty($goods['redeem_pionts']) || $goods['redeem_pionts'] < 0){
             return ['code' => -20003, 'msg' => '兑换积分不正确！'];
         }
-        if(empty($description)){
+        if(empty($goods['description'])){
             return ['code' => -20004, 'msg' => '商品描述不能为空！'];
+        }
+        if(empty($goods['thumb'])){
+            return ['code' => -20005, 'msg' => '请上传商品缩略图'];
+        }
+        if(empty($goods['thumb_list'])){
+            return ['code' => -20006, 'msg' => '请上传商品图片！'];
         }
 
         //保存信息
         $res = (new self)->_save([
             'goods_id' => static::_gen_goods_id(),
-            'name' => $name,
-            'redeem_pionts' => $redeem_pionts,
-            'description' => $description,
+            'name' => Filter::filters_title($goods['name']),
+            'redeem_pionts' => intval($goods['redeem_pionts']),
+            'description' => Filter::filters_outcontent($goods['description']),
+            'thumb' =>trim($goods['thumb']),
+            'thumb_list' => json_encode($goods['thumb_list']),
         ]);
         if(!$res){
             return ['code' => -20000, 'msg' => '商品信息保存失败'];
