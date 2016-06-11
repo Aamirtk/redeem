@@ -10,10 +10,12 @@ use yii\helpers\Html;
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
     <link href="/css/page-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/plugins/webuploader/webuploader.css" type="text/css"/>
     <script src="/js/jquery.js" type="text/javascript"></script>
     <script src="/js/bui-min.js" type="text/javascript"></script>
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
+    <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
     <style>
         .user_avatar {
             width: 120px;
@@ -23,6 +25,33 @@ use yii\helpers\Html;
         .demo-content{
             margin: 40px 60px;
         }
+
+        .layout-outer-content{
+            padding: 15px;
+            margin: 10px 0px 40px 100px;
+            width: 700px;
+            background-color: #f6f6fb;
+            border: 1px solid #c3c3d6;
+        }
+        .layout-content{
+            width: 700px;
+            margin: 10px 120px;
+        }
+        .img-content-li{
+            width: 200px;
+            height: 150px;
+            margin-left: -50px;
+        }
+        .img-content-li img{
+            width: 120px;
+            height:90px;
+        }
+        .img-delete{
+            position: relative;
+            top:17px;
+            left: 91px;
+        }
+
     </style>
     <script>
         _BASE_LIST_URL =  "<?php echo yiiUrl('auth/auth/list') ?>";
@@ -45,6 +74,48 @@ use yii\helpers\Html;
                 <input name="goods[thumb]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label"><s>*</s>缩略图：</label>
+            <div id="thumbpic" class="controls">
+                <button class="button button-primary">上传图片</button>
+            </div>
+        </div>
+
+        <div class="row " >
+            <div id="J_Layout" class="span16 layout-outer-content">
+                <div class="layout-content " aria-disabled="false" aria-pressed="false" >
+                    <div class=" pull-left img-content-li">
+                        <span class="label label-important img-delete">删除</span>
+                        <div aria-disabled="false"  class="" aria-pressed="false">
+                            <img  src="http://img.taobaocdn.com/bao/uploaded/i2/334181946/T1J3RPXBBhXXaH.X6X.JPEG_210x1000.jpg">
+                            <p>还是很喜欢.</p>
+                        </div>
+                    </div>
+                    <div class=" pull-left img-content-li">
+                        <span class="label label-important img-delete">删除</span>
+                        <div aria-disabled="false"  class="" aria-pressed="false">
+                            <img  src="http://img.taobaocdn.com/bao/uploaded/i2/334181946/T1J3RPXBBhXXaH.X6X.JPEG_210x1000.jpg">
+                            <p>还是很喜欢.</p>
+                        </div>
+                    </div>
+                    <div class=" pull-left img-content-li">
+                        <span class="label label-important img-delete">删除</span>
+                        <div aria-disabled="false"  class="" aria-pressed="false">
+                            <img  src="http://img.taobaocdn.com/bao/uploaded/i2/334181946/T1J3RPXBBhXXaH.X6X.JPEG_210x1000.jpg">
+                            <p>还是很喜欢.</p>
+                        </div>
+                    </div>
+                    <div class=" pull-left img-content-li">
+                        <span class="label label-important img-delete">删除</span>
+                        <div aria-disabled="false"  class="" aria-pressed="false">
+                            <img  src="http://img.taobaocdn.com/bao/uploaded/i2/334181946/T1J3RPXBBhXXaH.X6X.JPEG_210x1000.jpg">
+                            <p>还是很喜欢.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="control-group">
             <label class="control-label"><s>*</s>商品图片：</label>
             <div class="controls">
