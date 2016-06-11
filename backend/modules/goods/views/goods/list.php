@@ -5,14 +5,15 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>用户审核信息列表</title>
-    <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/page-min.css') ?>
-    <?= Html::jsFile('@web/js/jquery.js') ?>
-    <?= Html::jsFile('@web/assets/js/bui-min.js') ?>
-    <?= Html::jsFile('@web/js/common/common.js?v=1.0.0') ?>
-    <?= Html::jsFile('@web/js/tools.js') ?>
+    <title>商品列表</title>
+    <link href="/css/dpl.css" rel="stylesheet">
+    <link href="/css/bui.css" rel="stylesheet">
+    <link href="/css/page-min.css" rel="stylesheet">
+    <script src="/js/jquery.js" type="text/javascript"></script>
+    <script src="/js/bui-min.js" type="text/javascript"></script>
+    <script src="/js/page-min.js" type="text/javascript"></script>
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/tools.js" type="text/javascript"></script>
     <style>
         .user_avatar {
             width: 120px;
@@ -21,7 +22,7 @@ use yii\helpers\Html;
         }
     </style>
     <script>
-        _BASE_LIST_URL =  "<?php echo yiiUrl('auth/auth/list') ?>";
+        _BASE_LIST_URL =  "<?php echo yiiUrl('goods/goods/list') ?>";
     </script>
 </head>
 
@@ -30,39 +31,15 @@ use yii\helpers\Html;
     <div class="row">
         <div class="search-bar form-horizontal well">
             <form id="authsearch" class="form-horizontal">
+
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">时间范围：</label>
-                        <div class="controls">
-                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">用户等级：</label>
-                        <div class="controls" >
-                            <select name="grouptype" id="grouptype">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $val): ?>
-                                    <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span12">
-                        <label class="control-label">销售员：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="inputer" id="inputer">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">用户：</label>
+                        <label class="control-label">商品：</label>
                         <div class="controls" data-type="city">
                             <select name="filtertype" id="filtertype">
                                 <option value="">请选择</option>
-                                <option value="1">用户注册ID</option>
-                                <option value="2">用户名称</option>
+                                <option value="1">商品注册ID</option>
+                                <option value="2">商品名称</option>
                             </select>
                         </div>
                         <div class="controls">
@@ -80,26 +57,26 @@ use yii\helpers\Html;
                             </select>
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <label class="control-label">所属公司：</label>
-                        <div class="controls" >
-                            <select name="inputercompany" id="inputercompany">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
+                </div>
+                <div class="row">
+                    <div class="control-group span20">
+                        <label class="control-label">时间范围：</label>
+                        <div class="controls">
+                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchAuth()">查询</button>
+                    <div class="row">
+                        <div class="control-group span10">
+                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchGoods()">查询</button>
+                        </div>
                     </div>
                 </div>
+
             </form>
         </div>
         <div class="bui-grid-tbar">
         </div>
-        <div id="auths_grid">
+        <div id="goods_grid">
         </div>
     </div>
 </div>
@@ -152,55 +129,43 @@ use yii\helpers\Html;
                 autoLoad: true, //自动加载数据
                 params: {
                 },
-                root: 'userList',//数据返回字段,支持深成次属性root : 'data.records',
+                root: 'goodsList',//数据返回字段,支持深成次属性root : 'data.records',
                 totalProperty: 'totalCount',//总计字段
                 pageSize: 10// 配置分页数目,
             });
             var grid = new Grid.Grid({
-                render: '#auths_grid',
+                render: '#goods_grid',
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '用户编号', dataIndex: 'auth_id', width: 80, elCls : 'center'},
-                    {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
+                    {title: '商品序号', dataIndex: 'gid', width: 80, elCls : 'center'},
+                    {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
+                    {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center',},
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
-                        title: '微信头像',
+                        title: '缩略图',
                         width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.avatar +"'>";
+                            return "<img class='user_avatar' src='"+ obj.thumb +"'>";
                         }
                     },
+                    {title: '兑换积分', dataIndex: 'redeem_pionts', width: 90, elCls : 'center'},
+                    {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
+                    {title: '商品描述', dataIndex: 'description', width: 160},
+                    {title: '创建时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {
-                        title: '名片',
-                        width: 140,
-                        elCls : 'center',
-                        renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
-                        }
-                    },
-                    {title: '手机号码', dataIndex: 'mobile', width: 90},
-                    {title: '电子邮箱', dataIndex: 'email', width: 130},
-                    {title: '微信公众号', dataIndex: 'wechat', width: 120},
-                    {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
-                    {title: '审核状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
-                    {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
-                    {
-                        title: '审核',
+                        title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.auth_status == 1){
-                                return "<a class='button button-primary' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>编辑</a>" +
-                                " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>"+
-                                " <a class='button button-danger' onclick='checkUnPass(" + obj.auth_id + ")'>不通过</a>";
+                            if(obj.goods_status == 1){
+                                return "<a class='button button-primary page-action' title='编辑商品' href='/goods/goods/update/?gid="+ obj.gid +"' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
+                                " <a class='button button-primary' onclick='checkPass(" + obj.gid + ")'>下架</a>"+
+                                " <a class='button button-danger' onclick='checkUnPass(" + obj.gid + ")'>删除</a>";
                             }else if(obj.auth_status == 2){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>查看</a>" +
-                                " <a class='button button-success' >已审核</a>";
-                            }else if(obj.auth_status == 3){
-                                return "<a class='button button-primary' title='用户信息' href='javascript:void(0);' onclick='showCheckInfo(" + obj.auth_id + ")'>编辑</a>" +
-                                " <a class='button button-primary' onclick='checkPass(" + obj.auth_id + ")'>通过</a>";
+                                return "<a class='button button-primary page-action' title='编辑商品信息' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
+                                " <a class='button button-primary' onclick='checkPass(" + obj.gid + ")'>上架</a>"+
+                                " <a class='button button-danger' onclick='checkUnPass(" + obj.gid + ")'>删除</a>";
                             }
                         }
                     }
@@ -215,7 +180,7 @@ use yii\helpers\Html;
                 plugins: Grid.Plugins.CheckSelection,// 插件形式引入多选表格
             });
             grid.render();
-            $("#auths_grid").data("BGrid", grid);
+            $("#goods_grid").data("BGrid", grid);
 
         });
 
@@ -224,9 +189,9 @@ use yii\helpers\Html;
 
 <script>
 /**
- * 搜索用户,刷新列表
+ * 搜索商品,刷新列表
  */
-function searchAuth() {
+function searchGoods() {
     var search = {};
     var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -234,7 +199,7 @@ function searchAuth() {
             search[field.name] = field.value;
         }
     });
-    var store = $("#auths_grid").data("BGrid").get('store');
+    var store = $("#goods_grid").data("BGrid").get('store');
     var lastParams = store.get("lastParams");
     lastParams.search = search;
     store.load(lastParams);//刷新
@@ -242,7 +207,7 @@ function searchAuth() {
 /**
  * 获取过滤项
  */
-function getAuthGridSearchConditions() {
+function getGoodsGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -256,9 +221,9 @@ function getAuthGridSearchConditions() {
 }
 
 /**
- * 显示用户详情
+ * 显示商品详情
  */
-function showCheckInfo(auth_id) {
+function showCheckInfo(gid) {
     var width = 700;
     var height = 450;
     var Overlay = BUI.Overlay;
@@ -273,30 +238,30 @@ function showCheckInfo(auth_id) {
         },
     ];
     dialog = new Overlay.Dialog({
-        title: '用户信息',
+        title: '商品信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
             url: "/auth/auth/info",
             autoLoad: true, //不自动加载
-            params: {auth_id: auth_id},//附加的参数
+            params: {gid: gid},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({auth_id: auth_id});
+    dialog.get('loader').load({gid: gid});
 }
 
 
 /**
  * 审核通过
  */
-function checkPass(auth_id) {
+function checkPass(gid) {
     var param = param || {};
-    param.auth_id = auth_id;
+    param.gid = gid;
     param.auth_status = 2;
     $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
         if(json.code > 0){
@@ -315,7 +280,7 @@ function checkPass(auth_id) {
 /**
  * 审核不通过
  */
-function checkUnPass(auth_id) {
+function checkUnPass(gid) {
     var Overlay = BUI.Overlay;
     var dialog_reason = new Overlay.Dialog({
         title:'请填写审核不通过的原因',
@@ -340,7 +305,7 @@ function checkUnPass(auth_id) {
                         return;
                     }
                     param.reason = reason;
-                    param.auth_id = auth_id;
+                    param.gid = gid;
                     param.auth_status = 3;
                     $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
                         if(json.code > 0){

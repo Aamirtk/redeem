@@ -22,6 +22,13 @@ use common\lib\Filter;
 class Goods extends \yii\db\ActiveRecord
 {
     /**
+     * 商品状态
+     */
+    const STATUS_UPSHELF = 1;//上架
+    const STATUS_OFFSHELF = 2;//下架
+    const STATUS_DELETE = 3;//删除
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -207,7 +214,7 @@ class Goods extends \yii\db\ActiveRecord
      * @param $goods array
      * @return array|boolean
      */
-    public function _add_goods($goods) {
+    public function _save_goods($goods) {
         //参数校验
         if(empty($goods['name']) || strlen($goods['name']) > 50){
             return ['code' => -20002, 'msg' => '商品名称不符合规范！'];
@@ -225,15 +232,20 @@ class Goods extends \yii\db\ActiveRecord
             return ['code' => -20006, 'msg' => '请上传商品图片！'];
         }
 
-        //保存信息
-        $res = (new self)->_save([
+        $_save_data = [
             'goods_id' => static::_gen_goods_id(),
             'name' => Filter::filters_title($goods['name']),
             'redeem_pionts' => intval($goods['redeem_pionts']),
             'description' => Filter::filters_outcontent($goods['description']),
             'thumb' =>trim($goods['thumb']),
             'thumb_list' => json_encode($goods['thumb_list']),
-        ]);
+        ];
+        if(isset($goods['gid'])){//更新，否则为添加
+            $_save_data['gid'] = $goods['gid'];
+        }
+
+        //保存信息
+        $res = (new self)->_save($_save_data);
         if(!$res){
             return ['code' => -20000, 'msg' => '商品信息保存失败'];
         }
@@ -241,8 +253,35 @@ class Goods extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 生成商品id
+     * @return sting
+     */
     public static function _gen_goods_id(){
         return date('YmdHis', time()) . substr(md5(microtime() . rand(0, 10000)), 0, 5);
+    }
+
+    /**
+     * 审核状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_goods_status($status = 1){
+        switch(intval($status)){
+            case self::STATUS_UPSHELF:
+                $_name = '上架';
+                break;
+            case self::STATUS_OFFSHELF:
+                $_name = '下架';
+                break;
+            case self::STATUS_DELETE:
+                $_name = '删除';
+                break;
+            default:
+                $_name = '上架';
+                break;
+        }
+        return $_name;
     }
 
 

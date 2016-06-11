@@ -48,7 +48,7 @@ class GoodsController extends BaseController
     }
 
     /**
-     * 用户列表
+     * 商品列表
      * @return type
      */
     public function actionListView()
@@ -57,14 +57,14 @@ class GoodsController extends BaseController
     }
 
     /**
-     * 用户数据
+     * 商品数据
      */
     public function actionList()
     {
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new Auth();
+        $mdl = new Goods();
         $query = $mdl::find();
         $search = $this->_request('search');
         $page = $this->_request('page', 0);
@@ -86,10 +86,10 @@ class GoodsController extends BaseController
                 $query = $query->andWhere(['group_id' => $search['grouptype']]);
             }
             if (isset($search['filtertype']) && !empty($search['filtercontent'])) {
-                if ($search['filtertype'] == 2)//按照用户名称筛选
+                if ($search['filtertype'] == 2)//按照商品名称筛选
                 {
                     $query = $query->andWhere(['like', $memTb . '.name', trim($search['filtercontent'])]);
-                } elseif ($search['filtertype'] == 1)//按照用户ID筛选
+                } elseif ($search['filtertype'] == 1)//按照商品ID筛选
                 {
                     $query = $query->andWhere([$memTb . '.username' => trim($search['filtercontent'])]);
                 }
@@ -107,44 +107,40 @@ class GoodsController extends BaseController
             }
         }
 
-        $_order_by = 'auth_id ASC';
+        $_order_by = 'gid DESC';
+        $query_count = clone($query);
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
             ->all();
-        $authList = ArrayHelper::toArray($userArr, [
-            'common\models\Auth' => [
-                'auth_id',
-                'nick',
+        $count = $query_count->count();
+        $goodsList = ArrayHelper::toArray($userArr, [
+            'common\models\Goods' => [
+                'gid',
+                'goods_id',
                 'name',
-                'mobile',
-                'avatar',
-                'name_card',
-                'email',
-                'auth_status',
-                'wechat' => 'wechat_openid',
-                'user_type' => function ($m) {
-                    return User::_get_user_type($m->user_type);
-                },
+                'thumb',
+                'description',
+                'redeem_pionts',
+                'goods_status',
                 'status_name' => function ($m) {
-                    return Auth::_get_auth_status($m->auth_status);;
+                    return Goods::_get_goods_status($m->goods_status);
                 },
-
                 'inputer' => function ($m) {
                     return '录入人';
                 },
                 'checker' => function ($m) {
                     return '审核人';
                 },
-                'update_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->update_at);
+                'create_at' => function ($m) {
+                    return date('Y-m-d h:i:s', $m->create_at);
                 },
             ],
         ]);
         $_data = [
-            'userList' => $authList,
-            'totalCount' => count($authList)
+            'goodsList' => $goodsList,
+            'totalCount' => $count
         ];
         exit(json_encode($_data));
     }
@@ -159,10 +155,53 @@ class GoodsController extends BaseController
             return $this->render('add');
         }
         $goods = $this->_request('goods', []);
+        if(isset($goods['gid'])){
+            unset($goods['gid']);
+        }
         $mdl = new Goods();
-        lg($this->_request());
-        $res = $mdl->_add_goods($goods);
+        $res = $mdl->_save_goods($goods);
         $this->_json($res['code'], $res['msg']);
     }
+
+    /**
+     * 添加商品
+     * @return array
+     */
+    function actionUpdate()
+    {
+        $gid = intval($this->_request('gid'));
+        $goods_info = $this->_request('goods', []);
+
+        $mdl = new Goods();
+        //检验参数是否合法
+        if (empty($gid)) {
+            $this->_json(-20001, '商品序号gid不能为空');
+        }
+
+        //检验商品是否存在
+        $goods = $mdl->_get_info(['gid' => $gid]);
+        if (!$goods) {
+            $this->_json(-20002, '商品信息不存在');
+        }
+
+        //加载
+        if(!$this->isAjax()){
+            $_data = [
+                'goods' => $goods
+            ];
+            return $this->render('update', $_data);
+        }
+
+        //保存
+        $goods_info['gid'] = $gid;
+        $res = $mdl->_save_goods($goods_info);
+        $this->_json($res['code'], $res['msg']);
+
+    }
+
+
+
+
+
 
 }

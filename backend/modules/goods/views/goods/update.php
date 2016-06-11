@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>添加商品</title>
+    <title>编辑商品信息</title>
 
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
@@ -69,10 +69,11 @@ use yii\helpers\Html;
 <div class="demo-content">
     <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
         <h2>添加商品</h2>
+        <input name="gid" type="hidden" value="<?php echo $goods['gid'] ?>">
         <div class="control-group">
             <label class="control-label"><s>*</s>商品名称：</label>
             <div class="controls">
-                <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}">
+                <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $goods['name'] ?>">
             </div>
         </div>
         
@@ -85,7 +86,14 @@ use yii\helpers\Html;
         <div class="row" >
             <div class="span16 layout-outer-content">
                 <div id="thumbpic-content" class="layout-content" aria-disabled="false" aria-pressed="false" >
-
+                    <div id="" class=" pull-left img-content-li">
+                        <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['thumb'] ?>">删除</span></a>
+                        <div aria-disabled="false"  class="" aria-pressed="false">
+                            <img  src="<?php echo $goods['thumb'] ?>" />
+                            <input type="hidden" name="goods[thumb]" value="<?php echo $goods['thumb'] ?>">
+                            <p></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,7 +107,19 @@ use yii\helpers\Html;
         <div class="row" >
             <div class="span16 layout-outer-content">
                 <div id="thumblistpic-content" class="layout-content content-list" aria-disabled="false" aria-pressed="false" >
-
+                    <?php $thumb_list = json_decode($goods['thumb_list']);?>
+                    <?php if(!empty($thumb_list)): ?>
+                        <?php foreach($thumb_list as $k => $val): ?>
+                            <div id="" class=" pull-left img-content-li">
+                                <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $val ?>">删除</span></a>
+                                <div aria-disabled="false"  class="" aria-pressed="false">
+                                    <img  src="<?php echo $val ?>" />
+                                    <input type="hidden" name="goods[thumb_list]" value="<?php echo $val ?>">
+                                    <p></p>
+                                </div>
+                            </div>
+                        <?php endforeach ?>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -107,13 +127,13 @@ use yii\helpers\Html;
         <div class="control-group">
             <label class="control-label"><s>*</s>兑换积分：</label>
             <div class="controls">
-                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}">
+                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['redeem_pionts'] ?>">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">商品描述：</label>
             <div class="controls  control-row-auto">
-                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>
+                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}" value="<?php echo $goods['description'] ?>"></textarea>
             </div>
         </div>
         <div class="row actions-bar">
@@ -136,7 +156,7 @@ use yii\helpers\Html;
             $("#save-goods").on('click', function(){
                 if(form.isValid()){
                     var param = $._get_form_json("#Goods_Form");
-                    $._ajax('/goods/goods/add', param, 'POST', 'JSON', function(json){
+                    $._ajax('/goods/goods/update', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){
                                 window.location.href = '/goods/goods/list';
@@ -329,6 +349,18 @@ use yii\helpers\Html;
                 }
             });
         }
+
+        $('.img-delete').off('click').on('click', function(){
+            var dom = $(this);
+            var filePath = dom.attr('file-path');
+            deleteFile(filePath, function(json){
+                if(json.code > 0){
+                    dom.closest('div').remove();
+                }else{
+                    BUI.Message.Alert('删除失败！');
+                }
+            });
+        });
 
     </script>
 
