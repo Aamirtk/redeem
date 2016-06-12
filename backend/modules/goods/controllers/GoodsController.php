@@ -5,12 +5,8 @@ namespace backend\modules\goods\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\api\VsoApi;
-use common\models\User;
-use common\models\Auth;
 use common\models\Goods;
 use app\modules\team\models\Team;
-use common\lib\Upload;
 
 class GoodsController extends BaseController
 {
@@ -42,9 +38,7 @@ class GoodsController extends BaseController
             'save',
             'update',
             'ajax-save',
-            'ajax-check',
             'ajax-change-status',
-            'upload-name-card',
         ];
     }
 
