@@ -67,7 +67,7 @@ use yii\helpers\Html;
                     </div>
                     <div class="row">
                         <div class="control-group span10">
-                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchGoods()">查询</button>
+                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchOrder()">查询</button>
                         </div>
                     </div>
                 </div>
@@ -191,7 +191,7 @@ use yii\helpers\Html;
 /**
  * 搜索商品,刷新列表
  */
-function searchGoods() {
+function searchOrder() {
     var search = {};
     var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -207,7 +207,7 @@ function searchGoods() {
 /**
  * 获取过滤项
  */
-function getGoodsGridSearchConditions() {
+function getOrderGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {

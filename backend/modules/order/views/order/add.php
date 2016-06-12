@@ -67,7 +67,7 @@ use yii\helpers\Html;
 
 <body>
 <div class="demo-content">
-    <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
+    <form id="Order_Form" action="" class="form-horizontal" onsubmit="return false;" >
         <h2>添加商品</h2>
         <div class="control-group">
             <label class="control-label"><s>*</s>商品名称：</label>
@@ -128,14 +128,14 @@ use yii\helpers\Html;
     <script type="text/javascript">
         BUI.use('bui/form',function(Form){
             var form = new Form.Form({
-                srcNode : '#Goods_Form'
+                srcNode : '#Order_Form'
             });
             form.render();
 
             //保存
             $("#save-order").on('click', function(){
                 if(form.isValid()){
-                    var param = $._get_form_json("#Goods_Form");
+                    var param = $._get_form_json("#Order_Form");
                     $._ajax('/order/order/add', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){

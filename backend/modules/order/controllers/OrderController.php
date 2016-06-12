@@ -5,10 +5,10 @@ namespace backend\modules\order\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\models\Goods;
+use common\models\Order;
 use app\modules\team\models\Team;
 
-class GoodsController extends BaseController
+class OrderController extends BaseController
 {
 
     public $layout = 'layout';
@@ -59,7 +59,7 @@ class GoodsController extends BaseController
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new Goods();
+        $mdl = new Order();
         $query = $mdl::find();
         $search = $this->_request('search');
         $page = $this->_request('page', 0);
@@ -112,7 +112,7 @@ class GoodsController extends BaseController
             ->all();
         $count = $query_count->count();
         $orderList = ArrayHelper::toArray($userArr, [
-            'common\models\Goods' => [
+            'common\models\Order' => [
                 'gid',
                 'order_id',
                 'name',
@@ -121,7 +121,7 @@ class GoodsController extends BaseController
                 'redeem_pionts',
                 'order_status',
                 'status_name' => function ($m) {
-                    return Goods::_get_order_status($m->order_status);
+                    return Order::_get_order_status($m->order_status);
                 },
                 'inputer' => function ($m) {
                     return '录入人';
@@ -154,7 +154,7 @@ class GoodsController extends BaseController
         if(isset($order['gid'])){
             unset($order['gid']);
         }
-        $mdl = new Goods();
+        $mdl = new Order();
         $res = $mdl->_save_order($order);
         $this->_json($res['code'], $res['msg']);
     }
@@ -168,7 +168,7 @@ class GoodsController extends BaseController
         $gid = intval($this->_request('gid'));
         $order_info = $this->_request('order', []);
 
-        $mdl = new Goods();
+        $mdl = new Order();
         //检验参数是否合法
         if (empty($gid)) {
             $this->_json(-20001, '商品序号gid不能为空');
@@ -203,7 +203,7 @@ class GoodsController extends BaseController
         $gid = intval($this->_request('gid'));
         $order_status = $this->_request('order_status');
 
-        $mdl = new Goods();
+        $mdl = new Order();
         //检验参数是否合法
         if (empty($gid)) {
             $this->_json(-20001, '商品序号gid不能为空');
@@ -227,12 +227,6 @@ class GoodsController extends BaseController
         }
         $this->_json(20000, '保存成功');
     }
-
-
-
-
-
-
 
 
 }
