@@ -86,14 +86,16 @@ use yii\helpers\Html;
         <div class="row" >
             <div class="span16 layout-outer-content">
                 <div id="thumbpic-content" class="layout-content" aria-disabled="false" aria-pressed="false" >
-                    <div id="" class=" pull-left img-content-li">
-                        <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['thumb'] ?>">删除</span></a>
-                        <div aria-disabled="false"  class="" aria-pressed="false">
-                            <img  src="<?php echo $goods['thumb'] ?>" />
-                            <input type="hidden" name="goods[thumb]" value="<?php echo $goods['thumb'] ?>">
-                            <p></p>
+                    <?php if(!empty($goods['thumb'])): ?>
+                        <div id="" class=" pull-left img-content-li">
+                            <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['thumb'] ?>">删除</span></a>
+                            <div aria-disabled="false"  class="" aria-pressed="false">
+                                <img  src="<?php echo $goods['thumb'] ?>" />
+                                <input type="hidden" name="goods[thumb]" value="<?php echo $goods['thumb'] ?>">
+                                <p></p>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif ?>
                 </div>
             </div>
         </div>

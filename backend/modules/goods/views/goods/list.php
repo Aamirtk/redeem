@@ -160,12 +160,12 @@ use yii\helpers\Html;
                         renderer: function (v, obj) {
                             if(obj.goods_status == 1){
                                 return "<a class='button button-primary page-action' title='编辑商品' href='/goods/goods/update/?gid="+ obj.gid +"' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='checkPass(" + obj.gid + ")'>下架</a>"+
-                                " <a class='button button-danger' onclick='checkUnPass(" + obj.gid + ")'>删除</a>";
-                            }else if(obj.auth_status == 2){
+                                " <a class='button button-primary' onclick='offShelf(" + obj.gid + ")'>下架</a>"+
+                                " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
+                            }else if(obj.goods_status == 2){
                                 return "<a class='button button-primary page-action' title='编辑商品信息' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='checkPass(" + obj.gid + ")'>上架</a>"+
-                                " <a class='button button-danger' onclick='checkUnPass(" + obj.gid + ")'>删除</a>";
+                                " <a class='button button-primary' onclick='upShelf(" + obj.gid + ")'>上架</a>"+
+                                " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
                             }
                         }
                     }
@@ -257,80 +257,65 @@ function showCheckInfo(gid) {
 
 
 /**
- * 审核通过
+ * 上架
  */
-function checkPass(gid) {
-    var param = param || {};
-    param.gid = gid;
-    param.auth_status = 2;
-    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
+function upShelf(gid) {
+    ajax_change_status(gid, 1, function(json){
         if(json.code > 0){
             BUI.Message.Alert(json.msg, function(){
-                window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
+                window.location.href = '/goods/goods/list';
             }, 'success');
-
         }else{
             BUI.Message.Alert(json.msg, 'error');
-            this.close();
         }
     });
-
 }
 
 /**
- * 审核不通过
+ * 下架
  */
-function checkUnPass(gid) {
-    var Overlay = BUI.Overlay;
-    var dialog_reason = new Overlay.Dialog({
-        title:'请填写审核不通过的原因',
-        width:380,
-        height:210,
-        closeAction: 'destroy',
-        contentId:'reason_content',
-        buttons: [
-            {
-                text: '保存',
-                elCls: 'button button-primary',
-                handler: function () {
-                    var param = {};
-                    var dom = $("#reason_text");
-                    var reason = $.trim(dom.val());
-                    if(reason == '' || reason == undefined){
-                        BUI.Message.Alert('原因不能为空', 'error');
-                        return;
-                    }
-                    if($._str_len(reason) > 100){
-                        BUI.Message.Alert('您的输入超过最大限制字数', 'error');
-                        return;
-                    }
-                    param.reason = reason;
-                    param.gid = gid;
-                    param.auth_status = 3;
-                    $._ajax('<?php echo yiiUrl('auth/auth/ajax-check') ?>', param, 'POST','JSON', function(json){
-                        if(json.code > 0){
-                            BUI.Message.Alert(json.msg, 'success');
-                            window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
-                            dom._clear_form();
-                            this.close();
-                        }else{
-                            BUI.Message.Alert(json.msg, 'error');
-                            this.close();
-                        }
-                    });
-                }
-            },
-            {
-                text: '取消',
-                elCls: 'button button-danger',
-                handler: function () {
-                    window.location.href = '<?php echo yiiUrl('auth/auth/list') ?>';
-                    this.close();
-                }
-            }
-        ],
+function offShelf(gid) {
+    ajax_change_status(gid, 2, function(json){
+        if(json.code > 0){
+            BUI.Message.Alert(json.msg, function(){
+                window.location.href = '/goods/goods/list';
+            }, 'success');
+        }else{
+            BUI.Message.Alert(json.msg, 'error');
+        }
     });
-    dialog_reason.show();
+}
+
+/**
+ *删除
+ */
+function del(gid) {
+    BUI.Message.Confirm('您确定要删除？', function(){
+        ajax_change_status(gid, 3, function(json){
+            if(json.code > 0){
+                BUI.Message.Alert(json.msg, function(){
+                    window.location.href = '/goods/goods/list';
+                }, 'success');
+            }else{
+                BUI.Message.Alert(json.msg, 'error');
+            }
+        });
+    }, 'question');
+}
+
+/**
+ *改变商品状态
+ */
+function ajax_change_status(gid, status, callback){
+    var param = param || {};
+    param.gid = gid;
+    param.goods_status = status;
+    $._ajax('<?php echo yiiUrl('goods/goods/ajax-change-status') ?>', param, 'POST','JSON', function(json){
+        if(typeof callback == 'function'){
+            callback(json);
+        }
+    });
+
 }
 
 </script>

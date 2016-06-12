@@ -43,6 +43,7 @@ class GoodsController extends BaseController
             'update',
             'ajax-save',
             'ajax-check',
+            'ajax-change-status',
             'upload-name-card',
         ];
     }
@@ -106,7 +107,8 @@ class GoodsController extends BaseController
                 $query->andWhere([$memTb . '.check_status' => $search['checkstatus']]);
             }
         }
-
+        //只能是上架，或者下架的产品
+        $query->andWhere(['in', 'goods_status', [$mdl::STATUS_UPSHELF, $mdl::STATUS_OFFSHELF]]);
         $_order_by = 'gid DESC';
         $query_count = clone($query);
         $userArr = $query
@@ -196,8 +198,43 @@ class GoodsController extends BaseController
         $goods_info['gid'] = $gid;
         $res = $mdl->_save_goods($goods_info);
         $this->_json($res['code'], $res['msg']);
-
     }
+
+    /**
+     * 改变商品状态
+     * @return array
+     */
+    function actionAjaxChangeStatus()
+    {
+        $gid = intval($this->_request('gid'));
+        $goods_status = $this->_request('goods_status');
+
+        $mdl = new Goods();
+        //检验参数是否合法
+        if (empty($gid)) {
+            $this->_json(-20001, '商品序号gid不能为空');
+        }
+        if(!in_array($goods_status, [$mdl::STATUS_OFFSHELF, $mdl::STATUS_UPSHELF, $mdl::STATUS_DELETE])){
+            $this->_json(-20002, '商品状态不正确');
+        }
+
+        //检验商品是否存在
+        $goods = $mdl->_get_info(['gid' => $gid]);
+        if (!$goods) {
+            $this->_json(-20003, '商品信息不存在');
+        }
+
+        $res = $mdl->_save([
+            'gid' => $gid,
+            'goods_status' => $goods_status,
+        ]);
+        if(!$res){
+            $this->_json(-20003, '商品状态修改失败');
+        }
+        $this->_json(20000, '保存成功');
+    }
+
+
 
 
 
