@@ -43,7 +43,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 商品列表
+     * 订单列表
      * @return type
      */
     public function actionListView()
@@ -52,7 +52,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 商品数据
+     * 订单数据
      */
     public function actionList()
     {
@@ -81,10 +81,10 @@ class OrderController extends BaseController
                 $query = $query->andWhere(['group_id' => $search['grouptype']]);
             }
             if (isset($search['filtertype']) && !empty($search['filtercontent'])) {
-                if ($search['filtertype'] == 2)//按照商品名称筛选
+                if ($search['filtertype'] == 2)//按照订单名称筛选
                 {
                     $query = $query->andWhere(['like', $memTb . '.name', trim($search['filtercontent'])]);
-                } elseif ($search['filtertype'] == 1)//按照商品ID筛选
+                } elseif ($search['filtertype'] == 1)//按照订单ID筛选
                 {
                     $query = $query->andWhere([$memTb . '.username' => trim($search['filtercontent'])]);
                 }
@@ -102,32 +102,30 @@ class OrderController extends BaseController
             }
         }
         //只能是上架，或者下架的产品
-        $query->andWhere(['in', 'order_status', [$mdl::STATUS_UPSHELF, $mdl::STATUS_OFFSHELF]]);
-        $_order_by = 'gid DESC';
+        $query->andWhere(['is_deleted' => $mdl::NO_DELETE]);
+        $_order_by = 'oid DESC';
         $query_count = clone($query);
-        $userArr = $query
+        $orderArr = $query
+            ->with('address')
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
             ->all();
         $count = $query_count->count();
-        $orderList = ArrayHelper::toArray($userArr, [
+        $orderList = ArrayHelper::toArray($orderArr, [
             'common\models\Order' => [
+                'oid',
                 'gid',
-                'order_id',
-                'name',
-                'thumb',
-                'description',
-                'redeem_pionts',
+                'goods_id',
+                'goods_name',
+                'buyer_phone',
+                'buyer_name',
                 'order_status',
                 'status_name' => function ($m) {
                     return Order::_get_order_status($m->order_status);
                 },
-                'inputer' => function ($m) {
-                    return '录入人';
-                },
-                'checker' => function ($m) {
-                    return '审核人';
+                'address' => function ($m) {
+                    return _value($m['address']['detail']);
                 },
                 'create_at' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_at);
@@ -142,7 +140,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 添加商品
+     * 添加订单
      * @return array
      */
     function actionAdd()
@@ -151,8 +149,8 @@ class OrderController extends BaseController
             return $this->render('add');
         }
         $order = $this->_request('order', []);
-        if(isset($order['gid'])){
-            unset($order['gid']);
+        if(isset($order['oid'])){
+            unset($order['oid']);
         }
         $mdl = new Order();
         $res = $mdl->_save_order($order);
@@ -160,24 +158,24 @@ class OrderController extends BaseController
     }
 
     /**
-     * 添加商品
+     * 添加订单
      * @return array
      */
     function actionUpdate()
     {
-        $gid = intval($this->_request('gid'));
+        $oid = intval($this->_request('oid'));
         $order_info = $this->_request('order', []);
 
         $mdl = new Order();
         //检验参数是否合法
-        if (empty($gid)) {
-            $this->_json(-20001, '商品序号gid不能为空');
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
         }
 
-        //检验商品是否存在
-        $order = $mdl->_get_info(['gid' => $gid]);
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
         if (!$order) {
-            $this->_json(-20002, '商品信息不存在');
+            $this->_json(-20002, '订单信息不存在');
         }
 
         //加载
@@ -189,41 +187,41 @@ class OrderController extends BaseController
         }
 
         //保存
-        $order_info['gid'] = $gid;
+        $order_info['oid'] = $oid;
         $res = $mdl->_save_order($order_info);
         $this->_json($res['code'], $res['msg']);
     }
 
     /**
-     * 改变商品状态
+     * 改变订单状态
      * @return array
      */
     function actionAjaxChangeStatus()
     {
-        $gid = intval($this->_request('gid'));
+        $oid = intval($this->_request('oid'));
         $order_status = $this->_request('order_status');
 
         $mdl = new Order();
         //检验参数是否合法
-        if (empty($gid)) {
-            $this->_json(-20001, '商品序号gid不能为空');
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
         }
         if(!in_array($order_status, [$mdl::STATUS_OFFSHELF, $mdl::STATUS_UPSHELF, $mdl::STATUS_DELETE])){
-            $this->_json(-20002, '商品状态不正确');
+            $this->_json(-20002, '订单状态不正确');
         }
 
-        //检验商品是否存在
-        $order = $mdl->_get_info(['gid' => $gid]);
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
         if (!$order) {
-            $this->_json(-20003, '商品信息不存在');
+            $this->_json(-20003, '订单信息不存在');
         }
 
         $res = $mdl->_save([
-            'gid' => $gid,
+            'oid' => $oid,
             'order_status' => $order_status,
         ]);
         if(!$res){
-            $this->_json(-20003, '商品状态修改失败');
+            $this->_json(-20003, '订单状态修改失败');
         }
         $this->_json(20000, '保存成功');
     }

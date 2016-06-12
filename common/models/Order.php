@@ -38,7 +38,7 @@ class Order extends \yii\db\ActiveRecord
      */
     const NO_DELETE = 1;//未删除、正常
     const IS_DELETE = 2;//删除
-    
+
 
     /**
      * @inheritdoc
@@ -65,7 +65,8 @@ class Order extends \yii\db\ActiveRecord
             [['gid', 'order_status', 'add_id', 'is_deleted', 'update_at', 'create_at'], 'integer'],
             [['goods_id'], 'string', 'max' => 40],
             [['goods_name', 'buyer_name'], 'string', 'max' => 50],
-            [['buyer_phone'], 'string', 'max' => 12]
+            [['buyer_phone'], 'string', 'max' => 12],
+            [['create_at'], 'default', 'value' => time()],
         ];
     }
 
@@ -229,5 +230,38 @@ class Order extends \yii\db\ActiveRecord
             }
         }
         return false;
+    }
+
+    /**
+     * 订单状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_order_status($status = 1){
+        switch(intval($status)){
+            case self::STATUS_PAY:
+                $_name = '待付款';
+                break;
+            case self::STATUS_SEND:
+                $_name = '待发货';
+                break;
+            case self::STATUS_RECEIVE:
+                $_name = '待收货';
+                break;
+            case self::STATUS_DONE:
+                $_name = '已完成';
+                break;
+            case self::STATUS_UNDO:
+                $_name = '已撤销';
+                break;
+            case self::STATUS_COMMENT:
+                $_name = '待评论';
+                break;
+
+            default:
+                $_name = '';
+                break;
+        }
+        return $_name;
     }
 }

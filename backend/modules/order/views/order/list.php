@@ -1,11 +1,12 @@
 <?php
 use yii\helpers\Html;
+use common\models\Order;
 ?>
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>商品列表</title>
+    <title>订单列表</title>
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
     <link href="/css/page-min.css" rel="stylesheet">
@@ -34,12 +35,12 @@ use yii\helpers\Html;
 
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">商品：</label>
+                        <label class="control-label">订单：</label>
                         <div class="controls" data-type="city">
                             <select name="filtertype" id="filtertype">
                                 <option value="">请选择</option>
-                                <option value="1">商品注册ID</option>
-                                <option value="2">商品名称</option>
+                                <option value="1">订单注册ID</option>
+                                <option value="2">订单名称</option>
                             </select>
                         </div>
                         <div class="controls">
@@ -81,24 +82,6 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<div id="reason_content" style="display: none" >
-    <form id="reason_form" class="form-horizontal">
-        <div class="control-group" >
-            <div class="control-group" style="height: 80px">
-                <label class="control-label"></label>
-                <div class="controls ">
-                    <textarea class="input-large" id="reason_text" style="height: 60px" data-rules="{required : true}" type="text"></textarea>
-                </div>
-            </div>
-            <div class="control-group style="">
-            <label class="control-label"></label>
-            <div class="controls">
-                <span><b>提示：</b>输入字数不能超过<?php echo yiiParams('checkdeny_reason_limit') ?>个字</span>
-            </div>
-        </div>
-    </form>
-</div>
-
 <script>
     $(function () {
         BUI.use('common/page');
@@ -138,35 +121,20 @@ use yii\helpers\Html;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '商品序号', dataIndex: 'gid', width: 80, elCls : 'center'},
-                    {title: '商品编号', dataIndex: 'order_id', width: 150, elCls : 'center'},
-                    {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center',},
-                    {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
-                    {
-                        title: '缩略图',
-                        width: 140,
-                        elCls : 'center',
-                        renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.thumb +"'>";
-                        }
-                    },
-                    {title: '兑换积分', dataIndex: 'redeem_pionts', width: 90, elCls : 'center'},
-                    {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '商品描述', dataIndex: 'description', width: 160},
+                    {title: '订单编号', dataIndex: 'oid', width: 80, elCls : 'center'},
+                    {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
+                    {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
+                    {title: '购买人姓名', dataIndex: 'buyer_name', width: 90, elCls : 'center',},
+                    {title: '购买人手机', dataIndex: 'buyer_phone', width: 90, elCls : 'center',},
+                    {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
+                    {title: '收货地址', dataIndex: 'address', width: 160},
                     {title: '创建时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.order_status == 1){
-                                return "<a class='button button-primary page-action' title='编辑商品' href='/order/order/update/?gid="+ obj.gid +"' data-href='/order/order/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='offShelf(" + obj.gid + ")'>下架</a>"+
-                                " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
-                            }else if(obj.order_status == 2){
-                                return "<a class='button button-primary page-action' title='编辑商品信息' data-href='/order/order/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='upShelf(" + obj.gid + ")'>上架</a>"+
-                                " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
-                            }
+                            return "<a class='button button-primary page-action' title='编辑订单' href='/order/order/update/?oid="+ obj.oid +"' data-href='/order/order/update/?oid="+ obj.oid +"' >编辑</a>" +
+                            " <a class='button button-danger' onclick='del(" + obj.oid + ")'>删除</a>";
                         }
                     }
                 ],
@@ -189,7 +157,7 @@ use yii\helpers\Html;
 
 <script>
 /**
- * 搜索商品,刷新列表
+ * 搜索订单,刷新列表
  */
 function searchOrder() {
     var search = {};
@@ -221,9 +189,9 @@ function getOrderGridSearchConditions() {
 }
 
 /**
- * 显示商品详情
+ * 显示订单详情
  */
-function showCheckInfo(gid) {
+function showCheckInfo(oid) {
     var width = 700;
     var height = 450;
     var Overlay = BUI.Overlay;
@@ -238,29 +206,29 @@ function showCheckInfo(gid) {
         },
     ];
     dialog = new Overlay.Dialog({
-        title: '商品信息',
+        title: '订单信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
             url: "/auth/auth/info",
             autoLoad: true, //不自动加载
-            params: {gid: gid},//附加的参数
+            params: {oid: oid},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({gid: gid});
+    dialog.get('loader').load({oid: oid});
 }
 
 
 /**
  * 上架
  */
-function upShelf(gid) {
-    ajax_change_status(gid, 1, function(json){
+function upShelf(oid) {
+    ajax_change_status(oid, 1, function(json){
         if(json.code > 0){
             BUI.Message.Alert(json.msg, function(){
                 window.location.href = '/order/order/list';
@@ -274,8 +242,8 @@ function upShelf(gid) {
 /**
  * 下架
  */
-function offShelf(gid) {
-    ajax_change_status(gid, 2, function(json){
+function offShelf(oid) {
+    ajax_change_status(oid, 2, function(json){
         if(json.code > 0){
             BUI.Message.Alert(json.msg, function(){
                 window.location.href = '/order/order/list';
@@ -289,9 +257,9 @@ function offShelf(gid) {
 /**
  *删除
  */
-function del(gid) {
+function del(oid) {
     BUI.Message.Confirm('您确定要删除？', function(){
-        ajax_change_status(gid, 3, function(json){
+        ajax_change_status(oid, 3, function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){
                     window.location.href = '/order/order/list';
@@ -304,11 +272,11 @@ function del(gid) {
 }
 
 /**
- *改变商品状态
+ *改变订单状态
  */
-function ajax_change_status(gid, status, callback){
+function ajax_change_status(oid, status, callback){
     var param = param || {};
-    param.gid = gid;
+    param.oid = oid;
     param.order_status = status;
     $._ajax('<?php echo yiiUrl('order/order/ajax-change-status') ?>', param, 'POST','JSON', function(json){
         if(typeof callback == 'function'){

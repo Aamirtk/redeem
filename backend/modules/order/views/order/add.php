@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>添加商品</title>
+    <title>添加订单</title>
 
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
@@ -68,16 +68,16 @@ use yii\helpers\Html;
 <body>
 <div class="demo-content">
     <form id="Order_Form" action="" class="form-horizontal" onsubmit="return false;" >
-        <h2>添加商品</h2>
+        <h2>添加订单</h2>
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品名称：</label>
+            <label class="control-label"><s>*</s>订单名称：</label>
             <div class="controls">
                 <input name="order[name]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
         
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品缩略图：</label>
+            <label class="control-label"><s>*</s>订单缩略图：</label>
             <div id="thumbpic" class="controls">
                 <span class="button button-primary">上传图片</span>
             </div>
@@ -91,7 +91,7 @@ use yii\helpers\Html;
         </div>
 
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品图片：</label>
+            <label class="control-label"><s>*</s>订单图片：</label>
             <div id="thumblistpic" class="controls">
                 <span class="button button-primary">上传图片</span>
             </div>
@@ -111,7 +111,7 @@ use yii\helpers\Html;
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">商品描述：</label>
+            <label class="control-label">订单描述：</label>
             <div class="controls  control-row-auto">
                 <textarea name="order[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>
             </div>
@@ -234,7 +234,7 @@ use yii\helpers\Html;
             });
 
 
-            /*上传商品图*/
+            /*上传订单图*/
             var uploaderlist = WebUploader.create({
                 // 选完文件后，是否自动上传。
                 auto: true,

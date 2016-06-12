@@ -11,6 +11,7 @@ use yii\helpers\Html;
     <link href="/css/page-min.css" rel="stylesheet">
     <script src="/js/jquery.js" type="text/javascript"></script>
     <script src="/js/bui-min.js" type="text/javascript"></script>
+    <script src="/js/page-min.js" type="text/javascript"></script>
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
     <style>
