@@ -44,7 +44,7 @@ use yii\captcha\Captcha;
     <div class="row">
         <div class="col-md-4 sm col-sm-1"></div>
         <div class="col-md-4 sm col-sm-1 login">
-            <h3><p><span class='glyphicon glyphicon-user'></span>&nbsp;用户成长体系管理后台</p></h3>
+            <h3><p><span class='glyphicon glyphicon-user'></span>&nbsp;积分商城管理后台</p></h3>
             <?php $form = ActiveForm::begin(
                 [
                     'id' => 'login',
