@@ -206,7 +206,6 @@ class OrderController extends BaseController
         if (!$order) {
             $this->_json(-20002, '订单信息不存在');
         }
-        lg($order_info);
         $res = $mdl->_save([
             'oid' => $oid,
             'order_status' => intval($order_info['order_status']),
