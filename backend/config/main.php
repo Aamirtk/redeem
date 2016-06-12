@@ -52,10 +52,6 @@ return [
         'vip' => [
             'class' => 'backend\modules\vip\Module',
         ],
-        // 商机
-        'opportunity' => [
-            'class' => 'backend\modules\opportunity\Module',
-        ],
     ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),
