@@ -38,6 +38,7 @@ class OrderController extends BaseController
             'save',
             'update',
             'ajax-save',
+            'ajax-delete',
             'ajax-change-status',
         ];
     }
@@ -164,7 +165,67 @@ class OrderController extends BaseController
     function actionUpdate()
     {
         $oid = intval($this->_request('oid'));
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+        $_data = [
+            'order' => $order,
+            'status_list' => $mdl::_get_status_list(),
+        ];
+        return $this->render('update', $_data);
+    }
+
+    /**
+     * 改变订单状态
+     * @return array
+     */
+    function actionAjaxSave()
+    {
+        $oid = intval($this->_request('oid'));
         $order_info = $this->_request('order', []);
+
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+        if(empty($order_info['order_status'])){
+            $this->_json(-20002, '订单状态不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+        lg($order_info);
+        $res = $mdl->_save([
+            'oid' => $oid,
+            'order_status' => intval($order_info['order_status']),
+        ]);
+        if(!$res){
+            $this->_json(-20003, '保存失败');
+        }
+
+        //保存
+        $this->_json(20000, '保存成功');
+    }
+
+    /**
+     * 改变订单状态
+     * @return array
+     */
+    function actionAjaxDelete()
+    {
+        $oid = intval($this->_request('oid'));
 
         $mdl = new Order();
         //检验参数是否合法
@@ -178,52 +239,14 @@ class OrderController extends BaseController
             $this->_json(-20002, '订单信息不存在');
         }
 
-        //加载
-        if(!$this->isAjax()){
-            $_data = [
-                'order' => $order
-            ];
-            return $this->render('update', $_data);
-        }
-
-        //保存
-        $order_info['oid'] = $oid;
-        $res = $mdl->_save_order($order_info);
-        $this->_json($res['code'], $res['msg']);
-    }
-
-    /**
-     * 改变订单状态
-     * @return array
-     */
-    function actionAjaxChangeStatus()
-    {
-        $oid = intval($this->_request('oid'));
-        $order_status = $this->_request('order_status');
-
-        $mdl = new Order();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
-        }
-        if(!in_array($order_status, [$mdl::STATUS_OFFSHELF, $mdl::STATUS_UPSHELF, $mdl::STATUS_DELETE])){
-            $this->_json(-20002, '订单状态不正确');
-        }
-
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
-            $this->_json(-20003, '订单信息不存在');
-        }
-
         $res = $mdl->_save([
             'oid' => $oid,
-            'order_status' => $order_status,
+            'is_deleted' => $mdl::IS_DELETE,
         ]);
         if(!$res){
-            $this->_json(-20003, '订单状态修改失败');
+            $this->_json(-20003, '删除失败');
         }
-        $this->_json(20000, '保存成功');
+        $this->_json(20000, '删除成功');
     }
 
 

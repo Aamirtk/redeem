@@ -133,7 +133,7 @@ use common\models\Order;
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            return "<a class='button button-primary page-action' title='编辑订单' href='/order/order/update/?oid="+ obj.oid +"' data-href='/order/order/update/?oid="+ obj.oid +"' >编辑</a>" +
+                            return "<a class='button button-primary' onclick='updateOrder(" + obj.oid + ")'>编辑</a>" +
                             " <a class='button button-danger' onclick='del(" + obj.oid + ")'>删除</a>";
                         }
                     }
@@ -225,33 +225,29 @@ function showCheckInfo(oid) {
 
 
 /**
- * 上架
+ * 更改用户详情
  */
-function upShelf(oid) {
-    ajax_change_status(oid, 1, function(json){
-        if(json.code > 0){
-            BUI.Message.Alert(json.msg, function(){
-                window.location.href = '/order/order/list';
-            }, 'success');
-        }else{
-            BUI.Message.Alert(json.msg, 'error');
-        }
+function updateOrder(oid) {
+    var width = 400;
+    var height = 300;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '订单信息',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/order/order/update",
+            autoLoad: true, //不自动加载
+            params: {oid: oid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        buttons: buttons,
+        mask: false
     });
-}
-
-/**
- * 下架
- */
-function offShelf(oid) {
-    ajax_change_status(oid, 2, function(json){
-        if(json.code > 0){
-            BUI.Message.Alert(json.msg, function(){
-                window.location.href = '/order/order/list';
-            }, 'success');
-        }else{
-            BUI.Message.Alert(json.msg, 'error');
-        }
-    });
+    dialog.show();
+    dialog.get('loader').load({oid: oid});
 }
 
 /**
@@ -259,31 +255,19 @@ function offShelf(oid) {
  */
 function del(oid) {
     BUI.Message.Confirm('您确定要删除？', function(){
-        ajax_change_status(oid, 3, function(json){
+        var param = param || {};
+        param.oid = oid;
+        $._ajax('<?php echo yiiUrl('order/order/ajax-delete') ?>', param, 'POST','JSON', function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '/order/order/list';
+                    window.location.href = '<?php echo yiiUrl('order/order/list') ?>';
                 }, 'success');
             }else{
                 BUI.Message.Alert(json.msg, 'error');
+                this.close();
             }
         });
     }, 'question');
-}
-
-/**
- *改变订单状态
- */
-function ajax_change_status(oid, status, callback){
-    var param = param || {};
-    param.oid = oid;
-    param.order_status = status;
-    $._ajax('<?php echo yiiUrl('order/order/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-        if(typeof callback == 'function'){
-            callback(json);
-        }
-    });
-
 }
 
 </script>

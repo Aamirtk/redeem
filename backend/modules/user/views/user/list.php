@@ -301,7 +301,7 @@ function showUserInfo(uid) {
 }
 
 /**
- * 显示用户详情
+ * 更改用户详情
  */
 function updateUser(uid) {
     var width = 400;

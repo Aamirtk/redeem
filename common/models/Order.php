@@ -110,7 +110,7 @@ class Order extends \yii\db\ActiveRecord
         $obj = self::find();
         return $obj->where($where)
             ->joinWith('address')
-            ->toArray(true)
+            ->asArray(true)
             ->one();
     }
 
@@ -198,9 +198,9 @@ class Order extends \yii\db\ActiveRecord
                     return false;
                 }
 
-                if (!empty($data['id'])) {//修改
-                    $id = $data['id'];
-                    $ret = $_mdl->updateAll($data, ['id' => $id]);
+                if (!empty($data['oid'])) {//修改
+                    $id = $data['oid'];
+                    $ret = $_mdl->updateAll($data, ['oid' => $id]);
                 } else {//增加
                     $ret = $_mdl->insert();
                 }
@@ -264,4 +264,22 @@ class Order extends \yii\db\ActiveRecord
         }
         return $_name;
     }
+
+    /**
+     * 订单状态列表
+     * @return array|boolean
+     */
+    public static function _get_status_list(){
+        $statusArr = [];
+        $statusArr[self::STATUS_PAY]     = '待付款';
+        $statusArr[self::STATUS_SEND]    = '待发货';
+        $statusArr[self::STATUS_RECEIVE] = '待收货';
+        $statusArr[self::STATUS_DONE]    = '已完成';
+        $statusArr[self::STATUS_UNDO]    = '已撤销';
+        $statusArr[self::STATUS_COMMENT] = '待评论';
+
+        return $statusArr;
+    }
+
+
 }
