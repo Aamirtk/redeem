@@ -23,7 +23,7 @@ class MyController extends BaseController
      */
     public function actionOrder()
     {
-        return $this->render('order-list');
+        return $this->render('order');
     }
 
     /**
@@ -32,7 +32,16 @@ class MyController extends BaseController
      */
     public function actionAddress()
     {
-        return $this->render('address-list');
+        return $this->render('address');
+    }
+
+    /**
+     * 我的积分
+     * @return type
+     */
+    public function actionPoints()
+    {
+        return $this->render('points');
     }
 
 
