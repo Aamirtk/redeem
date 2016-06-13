@@ -13,9 +13,27 @@ return [
     'defaultRoute' => '/home/home/index',
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
+        //首页
         'home' => [
             'class' => 'frontend\modules\home\Module',
         ],
+        //用户
+        'user' => [
+            'class' => 'frontend\modules\user\Module',
+        ],
+        //商品
+        'goods' => [
+            'class' => 'frontend\modules\goods\Module',
+        ],
+        //订单
+        'order' => [
+            'class' => 'frontend\modules\order\Module',
+        ],
+        //我的
+        'my' => [
+            'class' => 'frontend\modules\my\Module',
+        ],
+
     ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),
