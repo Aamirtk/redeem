@@ -11,12 +11,15 @@
     <meta name="browsermode" content="application">
     <meta name="x5-page-mode" content="app">
     <link rel="stylesheet" type="text/css" href="/css/header.css">
-    <link rel="stylesheet" type="text/css" href="/css/dingdanqueren.css">
+    <link rel="stylesheet" type="text/css" href="/css/gouwuche.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $('.back').click(function(){
                 history.back();
+            });
+            $('.box').click(function(){
+                $(this).toggleClass('active');
             });
         });
         <!-- 增加数量 -->
@@ -48,42 +51,42 @@
 <div class="body-All">
     <header>
         <div class="back"><a><img src="/images/back.png"></a></div>
-        我的订单
+        购物车
         <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
     </header>
-    <div class="box">
-        <div class="pic"><img src="/images/pic.png"></div>
-        <div class="text">
-            <div class="title">【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</div>
-            <div>
-                <div class="integral">积分&nbsp;&nbsp;<span>999</span></div>
-                <div class="count">
-                    <img src="/images/+.png" onclick="numAdd(this)">
-                    <input type="text" name="number" value="1" />
-                    <img src="/images/-.png" onclick="numDec(this)">
+    <div class="box-container">
+        <div class="box">
+            <div class="pic"><img src="/images/pic.png"></div>
+            <div class="text">
+                <div class="title">【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</div>
+                <div>
+                    <div class="integral">积分&nbsp;&nbsp;<span>999</span></div>
+                    <div class="count">
+                        <img src="/images/+.png" onclick="numAdd(this)">
+                        <input type="text" name="number" value="1" />
+                        <img src="/images/-.png" onclick="numDec(this)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="pic"><img src="/images/pic.png"></div>
+            <div class="text">
+                <div class="title">【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</div>
+                <div>
+                    <div class="integral">积分&nbsp;&nbsp;<span>999</span></div>
+                    <div class="count">
+                        <img src="/images/+.png" onclick="numAdd(this)">
+                        <input type="text" name="number" value="1" />
+                        <img src="/images/-.png" onclick="numDec(this)">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="address-container">
-        <div class="address">
-            <div class="top">
-                <span>张玛丽</span>&nbsp;&nbsp;
-                <div class="fr"><span>134xxxx1234</span>&nbsp;
-                    <span class="default">默认</span></div>
-            </div>
-            <div class="middle">
-                <span>上海市</span>&nbsp;
-                <span>上海市</span>&nbsp;
-                <span>浦东新区</span>&nbsp;
-                <span>金湘路225弄11号</span>
-            </div>
-            <div class="bottom">地址类型：公司地址</div>
-            <a href="/address/add"><div class="change">更换地址</div></a>
-        </div>
-    </div>
-    <div class="button">
-        <a href="" class="btn">立即支付</a>
+    <div class="exchange">
+        <div class="needIntegral">共&nbsp;<span>1998</span>&nbsp;积分</div>
+        <div class="button"><a href="/order/add" class="btn">立即兑换</a></div>
     </div>
 </div>
 </body>
