@@ -71,7 +71,7 @@
         </div>
     </div>
     <ul class="box">
-        <a href="/goods/goods/view">
+        <a href="/goods/view">
             <li>
                 <div class="pic">
                     <img src="images/pic05.png">
@@ -84,7 +84,7 @@
                 </div>
             </li>
         </a>
-        <a href="/goods/goods/view">
+        <a href="/goods/view">
             <li>
                 <div class="pic">
                     <img src="images/pic05.png">

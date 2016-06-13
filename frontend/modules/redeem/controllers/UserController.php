@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\home\controllers;
+namespace frontend\modules\redeem\controllers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -10,7 +10,7 @@ use common\models\User;
 use common\models\Auth;
 
 
-class HomeController extends BaseController
+class UserController extends BaseController
 {
 
     public $layout = 'layout';

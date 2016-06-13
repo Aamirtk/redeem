@@ -10,30 +10,13 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => '/home/home/index',
+    'defaultRoute' => '/redeem/home/index',
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
-        //首页
-        'home' => [
-            'class' => 'frontend\modules\home\Module',
+        //积分兑换
+        'redeem' => [
+            'class' => 'frontend\modules\redeem\Module',
         ],
-        //用户
-        'user' => [
-            'class' => 'frontend\modules\user\Module',
-        ],
-        //商品
-        'goods' => [
-            'class' => 'frontend\modules\goods\Module',
-        ],
-        //订单
-        'order' => [
-            'class' => 'frontend\modules\order\Module',
-        ],
-        //我的
-        'my' => [
-            'class' => 'frontend\modules\my\Module',
-        ],
-
     ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),
@@ -41,8 +24,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                "<module:\w+>/<controller:\w+>/<action:\w+>" => "<module>/<controller>/<action>",
+                "<controller:\w+>/<action:\w+>" => "redeem/<controller>/<action>",
             ],
         ],
+
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
