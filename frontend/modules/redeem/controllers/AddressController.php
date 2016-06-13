@@ -10,7 +10,7 @@ use common\models\User;
 use common\models\Auth;
 
 
-class OrderController extends BaseController
+class AddressController extends BaseController
 {
 
     public $layout = 'layout';
@@ -25,16 +25,6 @@ class OrderController extends BaseController
     {
         return $this->render('add');
     }
-
-    /**
-     * 兑换
-     * @return type
-     */
-    public function actionPay()
-    {
-        return $this->render('pay');
-    }
-
 
 
 

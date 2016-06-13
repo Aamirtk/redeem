@@ -10,7 +10,7 @@ use common\models\User;
 use common\models\Auth;
 
 
-class OrderController extends BaseController
+class LogisticController extends BaseController
 {
 
     public $layout = 'layout';
@@ -21,20 +21,10 @@ class OrderController extends BaseController
      * 生成订单
      * @return type
      */
-    public function actionAdd()
+    public function actionDetail()
     {
-        return $this->render('add');
+        return $this->render('detail');
     }
-
-    /**
-     * 兑换
-     * @return type
-     */
-    public function actionPay()
-    {
-        return $this->render('pay');
-    }
-
 
 
 

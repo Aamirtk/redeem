@@ -10,7 +10,7 @@ use common\models\User;
 use common\models\Auth;
 
 
-class OrderController extends BaseController
+class CartController extends BaseController
 {
 
     public $layout = 'layout';
