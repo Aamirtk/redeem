@@ -10,9 +10,13 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => '/home/default/index',
+    'defaultRoute' => '/home/home/index',
     'controllerNamespace' => 'frontend\controllers',
-    'modules' => require(__DIR__ . '/../../common/config/modules.php'),
+    'modules' => [
+        'home' => [
+            'class' => 'frontend\modules\home\Module',
+        ],
+    ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),
         'urlManager' => [

@@ -1,0 +1,309 @@
+html,body { background-color: #efefef;}
+.recommend_center {
+    width: 1200px;
+    margin: 0 auto;
+    min-width: 1000px;
+}
+
+.nav-ranking {
+    width: 145px;
+    float: left;
+    padding-top: 10px;
+    text-align: center;
+    background-color: #2281cb;
+    height: 42px;
+    color: #fff;
+}
+.telent-content {
+    font-family: "Microsoft YaHei";
+    height: auto;
+}
+
+.con_left {
+    float: left;
+    background-color: #fff;
+    margin-top: 20px;
+    width: 914px;
+    margin-bottom: 62px;
+}
+
+.con_right {
+    float: right;
+    width: 267px;
+    margin-top: 20px;
+}
+
+.tab-nav {
+    height: 42px;
+    border: 1px solid #e5e5e5;
+}
+.con_right img { margin-bottom: 20px;}
+
+.tab-nav li {
+    float: left;
+    width: 113px;
+    text-align: center;
+    border-left: 1px solid #e5e5e5;
+    line-height: 42px;
+}
+.rank-character {
+    float: left;
+    height: 100px;
+    width: 405px;
+}
+
+.numbox {
+    width: 60px;
+    height: 60px;
+    font-family: "Arial";
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    margin: 20px 18px 0 18px;
+    display: inline-block;
+    color: #fff;
+}
+.numbox img { border-radius: 50%; }
+.Tcolor1 { background-color: #f13d3f;}
+.Tcolor2 { background-color: #f5a623;}
+.Tcolor3 { background-color: #4ba220;}
+.Tcolor4 { background-color: #cacbca;}
+.rank-box {
+    height: 100px;
+    background-color: #fff;
+    position: relative;
+    top: 10px;
+    border-top: 1px solid #f5f5f5;
+}
+.rank-box:hover { background-color: #dbeef5;}
+ {
+    position: relative;
+    top: -5px;
+}
+.vip-icons {
+    position: relative;
+    top: 14px;
+    left: -35px;
+    top /*\**/: 20px\9;
+    left /*\**/: -30px\9;
+}
+.tab-box-1 {
+    background-color: #efefef;
+}
+
+.nickname {
+    position: relative;
+    top: -50px;
+    left: 220px;
+    font-size: 14px;
+}
+
+.signiture {
+    position: relative;
+    top: -45px;
+    width: 255px;
+    left: 220px;
+    font-family: "宋体";
+    font-size: 12px
+}
+.sharebox {
+    float: right;
+    position: relative;
+    top: 40px;
+    right: 42px;
+}
+.sharebox a {
+    display: inline-block;
+    background-image: url(/images/rc/personal/space/siteicon5.png);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+.weixin {
+    background-position:  -83px 0;
+}
+.weixin:hover { background-position: -83px -27px;}
+.weibo {
+    background-position:  0px 0;
+}
+.weibo:hover { background-position: 0px -27px;}
+.zoom {
+    background-position: -55px 0;
+}
+.zoom:hover { background-position: -55px -27px;}
+.qq {
+    background-position:  -27px 0;
+}
+.qq:hover { background-position: -27px -27px;}
+.topinfo {
+    background-color: #efefef;
+    height: 157px;
+    display: none;
+    position: relative;
+    top: 10px;
+    clear: both;
+}
+
+.infoleft {
+    position: absolute;
+    left: 140px;
+}
+.brief {
+    margin-top: 20px;
+    color: #677984;
+    font-size: 14px;
+}
+.brief > img { margin-left: 10px;}
+.cor1 { color: #777; } .cor2 { color: #aaa; }
+.mt5 { margin-top: 5px;}
+.allcount { color: #3396e9; }
+a.refer {
+    position: relative;
+    top: 22px;
+    display: inline-block;
+    width: 80px;
+    height: 24px;
+    line-height: 22px;
+    margin-right: 5px;
+    border-radius: 3px;
+    color: #fff;
+    text-decoration: none;
+    padding-left: 20px;
+    text-align: left;
+}
+a.refer:hover { color: #fff;}
+.concerns
+{
+    background: #505152 url("/images/rc/personal/rank/addconcerns.png") no-repeat scroll 11px 6px;
+}
+.concerns.visited { background-color: #ccc; background-image: none; color: #fff; text-decoration: none; }
+.employed {
+    background: #3297e7 url("/images/rc/personal/rank/addperson.png") no-repeat scroll 11px 6px;
+    width: 94px;
+}
+.employed:hover { background-color: #0c77cb;}
+.privateletter {
+    background: #505152 url("/images/rc/personal/rank/personletter.png") no-repeat scroll 14px 7px;
+}
+.concerns:hover,.privateletter:hover { background-color: #333;}
+
+
+.inforight {
+    position: absolute;
+    top: 20px;
+    left: 430px;
+}
+.inforight > img { margin-right: 7px;}
+
+
+
+.rule-explain {
+    color: #888;
+    font-family: "宋体";
+    margin-top: 18px;
+}
+
+.rule-tit {
+    color: #666;
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+    margin-left: 5px;
+}
+.telent-navigater {
+    overflow: hidden;
+}
+.telent-list{
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+}
+.nav_list > a {
+    width: 145px;
+    height: 42px;
+    text-align: center;
+    line-height: 40px;
+}
+.telent-navigater li{
+    float: left;
+}
+.telent-navigater li a{
+    display: block;
+    text-decoration: none;
+}
+.default > a{
+    color: #fff; background-color: #2281cb;
+}
+.telent-navigater li a:hover{
+    color: #3197e7;
+}
+.telent-navigater li.active a{
+     color: #fff;
+    background-color: #3381cb;
+}
+.tab-nav li > a:hover { color: #2281cb;}
+.telent-content{display: none;}
+.telent-content:first-child{display: block;}
+#tab_1{background: red;}
+#tab_2{background: #0000ff;}
+#tab_3{background: #000; }
+.nav_wrap {
+    border-bottom: 2px solid #2281cb;
+    background-color: #fff;
+}
+
+.wx-erweima {
+    position: absolute;
+    z-index: 2;
+    top: 35px;
+    left: -12px;
+    box-shadow: 3px 3px 13px 2px rgba(4,0,0,.17);
+}
+.wx-triangle {
+    position: absolute;
+    left: 100px;
+    top: -18px;
+    display:none;
+}
+.wx-triangle span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #d8d8d8;
+    position: absolute;
+    top: 6px;
+}
+.wx-triangle em {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #fff;
+    position: absolute;
+    left: -10px;
+    top: 2px;
+}
+
+.work-show {
+    display: table;
+    width: 150px;
+    height: 115px;
+    overflow: hidden;
+    text-align: center;
+    margin-right: 8px;
+    float:left;
+    background-color:#FFF;
+}
+.inforight{
+    height: 115px;
+    overflow: hidden;
+}
+.work-show .table-cell{
+    width: 150px;
+    height: 115px;
+}
+.ws-imgs {
+    max-width: 150px;
+    max-height: 115px;
+}

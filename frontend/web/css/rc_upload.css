@@ -1,0 +1,1017 @@
+/*==人才库空间上传==*/
+.rc-upload-wrap, .rc-upload-wrap *
+{
+    box-sizing: border-box;
+}
+.rc-upload-wrap
+{
+    position: relative;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 100%;
+    min-width: 1200px;
+    font-family: "Microsoft Yahei";
+    line-height: 1;
+    background-color: #dfdfdf;
+}
+.rc-upload-wrap .rc-overlayer
+{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    z-index: 1000;
+}
+.rc-upload-wrap .rc-upload-box
+{
+    margin: 0 auto;
+    width: 640px;
+    border-radius: 3px;
+    background-color: #f8f8f8;
+}
+.rc-upload-box .rc-upload-nav
+{
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #e0e0e0;
+}
+.rc-upload-nav li
+{
+    display: inline-block;
+    float: left;
+    padding-top: 3px;
+    width: 100px;
+    height: 80px;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+    background-color: #f3f3f3;
+}
+.rc-upload-nav li.active
+{
+    position: relative;
+    background-color: #7bc46a;
+}
+.rc-upload-nav li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    color: #a2a2a2;
+    background-color: #f3f3f3;
+}
+.rc-upload-nav li.active a
+{
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 99px;
+    height: 78px;
+    color: #404040;
+    background-color: #f8f8f8;
+    cursor: default;
+}
+.rc-upload-nav li .upload-nav-icon
+{
+    margin-top: 13px;
+    height: 26px;
+    line-height: 26px;
+}
+.rc-upload-nav li .upload-nav-text
+{
+    margin-top: 7px;
+}
+.rc-upload-box .rc-upload-content
+{
+    display: none;
+    padding-top: 21px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.rc-upload-box .rc-upload-content.active
+{
+    display: block;
+}
+.rc-upload-box .rc-upload-content .upload-content-msg
+{
+    margin-top: -1px;
+    background-color: #fff;
+}
+.rc-upload-box .rc-upload-content .upload-content-title
+{
+    position: relative;
+    height: 42px;
+    font-size: 12px;
+    line-height: 40px;
+    color: #444;
+    border: 1px solid #ccc;
+}
+.upload-content-title input.form-control
+{
+    position: relative;
+    padding: 6px 12px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #333;
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+}
+.flag-placeholder
+{
+    position: relative;
+}
+.flag-placeholder input
+{
+    z-index: 10;
+}
+.flag-placeholder label
+{
+    position: absolute;
+    top: 0;
+    left: 11px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #ccc;
+    z-index: 5;
+}
+.rc-upload-box .rc-upload-content .upload-content-category
+{
+    width: 600px;
+    height: 42px;
+}
+.upload-content-msg .upload-content-category .btn
+{
+    width: 600px;
+    height: 42px;
+    color: #999;
+    text-align: left;
+    border-radius: 0;
+    outline: none;
+}
+.upload-content-msg .upload-content-category .btn:focus
+{
+    background-color: transparent;
+}
+.upload-content-msg .upload-content-category .btn:hover,
+.upload-content-category.open > .dropdown-toggle.btn-default
+{
+    border-color: #ccc;
+}
+.upload-content-msg .upload-content-category .btn .caret
+{
+    float: right;
+    margin-top: 8px;
+}
+.upload-content-msg .upload-content-category .dropdown-menu
+{
+    margin-top: -1px;
+    padding: 0;
+    width: 600px;
+}
+.upload-content-msg .upload-content-category .dropdown-menu>li
+{
+    position: relative;
+}
+.upload-content-msg .upload-content-category .dropdown-menu>li.create-newworks
+{
+    padding: 15px;
+    border-top: 1px solid #dfdfdf;
+    background-color: #f8f8f8;
+}
+.create-newworks input.form-control
+{
+    position: relative;
+    padding: 6px 12px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    border: 1px solid #dfdfdf;
+    box-shadow: none;
+}
+.create-newworks label
+{
+    margin-top: 15px;
+    padding-left: 15px;
+}
+.upload-content-msg .upload-content-category .dropdown-menu>li>a
+{
+    padding-left: 15px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    color: #404040;
+}
+.upload-content-msg .edui-container
+{
+    box-shadow: none;
+}
+.upload-content-msg .edui-container .edui-toolbar
+{
+    box-shadow: none;
+}
+.upload-content-msg .upload-content-token
+{
+    position: relative;
+    float: left;
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 38px;
+    color: #aaa;
+}
+.upload-content-msg .upload-content-token:before
+{
+    content: "#";
+}
+.upload-content-msg .upload-content-tagwrap
+{
+    padding-left: 24px;
+    width: 600px;
+    height: auto;
+    min-height: 40px;
+    cursor: text;
+    border: 1px solid #ccc;
+    background: url(/images/rc/personal/icon-18-tag.png) no-repeat 5px 10px;
+}
+.upload-content-msg .upload-content-tagwrap .upload-content-tag
+{
+    position: relative;
+    float: left;
+    line-height: 38px;
+}
+.upload-content-tag input
+{
+    position: relative;
+    left: 10px;
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    height: 38px;
+    line-height: 38px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.upload-content-tag label
+{
+    margin: 0;
+    max-width: 250px;
+    width: 250px;
+    height: 38px;
+    line-height: 38px;
+    cursor: text;
+}
+.upload-content-tag .hiddenSpan
+{
+    position: absolute;
+    font-size: 14px;
+    visibility: hidden;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+.rc-upload-box .rc-upload-content .upload-content-setting
+{
+    margin-top: 20px;
+}
+.upload-content-setting .upload-content-copyright
+{
+    position: relative;
+    float: left;
+}
+.upload-content-copyright .copyright-icon
+{
+    display: inline-block;
+    width: 18px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    vertical-align: top;
+}
+.upload-content-copyright .copyright-icon-0
+{
+    width: 14px;
+    background-image: url(/images/rc/personal/space/copyright-icon-0.png);
+}
+.upload-content-copyright .copyright-icon-1
+{
+    background-image: url(/images/rc/personal/space/copyright-icon-1.png);
+}
+.upload-content-copyright .copyright-icon-2
+{
+    background-image: url(/images/rc/personal/space/copyright-icon-2.png);
+}
+.upload-content-copyright .copyright-icon-3
+{
+    background-image: url(/images/rc/personal/space/copyright-icon-3.png);
+}
+.upload-content-copyright .copyright-icon-4
+{
+    background-image: url(/images/rc/personal/space/copyright-icon-4.png);
+}
+.upload-content-copyright .copyright-icon-5
+{
+    width: 60px;
+    background-image: url(/images/rc/personal/space/copyright-icon-5.png);
+}
+.upload-content-copyright a.copyright-btn
+{
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    color: #74a5fd;
+    text-decoration: none;
+}
+.upload-content-copyright a.copyright-btn.copyright-dark
+{
+    color: #404040;
+}
+.upload-content-copyright .copyright-btn .copyright-desc
+{
+    display: inline-block;
+}
+.upload-content-copyright .dropdown-menu
+{
+    left: -70px;
+    padding: 14px 0;
+}
+.upload-content-copyright .dropdown-menu li.copyright-selected a
+{
+    background: url(/images/rc/personal/space/icon-16-correct.png) no-repeat 20px center;
+}
+.upload-content-copyright .dropdown-menu li.copyright-selected a:hover
+{
+    background-color: #f5f5f5;
+}
+.upload-content-copyright .dropdown-menu>li>a
+{
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 275px;
+}
+.upload-content-copyright .dropdown-menu .copyright-icon
+{
+    float: left;
+}
+.upload-content-copyright .dropdown-menu .copyright-desc
+{
+    padding-left: 70px;
+    font-size: 14px;
+    color: #404040;
+    line-height: 24px;
+}
+.upload-content-setting .upload-content-sharebox
+{
+    position: relative;
+    float: right;
+}
+.upload-content-sharebox li
+{
+    float: left;
+    margin-left: 6px;
+}
+.upload-content-sharebox li a
+{
+    display: inline-block;
+}
+.rc-upload-box .rc-upload-content .upload-content-operate
+{
+    margin-top: 20px;
+}
+.upload-content-operate a
+{
+    display: inline-block;
+    width: 100px;
+    height: 38px;
+    font-size: 14px;
+    line-height: 36px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+}
+.upload-content-operate a.operate-cancel
+{
+    float: left;
+    color: #404040;
+    background-color: #fff;
+    border-color: #d9d9d9;
+}
+.upload-content-operate a.operate-cancel:hover
+{
+    color: #999;
+}
+.upload-content-operate a.operate-cancel:hover:active
+{
+    background-color: #e5e5e5;
+}
+.upload-content-operate a.operate-release
+{
+    float: right;
+    color: #fff;
+    background-color: #53a93f;
+    border-color: #53a93f;
+}
+.upload-content-operate a.operate-release:hover
+{
+    background-color: #7bc46a;
+    border-color: #7bc46a;
+}
+.upload-content-operate a.operate-release:hover:active
+{
+    background-color: #3e802f;
+    border-color: #3e802f;
+}
+/*==图片==*/
+.active .icon-21-camera
+{
+    background-image: url(/images/rc/icon-21-greencamera.png);
+}
+/*==正常==*/
+.rc-upload-content #rc_picturePicker
+{
+    margin-bottom: 20px;
+}
+#rc_picturePicker .webuploader-pick
+{
+    padding: 0;
+    width: 600px;
+    height: 260px;
+    border: 1px solid #e4e4e4;
+    background-color: #fff;
+}
+#rc_picturePicker .webuploader-pick .rc-picturePicker-icon
+{
+    margin-top: 100px;
+    text-align: center;
+}
+#rc_picturePicker .webuploader-pick .rc-picturePicker-txt
+{
+    margin-top: 15px;
+    font-size: 16px;
+    line-height: 1;
+    color: #a2a2a2;
+    text-align: center;
+}
+/*==/正常==*/
+/*==一图==*/
+.uploader-one .rc-upload-content #rc_picturePicker,
+.uploader-one .uploader-list
+{
+    margin-bottom: 20px;
+}
+.uploader-one .uploader-list .uploader-listitem
+{
+    position: relative;
+    width: 600px;
+    height: 450px;
+    overflow: hidden;
+}
+.uploader-one .uploader-list .uploader-listitem img
+{
+    display: block;
+    margin: 0 auto;
+    width: 600px;
+    height: 450px;
+    vertical-align: top;
+}
+.uploader-one .uploader-list .uploader-listitem p
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000,endColorstr=#CC000000);
+}
+.uploader-one .uploader-list .uploader-listitem a.uploader-listitem-close,
+.uploader-more .uploader-list .uploader-listitem a.uploader-listitem-close
+{
+    display: none;
+    position: absolute;
+    right: 0;
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 24px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #504f5d;
+}
+.uploader-one .uploader-list .uploader-listitem a.uploader-listitem-close
+{
+    top: 0;
+}
+.uploader-one .uploader-list .uploader-listitem:hover a.uploader-listitem-close,
+.uploader-more .uploader-list .uploader-listitem:hover a.uploader-listitem-close,
+.uploader-more .uploader-list .uploader-listitem:hover a.uploader-listitem-noremark,
+.uploader-more .uploader-list .uploader-listitem:hover a.uploader-listitem-remarks
+{
+    display: inline-block;
+}
+.uploader-one #rc_picturePicker .webuploader-pick,
+.uploader-more #rc_picturePicker .webuploader-pick
+{
+    padding: 0;
+    width: 600px;
+    height: 50px;
+    border: 1px dashed #e4e4e4;
+    background-color: #fff;
+}
+.uploader-one #rc_picturePicker .webuploader-pick .rc-picturePicker-txt,
+.uploader-more #rc_picturePicker .webuploader-pick .rc-picturePicker-txt
+{
+    margin-top: 0;
+    font-size: 14px;
+    line-height: 48px;
+    color: #70b4fa;
+    text-align: center;
+}
+.rc-picturePicker-txt i.icon-13-blueadd
+{
+    margin-right: 5px;
+    vertical-align: baseline;
+}
+/*==/一图==*/
+/*==多图==*/
+.uploader-more .rc-upload-content #rc_picturePicker,
+.uploader-more .uploader-list
+{
+    margin-bottom: 20px;
+}
+.uploader-more .uploader-list
+{
+    margin-bottom: 15px;
+    margin-right: -5px;
+    width: 605px;
+}
+.uploader-more .uploader-list .uploader-listitem
+{
+    position: relative;
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: 146px;
+    height: 110px;
+}
+.uploader-more .uploader-list .uploader-listitem img
+{
+    display: inline-block;
+    width: 146px;
+    height: 110px;
+    vertical-align: top;
+}
+.uploader-more .uploader-list .uploader-listitem a.uploader-listitem-close
+{
+    bottom: 0;
+}
+.uploader-more .uploader-list .uploader-listitem a.uploader-listitem-noremark
+{
+    display: none;
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    background: url(/images/rc/personal/space/icon-28-noremark.jpg) #75747f no-repeat center center;
+}
+.uploader-more .uploader-list .uploader-listitem a.uploader-listitem-remarks
+{
+    display: none;
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    background: url(/images/rc/personal/space/icon-28-remarks.jpg) #75747f no-repeat center center;
+}
+/*==/多图==*/
+.uploader-listitem .uploader-progress,
+.rc-videoCoverList .uploader-progress
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: #ddd;
+}
+.uploader-video-local .uploader-progress
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    background-color: #70b4fa;
+    z-index: 0;
+}
+.uploader-listitem .uploader-progress i.icon-progress,
+.rc-videoCoverList .uploader-progress i.icon-progress
+{
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    font-size: 14px;
+    line-height: 60px;
+    color: #666;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background-color: #fff;
+}
+.rc-videoCoverList .uploader-progress
+{
+    width: 310px;
+    height: 145px;
+}
+.rc-videoCoverList .uploader-progress i.icon-progress{
+    margin-top: 40px;
+}
+.uploader-one .icon-progress
+{
+    margin-top: 193px;
+}
+.uploader-more .icon-progress
+{
+    margin-top: 23px;
+}
+.uploader-listitem.showremark
+{
+    z-index: 9999;
+}
+.uploader-listitem .uploader-listitem-remarkbox
+{
+    position: absolute;
+    top: 120px;
+    left: -95px;
+    padding: 15px 20px;
+    width: 380px;
+    height: 115px;
+    background-color: #f5f5f5;
+    border: 1px solid #b6b6b6;
+    box-shadow: -2px 2px 5px #b6b6b6;
+    z-index: 30;
+}
+.uploader-listitem-remarkbox .remarkbox-triangle
+{
+    position: absolute;
+    top: -10px;
+    left: 185px;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #b6b6b6 transparent;
+}
+.uploader-listitem-remarkbox .remarkbox-triangle:after
+{
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #f5f5f5 transparent;
+}
+.uploader-listitem-remarkbox .remarkbox-input .form-control
+{
+    height: 42px;
+    line-height: 40px;
+}
+.uploader-listitem-remarkbox .remarkbox-input label
+{
+    margin-top: 15px;
+    margin-left: 20px;
+}
+.uploader-listitem-remarkbox .remarkbox-btngroup
+{
+    margin-top: 10px;
+    font-size: 12px;
+}
+.uploader-listitem-remarkbox .remarkbox-btngroup a
+{
+    display: inline-block;
+    width: 82px;
+    height: 32px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #e3e3e3;
+}
+.uploader-listitem-remarkbox .remarkbox-btngroup a.remarkbox-cancel
+{
+    float: left;
+    color: #999;
+    background-color: #fdfdfd;
+}
+.uploader-listitem-remarkbox .remarkbox-btngroup a.remarkbox-confirm
+{
+    float: right;
+    color: #fff;
+    background-color: #7bc46a;
+}
+/*==/图片==*/
+/*==视频==*/
+.active .icon-26-video
+{
+    background-image: url(/images/rc/icon-26-greenvideo.png);
+}
+.rc-upload-content #uploader_videocover
+{
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 600px;
+    border: 1px solid #d4d4d4;
+    background-color: #fff;
+}
+#uploader_videocover #rc_videoCoverPicker.up-before
+{
+    float: left;
+    width: 310px;
+    height: 145px;
+    overflow: hidden;
+}
+#uploader_videocover #rc_videoCoverPicker.up-before .webuploader-pick
+{
+    float: left;
+    width: 310px;
+    height: 145px;
+    border: 1px dashed #e4e4e4;
+    background-color: #f5f5f5;
+}
+#rc_videoCoverPicker.up-before .webuploader-pick .rc-videoCoverPicker-icon
+{
+    margin-top: 40px;
+    text-align: center;
+}
+#rc_videoCoverPicker.up-before .webuploader-pick .rc-videoCoverPicker-txt
+{
+    margin-top: 7px;
+    font-size: 14px;
+    line-height: 1;
+    color: #999;
+    text-align: center;
+}
+#uploader_videocover .videoCoverPicker-right
+{
+    margin-top: 10px;
+    padding-left: 330px;
+    font-size: 12px;
+    color: #999;
+}
+#uploader_videocover .videoCoverPicker-right.first
+{
+    margin-top: 45px;
+}
+#uploader_videocover .rc-videoCoverList
+{
+    float: left;
+}
+.rc-videoCoverList img
+{
+    display: inline-block;
+    width: 310px;
+    height: 145px;
+}
+#uploader_videocover #rc_videoCoverPicker.up-after .webuploader-pick
+{
+    margin-top: 15px;
+    padding: 0;
+    width: 100px;
+    height: 30px;
+    line-height: 28px;
+    color: #999;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid #d9d9d9;
+    background-color: transparent;
+}
+.rc-upload-content #uploader_video
+{
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+.rc-upload-content #uploader_video .uploader-video-link,
+.rc-upload-content #uploader_video .uploader-video-local .webuploader-pick
+{
+    position: relative;
+    width: 600px;
+    height: 50px;
+    line-height: 48px;
+    border: 1px dashed #e4e4e4;
+}
+.rc-upload-content #uploader_video .uploader-video-link.active,
+.rc-upload-content #uploader_video .uploader-video-local.active .webuploader-pick
+{
+    color: #70b4fa;
+    border-style: solid;
+    z-index: 2;
+    box-shadow: 0 0 2px #e4e4e4 inset;
+}
+.uploader-video-link input.form-control
+{
+    position: relative;
+    height: 48px;
+    font-size: 14px;
+    line-height: 48px;
+    color: #ccc;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    z-index: 10;
+}
+.uploader-video-link.active input.form-control
+{
+    color: #70b4fa;
+}
+.uploader-video-link label
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 48px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 48px;
+    color: #c1c1c1;
+    z-index: 5;
+}
+.uploader-video-link label:after
+{
+    content: "添加外链URL";
+}
+.uploader-video-link label .icon-16-link
+{
+    margin-left: 20px;
+    margin-right: 5px;
+    vertical-align: text-bottom;
+    background: url(/images/rc/personal/space/icon-16-greylink.png) no-repeat center center;
+}
+.uploader-video-link.active label:after
+{
+    content: "外部链接：您可以通过优酷、土豆等其他网站链接过来";
+    color: #70b4fa;
+}
+.uploader-video-link.active label .icon-16-link
+{
+    background: url(/images/rc/personal/space/icon-16-bluelink.png) no-repeat center center;
+}
+.rc-upload-content #uploader_video .uploader-video-local
+{
+    margin-top: -1px;
+    height: 50px;
+}
+.rc-upload-content #uploader_video .uploader-video-local .webuploader-pick
+{
+    padding: 0;
+    color: #ccc;
+    background-color: transparent;
+}
+.uploader-video-local .webuploader-pick .icon-16-cloud
+{
+    margin-left: 20px;
+    margin-right: 5px;
+    background: url(/images/rc/personal/space/icon-16-greycloud.png) no-repeat center center;
+}
+.rc-upload-content #uploader_video .uploader-video-local.active  .webuploader-pick
+{
+    color: #70b4fa;
+}
+.uploader-video-local.active .webuploader-pick .icon-16-cloud
+{
+    background: url(/images/rc/personal/space/icon-16-bluecloud.png) no-repeat center center;
+}
+/*==/视频==*/
+/*==文字==*/
+.active .icon-18-pencil
+{
+    background-image: url(/images/rc/icon-18-greenpencil.png);
+}
+/*==/文字==*/
+/*==/人才库空间上传==*/
+
+/*==辅助==*/
+.rc-hide
+{
+    display: none;
+}
+.icon-16
+{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+.icon-18
+{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+.icon-21
+{
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    vertical-align: middle;
+}
+.icon-24
+{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+.icon-26
+{
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    vertical-align: middle;
+}
+.icon-36
+{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+}
+.icon-41
+{
+    display: inline-block;
+    width: 41px;
+    height: 41px;
+    vertical-align: middle;
+}
+.icon-16-greylink
+{
+    background: url(/images/rc/personal/space/icon-16-greylink.png) no-repeat center center;
+}
+.icon-16-bluelink
+{
+    background: url(/images/rc/personal/space/icon-16-bluelink.png) no-repeat center center;
+}
+.icon-16-greycloud
+{
+    background: url(/images/rc/personal/space/icon-16-greycloud.png) no-repeat center center;
+}
+.icon-16-bluecloud
+{
+    background: url(/images/rc/personal/space/icon-16-bluecloud.png) no-repeat center center;
+}
+.icon-18-pencil
+{
+    background: url(/images/rc/icon-18-greypencil.png) no-repeat center center;
+}
+.icon-21-camera
+{
+    background: url(/images/rc/icon-21-greycamera.png) no-repeat center center;
+}
+.icon-24-weibo
+{
+    background: url(/images/rc/personal/space/icon-24-weibo.png) no-repeat center center;
+}
+.icon-24-qq
+{
+    background: url(/images/rc/personal/space/icon-24-qq.png) no-repeat center center;
+}
+.icon-24-qqzone
+{
+    background: url(/images/rc/personal/space/icon-24-qqzone.png) no-repeat center center;
+}
+.icon-24-wechat
+{
+    background: url(/images/rc/personal/space/icon-24-wechat.png) no-repeat center center;
+}
+.icon-26-video
+{
+    background: url(/images/rc/icon-26-greyvideo.png) no-repeat center center;
+}
+.icon-36-upload
+{
+    background: url(/images/rc/icon-36-upload.png) no-repeat center center;
+}
+.icon-41-camera
+{
+    background: url(/images/rc/personal/space/icon-41-camera.png) no-repeat center center;
+}
+/*==/辅助==*/
