@@ -186,7 +186,6 @@ use yii\helpers\Html;
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
                     {title: '审核状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
                     {
                         title: '审核',
