@@ -16,6 +16,7 @@ use yii\base\Exception;
  * @property string $email
  * @property integer $points
  * @property integer $user_type
+ * @property integer $name_card
  * @property string $wechat_openid
  * @property integer $user_status
  * @property integer $update_at
@@ -51,7 +52,7 @@ class User extends \yii\db\ActiveRecord
         return [
             [['mobile', 'points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
             [['create_at', 'update_at'], 'default', 'value' => time()]
@@ -79,6 +80,7 @@ class User extends \yii\db\ActiveRecord
             'mobile' => '用户手机号码',
             'email' => '用户邮箱',
             'points' => '积分',
+            'name_card' => '名片',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
             'wechat_openid' => '微信Open Id',
             'user_status' => '状态（1-启用；2-禁用）',

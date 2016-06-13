@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Exception;
+use common\lib\Filter;
 
 /**
  * This is the model class for table "{{%goods}}".
@@ -20,6 +21,13 @@ use yii\base\Exception;
  */
 class Goods extends \yii\db\ActiveRecord
 {
+    /**
+     * 商品状态
+     */
+    const STATUS_UPSHELF = 1;//上架
+    const STATUS_OFFSHELF = 2;//下架
+    const STATUS_DELETE = 3;//删除
+
     /**
      * @inheritdoc
      */
@@ -46,7 +54,8 @@ class Goods extends \yii\db\ActiveRecord
             [['redeem_pionts', 'goods_status', 'create_at'], 'integer'],
             [['goods_id'], 'string', 'max' => 40],
             [['name'], 'string', 'max' => 50],
-            [['thumb'], 'string', 'max' => 120]
+            [['thumb'], 'string', 'max' => 120],
+            [['create_at'], 'default', 'value' => time()],
         ];
     }
 
@@ -166,9 +175,9 @@ class Goods extends \yii\db\ActiveRecord
                     return false;
                 }
 
-                if (!empty($data['id'])) {//修改
-                    $id = $data['id'];
-                    $ret = $_mdl->updateAll($data, ['id' => $id]);
+                if (!empty($data['gid'])) {//修改
+                    $id = $data['gid'];
+                    $ret = $_mdl->updateAll($data, ['gid' => $id]);
                 } else {//增加
                     $ret = $_mdl->insert();
                 }
@@ -199,4 +208,82 @@ class Goods extends \yii\db\ActiveRecord
         }
         return false;
     }
+
+    /**
+     * 添加商品
+     * @param $goods array
+     * @return array|boolean
+     */
+    public function _save_goods($goods) {
+        //参数校验
+        if(empty($goods['name']) || strlen($goods['name']) > 50){
+            return ['code' => -20002, 'msg' => '商品名称不符合规范！'];
+        }
+        if(empty($goods['redeem_pionts']) || $goods['redeem_pionts'] < 0){
+            return ['code' => -20003, 'msg' => '兑换积分不正确！'];
+        }
+        if(empty($goods['description'])){
+            return ['code' => -20004, 'msg' => '商品描述不能为空！'];
+        }
+        if(empty($goods['thumb'])){
+            return ['code' => -20005, 'msg' => '请上传商品缩略图'];
+        }
+        if(empty($goods['thumb_list'])){
+            return ['code' => -20006, 'msg' => '请上传商品图片！'];
+        }
+
+        $_save_data = [
+            'goods_id' => static::_gen_goods_id(),
+            'name' => Filter::filters_title($goods['name']),
+            'redeem_pionts' => intval($goods['redeem_pionts']),
+            'description' => Filter::filters_outcontent($goods['description']),
+            'thumb' =>trim($goods['thumb']),
+            'thumb_list' => json_encode($goods['thumb_list']),
+        ];
+        if(isset($goods['gid'])){//更新，否则为添加
+            $_save_data['gid'] = $goods['gid'];
+        }
+
+        //保存信息
+        $res = (new self)->_save($_save_data);
+        if(!$res){
+            return ['code' => -20000, 'msg' => '商品信息保存失败'];
+        }
+        return ['code' => 20000, 'msg' => '商品信息保存成功'];
+
+    }
+
+    /**
+     * 生成商品id
+     * @return sting
+     */
+    public static function _gen_goods_id(){
+        return date('YmdHis', time()) . substr(md5(microtime() . rand(0, 10000)), 0, 5);
+    }
+
+    /**
+     * 审核状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_goods_status($status = 1){
+        switch(intval($status)){
+            case self::STATUS_UPSHELF:
+                $_name = '上架';
+                break;
+            case self::STATUS_OFFSHELF:
+                $_name = '下架';
+                break;
+            case self::STATUS_DELETE:
+                $_name = '删除';
+                break;
+            default:
+                $_name = '上架';
+                break;
+        }
+        return $_name;
+    }
+
+
+
 }

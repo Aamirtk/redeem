@@ -66,7 +66,6 @@ use yii\widgets\LinkPager;
                         <th>序号</th>
                         <th>成员名称</th>
                         <th>成员昵称</th>
-                        <th>所属公司</th>
                         <th>成员角色</th>
                         <th>成员邮箱</th>
                         <th>成员操作</th>
@@ -77,7 +76,6 @@ use yii\widgets\LinkPager;
                                 <td><?= $k ?></td>
                                 <td><a href="<?= Yii::$app->urlManager->createUrl(['team/team/review', 'id' => $v->uid]) ?>" class="btn btn-group review"><?= $v->username ?></a></td>
                                 <td><?= $v->nickname ?></td>
-                                <td><?= $companyarr[$v->company_id] ?></td>
                                 <td><?= $rolearr[$v->role_id] ?></td>
                                 <td><?= $v->email ?></td>
                                 <td>

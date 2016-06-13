@@ -116,6 +116,7 @@ class UserController extends BaseController
                 'name',
                 'mobile',
                 'avatar',
+                'name_card',
                 'email',
                 'points',
                 'wechat' => 'wechat_openid',

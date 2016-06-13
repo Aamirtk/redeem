@@ -15,8 +15,6 @@ require(__DIR__ . '/../../vendor/yiisoft/yii2/Yii.php');
 require(__DIR__ . '/../../common/config/bootstrap.php');
 require(__DIR__ . '/../config/bootstrap.php');
 
-//引入Sphinx常量定义文件
-require(__DIR__.'/../../common/config/sphinx_define.php');
 $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../../common/config/main.php'),
     require(__DIR__ . '/../../common/config/main-local.php'),

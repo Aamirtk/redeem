@@ -20,7 +20,7 @@ class Team extends ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('db_uc');
+        return Yii::$app->get('db');
     }
 
     //查找username名称是否唯一

@@ -10,18 +10,26 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => '/home/default/index',
+    'defaultRoute' => '/redeem/home/index',
     'controllerNamespace' => 'frontend\controllers',
-    'modules' => require(__DIR__ . '/../../common/config/modules.php'),
+    'modules' => [
+        //积分兑换
+        'redeem' => [
+            'class' => 'frontend\modules\redeem\Module',
+        ],
+    ],
     'components' => [
-        'db_uc' => require(__DIR__ . '/../../common/config/db_uc.php'),
-        'db_keke' => require(__DIR__ . '/../../common/config/db_keke.php'), 
+        'db' => require(__DIR__ . '/../../common/config/db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                "<module:\w+>/<controller:\w+>/<action:\D+>" => "<module>/<controller>/<action>",
+                "<controller:\w+>/<action:\w+>/<id:\d+>" => "redeem/<controller>/<action>",
+                "<controller:\w+>/<action:\w+>" => "redeem/<controller>/<action>",
             ],
         ],
+
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,

@@ -6,17 +6,18 @@ use yii\helpers\Html;
 <head>
     <meta charset="UTF-8">
     <title>用户信息列表</title>
-    <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/page-min.css') ?>
-    <?= Html::jsFile('@web/js/jquery.js') ?>
-    <?= Html::jsFile('@web/assets/js/bui-min.js') ?>
-    <?= Html::jsFile('@web/js/common/common.js?v=1.0.0') ?>
-    <?= Html::jsFile('@web/js/tools.js') ?>
+    <link href="/css/dpl.css" rel="stylesheet">
+    <link href="/css/bui.css" rel="stylesheet">
+    <link href="/css/page-min.css" rel="stylesheet">
+    <script src="/js/jquery.js" type="text/javascript"></script>
+    <script src="/js/bui-min.js" type="text/javascript"></script>
+    <script src="/js/page-min.js" type="text/javascript"></script>
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/tools.js" type="text/javascript"></script>
     <style>
         .user_avatar {
-            height: auto;
-            width: 80px;
+            width: 120px;
+            height: 80px;
             margin: 10px auto;
         }
     </style>
@@ -166,10 +167,18 @@ use yii\helpers\Html;
                     {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
                         title: '微信头像',
-                        width: 120,
+                        width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
                             return "<img class='user_avatar' src='"+ obj.avatar +"'>";
+                        }
+                    },
+                    {
+                        title: '名片',
+                        width: 140,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
@@ -178,8 +187,6 @@ use yii\helpers\Html;
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
                     {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
-                    {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
-                    {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
                     {
                         title: '操作',
@@ -292,7 +299,7 @@ function showUserInfo(uid) {
 }
 
 /**
- * 显示用户详情
+ * 更改用户详情
  */
 function updateUser(uid) {
     var width = 400;

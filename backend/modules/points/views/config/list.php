@@ -6,13 +6,14 @@ use yii\helpers\Html;
 <head>
     <meta charset="UTF-8">
     <title>积分类型列表</title>
-    <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
-    <?= Html::cssFile('@web/assets/css/page-min.css') ?>
-    <?= Html::jsFile('@web/Js/jquery.js') ?>
-    <?= Html::jsFile('@web/assets/js/bui-min.js') ?>
-    <?= Html::jsFile('@web/Js/common/common.js?v=1.0.0') ?>
-    <?= Html::jsFile('@web/Js/tools.js') ?>
+    <link href="/css/dpl.css" rel="stylesheet">
+    <link href="/css/bui.css" rel="stylesheet">
+    <link href="/css/page-min.css" rel="stylesheet">
+    <script src="/js/jquery.js" type="text/javascript"></script>
+    <script src="/js/bui-min.js" type="text/javascript"></script>
+    <script src="/js/page-min.js" type="text/javascript"></script>
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/tools.js" type="text/javascript"></script>
     <script>
         var _ACTMARK="list";
         var _BASE_LIST_URL = "<?php echo yiiUrl('points/config/list') ?>";

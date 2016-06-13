@@ -190,34 +190,15 @@ class IndexController extends Controller
         ];
         $menu[] = [
             'top' => ['商品管理' => 'home'],
-            '会员分类配置' => [
-                ['分类列表' => 'vip/group/list-view'],
-            ],
-            '会员管理' => [
-                ['会员列表' => 'vip/vip/list'],
-                //['会员录入' => 'vip/vip/add'],
-                ['我的录入' => 'vip/vip/list-info'],
-                ['财务审核' => 'vip/vip/list-finance'],
-                ['运营审核' => 'vip/vip/list-operate'],
-            ],
-            '用户管理' => [
-                ['用户列表' => 'user/user/list-view'],
+            '商品管理' => [
+                ['商品列表' => 'goods/goods/list'],
+                ['添加商品' => 'goods/goods/add'],
             ],
         ];
         $menu[] = [
             'top' => ['订单管理' => 'home'],
-            '会员分类配置' => [
-                ['分类列表' => 'vip/group/list-view'],
-            ],
-            '会员管理' => [
-                ['会员列表' => 'vip/vip/list'],
-                //['会员录入' => 'vip/vip/add'],
-                ['我的录入' => 'vip/vip/list-info'],
-                ['财务审核' => 'vip/vip/list-finance'],
-                ['运营审核' => 'vip/vip/list-operate'],
-            ],
-            '用户管理' => [
-                ['用户列表' => 'user/user/list-view'],
+            '订单管理' => [
+                ['订单列表' => 'order/order/list'],
             ],
         ];
         $menu[] = [
@@ -230,38 +211,6 @@ class IndexController extends Controller
             ],
 
         ];
-        $menu[] = [
-            'top' => ['物流管理' => 'home'],
-            '会员分类配置' => [
-                ['分类列表' => 'vip/group/list-view'],
-            ],
-            '会员管理' => [
-                ['会员列表' => 'vip/vip/list'],
-                //['会员录入' => 'vip/vip/add'],
-                ['我的录入' => 'vip/vip/list-info'],
-                ['财务审核' => 'vip/vip/list-finance'],
-                ['运营审核' => 'vip/vip/list-operate'],
-            ],
-            '用户管理' => [
-                ['用户列表' => 'user/user/list-view'],
-            ],
-        ];
-        $menu[] = [
-            'top' => ['会员中心' => 'home'],
-            '会员分类配置' => [
-                ['分类列表' => 'vip/group/list-view'],
-            ],
-            '会员管理' => [
-                ['会员列表' => 'vip/vip/list'],
-                //['会员录入' => 'vip/vip/add'],
-                ['我的录入' => 'vip/vip/list-info'],
-                ['财务审核' => 'vip/vip/list-finance'],
-                ['运营审核' => 'vip/vip/list-operate'],
-            ],
-            '用户管理' => [
-                ['用户列表' => 'user/user/list-view'],
-            ],
-        ];
 
         return $menu;
     }
@@ -271,9 +220,6 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        // echo Yii::$app->user->getId().'<br/>';//获取用户id
-        // echo Yii::$app->user->identity->getUser();//获取用户名
-        // echo Yii::$app->basePath;//获取应用根目录
         return $this->render('index', $this->roleArr());
     }
 
