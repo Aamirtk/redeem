@@ -35,32 +35,47 @@ use common\models\Order;
 
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">订单：</label>
-                        <div class="controls" data-type="city">
-                            <select name="filtertype" id="filtertype">
-                                <option value="">请选择</option>
-                                <option value="1">订单注册ID</option>
-                                <option value="2">订单名称</option>
-                            </select>
-                        </div>
+                        <label class="control-label">商品名称：</label>
                         <div class="controls">
-                            <input type="text" class="control-text" name="filtercontent" id="name">
+                            <input type="text" class="control-text" name="goods_name">
                         </div>
                     </div>
+                    <div class="control-group span12">
+                        <label class="control-label">商品编号：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text" name="goods_id">
+                        </div>
+                    </div>
+
                     <div class="control-group span10">
-                        <label class="control-label">审核状态：</label>
+                        <label class="control-label">订单状态：</label>
                         <div class="controls" >
-                            <select name="checkstatus" id="checkstatus">
+                            <select name="order_status" id="checkstatus">
                                 <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
+                                <?php foreach (Order::_get_status_list() as $key => $name): ?>
+                                    <option value="<?php echo $key ?>"><?php echo  $name ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                     </div>
+
                 </div>
                 <div class="row">
-                    <div class="control-group span20">
+                    <div class="control-group span12">
+                        <label class="control-label">买家姓名：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text" name="buyer_name">
+                        </div>
+                    </div>
+                    <div class="control-group span12">
+                        <label class="control-label">买家手机：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text" name="buyer_phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="control-group span18">
                         <label class="control-label">时间范围：</label>
                         <div class="controls">
                             <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
@@ -72,7 +87,6 @@ use common\models\Order;
                         </div>
                     </div>
                 </div>
-
             </form>
         </div>
         <div class="bui-grid-tbar">
@@ -124,16 +138,18 @@ use common\models\Order;
                     {title: '订单编号', dataIndex: 'oid', width: 80, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
-                    {title: '购买人姓名', dataIndex: 'buyer_name', width: 90, elCls : 'center',},
-                    {title: '购买人手机', dataIndex: 'buyer_phone', width: 90, elCls : 'center',},
+                    {title: '买家姓名', dataIndex: 'buyer_name', width: 90, elCls : 'center',},
+                    {title: '买家手机', dataIndex: 'buyer_phone', width: 120, elCls : 'center',},
                     {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
+                    {title: '物流编号', dataIndex: '', width: 140, elCls : 'center'},
                     {title: '收货地址', dataIndex: 'address', width: 160},
-                    {title: '创建时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
+                    {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
                             return "<a class='button button-primary' onclick='updateOrder(" + obj.oid + ")'>编辑</a>" +
+                            "<a class='button button-info' onclick=''>物流</a>" +
                             " <a class='button button-danger' onclick='del(" + obj.oid + ")'>删除</a>";
                         }
                     }

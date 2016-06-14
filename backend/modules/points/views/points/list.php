@@ -33,7 +33,7 @@ use yii\helpers\Html;
 
         </div>
         <div class="bui-grid-tbar">
-            <a class="button button-primary" title="添加积分类型"  href="#" onclick="addPoints()" id="addVip1">添加积分类型</a>
+            <a class="button button-primary" title="添加积分对象"  href="#" onclick="addPoints()" id="addVip1">添加积分对象</a>
         </div>
         <div class="bui-grid-tbar">
         </div>

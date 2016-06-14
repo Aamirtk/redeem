@@ -2,6 +2,7 @@
 
 namespace backend\modules\order\controllers;
 
+use frontend\modules\personal\models\Goods;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
@@ -66,42 +67,37 @@ class OrderController extends BaseController
         $page = $this->_request('page', 0);
         $pageSize = $this->_request('pageSize', 10);
         $offset = $page * $pageSize;
-        $memTb = $mdl::tableName();
-        $teamTb = Team::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', $memTb . '.created_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', 'update_at', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', $memTb . '.created_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', 'update_at', strtotime($search['uptimeEnd'])]);
             }
-            if (isset($search['grouptype'])) //时间范围
+            if (isset($search['goods_id'])) //商品编号
             {
-                $query = $query->andWhere(['group_id' => $search['grouptype']]);
+                $query = $query->andWhere(['goods_id' => $search['goods_id']]);
             }
-            if (isset($search['filtertype']) && !empty($search['filtercontent'])) {
-                if ($search['filtertype'] == 2)//按照订单名称筛选
-                {
-                    $query = $query->andWhere(['like', $memTb . '.name', trim($search['filtercontent'])]);
-                } elseif ($search['filtertype'] == 1)//按照订单ID筛选
-                {
-                    $query = $query->andWhere([$memTb . '.username' => trim($search['filtercontent'])]);
-                }
-            }
-            if (isset($search['inputer']) && !empty($search['inputer'])) {
-                $query = $query->andWhere(['like', $teamTb . '.nickname', trim($search['filtercontent'])]);
-            }
-            if (isset($search['inputercompany'])) //筛选条件
+            if (isset($search['order_status'])) //订单状态
             {
-                $query = $query->andWhere([$teamTb . '.company_id' => $search['inputercompany']]);
+                $query = $query->andWhere(['order_status' => $search['order_status']]);
             }
-            if (isset($search['checkstatus'])) //筛选条件
+            if (isset($search['goods_name'])) //商品名称
             {
-                $query->andWhere([$memTb . '.check_status' => $search['checkstatus']]);
+                $query = $query->andWhere(['like', 'goods_name', $search['goods_name']]);
+            }
+            if (isset($search['buyer_name'])) //购买者名称
+            {
+                $query = $query->andWhere(['like', 'buyer_name', $search['buyer_name']]);
+            }
+            if (isset($search['buyer_phone'])) //购买者手机
+            {
+                $query = $query->andWhere(['buyer_phone' => $search['buyer_phone']]);
             }
         }
+
         //只能是上架，或者下架的产品
         $query->andWhere(['is_deleted' => $mdl::NO_DELETE]);
         $_order_by = 'oid DESC';

@@ -227,7 +227,6 @@ class PointsController extends BaseController
             'typeList' => $typeList,
             'is_goods' => $points['type'] == $mdl::POINTS_PRAISE ? true : false
         ];
-        lg($_data);
         return $this->render('edit', $_data);
     }
 
