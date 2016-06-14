@@ -270,6 +270,18 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
+     * 审核类型列表
+     * @return array|boolean
+     */
+    public static function _get_auth_type_list(){
+        return [
+            self::CHECK_PASS => '审核通过',
+            self::CHECK_UNPASS => '审核未通过',
+            self::CHECK_WAITING => '待审核',
+        ];
+    }
+
+    /**
      * 保存审核状态
      * @param $auth_id int 审核记录id
      * @param $auth_status int 认证记录id

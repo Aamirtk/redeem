@@ -66,8 +66,6 @@ class UserController extends BaseController
         $page = $this->_request('page', 0);
         $pageSize = $this->_request('pageSize', 10);
         $offset = $page * $pageSize;
-        $memTb = $mdl::tableName();
-        $teamTb = Team::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
@@ -85,11 +83,14 @@ class UserController extends BaseController
             {
                 $query = $query->andWhere(['user_status' => $search['user_status']]);
             }
-            if (isset($search['nick'])) //用户状态
+            if (isset($search['mobile'])) //手机号码
             {
-                 $query = $query->andWhere(['like', 'nick', $search['nick']]);
+                $query = $query->andWhere(['mobile' => $search['mobile']]);
             }
-            
+            if (isset($search['name'])) //用户名称
+            {
+                 $query = $query->andWhere(['like', 'name', $search['name']]);
+            }
         }
 
         $_order_by = 'uid ASC';

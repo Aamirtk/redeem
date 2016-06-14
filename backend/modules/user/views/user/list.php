@@ -34,9 +34,15 @@ use common\models\User;
             <form id="usersearch" class="form-horizontal">
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">微信昵称：</label>
+                        <label class="control-label">姓名：</label>
                         <div class="controls" data-type="city">
-                            <input type="text" class="control-text" name="nick" id="name">
+                            <input type="text" class="control-text" name="name" id="name">
+                        </div>
+                    </div>
+                    <div class="control-group span10">
+                        <label class="control-label">手机号：</label>
+                        <div class="controls" data-type="city">
+                            <input type="text" class="control-text" name="mobile" id="name">
                         </div>
                     </div>
                     <div class="control-group span10">
@@ -50,6 +56,8 @@ use common\models\User;
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="control-group span10">
                         <label class="control-label">用户状态：</label>
                         <div class="controls" >
@@ -61,8 +69,6 @@ use common\models\User;
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="control-group span16">
                         <label class="control-label">时间范围：</label>
                         <div class="controls">
