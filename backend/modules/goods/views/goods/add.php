@@ -15,6 +15,8 @@ use yii\helpers\Html;
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
     <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.all.js"></script>
     <style>
         .user_avatar {
             width: 120px;
@@ -110,48 +112,14 @@ use yii\helpers\Html;
                 <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}">
             </div>
         </div>
-        <div class="control-group">
+        <div class="control-group" id="description_content">
             <label class="control-label">商品描述：</label>
-<!--            <div class="controls  control-row-auto">-->
-<!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
-<!--            </div>-->
-
             <div class="controls  control-row-auto">
-                <?php echo common\widgets\ueditor\UEditor::widget([
-                    'id' => 'test112',
-                    'name' => 'goods[description]',
-                    'value' => '',
-                    'clientOptions' => [
-                        'serverUrl' => '/shop/goods/upload?upload_type=2&shop_id=255&goods_id=967b0151781aac654a4b1f94b7d0632f&username=86140469',
-                        //编辑区域大小
-                        'initialFrameWidth' => '400',
-                        'initialFrameHeight' => '300',
-                        //设置语言
-                        'lang' => 'zh-cn', //中文为 zh-cn
-                        //定制菜单
-                        'toolbars' => [
-                            [
-                                'fullscreen', 'undo', 'redo', '|',
-                                'fontsize',
-                                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat', '|',
-                                'justifyleft', 'justifycenter', 'justifyright', '|',
-                                'simpleupload', '|',
-                                'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|',
-                                'forecolor', 'backcolor'
-                            ],
-                        ]
-                    ],
-                    'inputOptions' => [
-                        'class' => 'required',
-                        'name' => 'goods[description]',
-                        'data-Messages' => '请输入商品描述',
-                    ],
-                ]); ?>
+<!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
+                <script type="text/plain" id="editor_content" name="goods[description]"></script>
             </div>
-
-
-
         </div>
+
         <div class="row actions-bar">
             <div class="form-actions span13 offset3">
                 <button type="submit" class="button button-primary" id="save-goods">保存</button>
@@ -194,6 +162,14 @@ use yii\helpers\Html;
     <!-- script end -->
 
     <script>
+        $(function () {
+            var editor = UE.getEditor('editor_content', {
+                "initialFrameWidth": "700",
+                "initialFrameHeight": "360",
+                "lang": "zh-cn",
+            });
+        })
+
         $(function () {
             /*上传缩略图*/
             var uploader = WebUploader.create({

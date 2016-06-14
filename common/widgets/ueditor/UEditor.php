@@ -57,6 +57,7 @@ class UEditor extends InputWidget
     protected function registerClientScript()
     {
         UEditorAsset::register($this->view);
+        lg($this->view);
 
         $clientOptions = Json::encode($this->clientOptions);
         $script = "UE.getEditor('" . $this->id . "', " . $clientOptions . ")";

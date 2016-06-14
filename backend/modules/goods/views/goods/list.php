@@ -152,7 +152,6 @@ use yii\helpers\Html;
                     },
                     {title: '兑换积分', dataIndex: 'redeem_pionts', width: 90, elCls : 'center'},
                     {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '商品描述', dataIndex: 'description', width: 160},
                     {title: '创建时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
                     {
                         title: '操作',

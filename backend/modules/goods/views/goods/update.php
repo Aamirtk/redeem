@@ -15,6 +15,8 @@ use yii\helpers\Html;
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
     <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.all.js"></script>
     <style>
         .user_avatar {
             width: 120px;
@@ -132,10 +134,11 @@ use yii\helpers\Html;
                 <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['redeem_pionts'] ?>">
             </div>
         </div>
-        <div class="control-group">
+        <div class="control-group" id="description_content">
             <label class="control-label">商品描述：</label>
             <div class="controls  control-row-auto">
-                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}" value="<?php echo $goods['description'] ?>"></textarea>
+                <!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
+                <script type="text/plain" id="editor_content" name="goods[description]"></script>
             </div>
         </div>
         <div class="row actions-bar">
@@ -180,6 +183,17 @@ use yii\helpers\Html;
     <!-- script end -->
 
     <script>
+        $(function () {
+            var editor = UE.getEditor('editor_content', {
+                "initialFrameWidth": "700",
+                "initialFrameHeight": "360",
+                "lang": "zh-cn",
+            });
+            editor.ready(function(){
+                editor.setContent('<?php echo $goods['description'] ?>');
+            });
+        })
+
         $(function () {
             /*上传缩略图*/
             var uploader = WebUploader.create({

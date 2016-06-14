@@ -26,6 +26,7 @@ class FileController extends BaseController
     public function actionUpload() {
         $objtype = trim($this->_request('objtype', 'pictures', true));
         $up_mdl = new Upload();
+
         $ret = $up_mdl->upload(yiiParams('img_save_dir'), $objtype);
         if ($ret['code'] > 0) {
             $this->_json(20000, $ret['msg'], $ret['data']);
