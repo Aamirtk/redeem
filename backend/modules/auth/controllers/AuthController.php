@@ -91,7 +91,7 @@ class AuthController extends BaseController
             }
         }
 
-        $_order_by = 'auth_id ASC';
+        $_order_by = 'auth_id DESC';
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)

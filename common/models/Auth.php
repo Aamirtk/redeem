@@ -60,7 +60,8 @@ class Auth extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'mobile', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
+            [['uid', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
+            [['mobile'], 'string', 'max' => 11],
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
@@ -157,9 +158,7 @@ class Auth extends \yii\db\ActiveRecord
                 foreach ($data as $k => $v) {
                     $_mdl->$k = $v;
                 }
-                if (!$_mdl->validate()) {//校验数据
-                    return false;
-                }
+
                 $ret = $_mdl->insert();
                 if ($ret !== false) {
                     return self::getDb()->getLastInsertID();
@@ -328,7 +327,6 @@ class Auth extends \yii\db\ActiveRecord
                     'wechat_openid' => $auth['wechat_openid'],
                     'update_at' => time(),
                 ]);
-
                 if (!$res) {
                     $transaction->rollBack();
                     throw new Exception('用户信息保存失败');

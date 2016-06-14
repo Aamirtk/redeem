@@ -93,7 +93,7 @@ class UserController extends BaseController
             }
         }
 
-        $_order_by = 'uid ASC';
+        $_order_by = 'uid DESC';
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)

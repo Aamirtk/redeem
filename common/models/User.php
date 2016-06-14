@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Exception;
+use common\models\Auth;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -50,15 +51,14 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mobile', 'points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
+            [['points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
-            [['mobile'], 'unique'],
-            [['wechat_openid'], 'unique'],
-            [['mobile'], 'validateMobile'],
-            [['wechat_openid'], 'validateOpenid'],
+            [['mobile'], 'unique', 'message' => '手机号码已经注册过了'],
+            [['wechat_openid'], 'unique', 'message' => '微信号已经注册过了'],
+            [['create_at', 'update_at'], 'default', 'value' => time()],
         ];
     }
 
@@ -91,42 +91,6 @@ class User extends \yii\db\ActiveRecord
     {
         return Yii::$app->get('db');
     }
-
-    /**
-     * 给mobile字段增加额外条件
-     **/
-    public function validateMobile($attribute, $params)
-    {
-        if (!$this->hasErrors())
-        {
-            $pattern = '/^1[3|5|7|8][0-9]{9}$/';
-//            if(!preg_match($pattern, $this->mobile)){
-//                $this->addError($attribute, '手机号格式不正确');
-//            }
-            $user = (new self)->_get_info(['mobile' => $this->mobile]);
-            if($user){
-                $this->addError($attribute, '手机号码已经注册过了');
-            }
-        }
-    }
-
-    /**
-     * 给mobile字段增加额外条件
-     **/
-    public function validateOpenid($attribute, $params)
-    {
-        if (!$this->hasErrors())
-        {
-            $user = (new self)->_get_info(['wechat_openid' => $this->wechat_openid]);
-            if($user){
-                $this->addError($attribute, '微信已经注册过了');
-            }
-        }
-    }
-
-
-
-
 
     /**
      * 获取信息
@@ -322,6 +286,64 @@ class User extends \yii\db\ActiveRecord
             self::IS_DELETE => '禁用',
         ];
     }
+
+    /**
+     * 新增用户记录
+     *@param $param array
+     * @return array|boolean
+     */
+    public static function _add_user($param){
+        if(empty($param['mobile']) || empty($param['wechat_openid'])){
+            return ['code' => -20001, 'msg' => '参数格式不正确'];
+        }
+
+        $u_mdl = new self;
+        $a_mdl = new Auth();
+
+        //验证手机号
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $param['mobile'])){
+            return ['code' => -20003, 'msg' => '手机号格式不正确'];
+        }
+
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //用户表插入记录
+            $u_mdl->mobile = $param['mobile'];
+            $u_mdl->wechat_openid = $param['wechat_openid'];
+            if(!$u_mdl->validate()){
+                $error = $u_mdl->errors;
+                $msg = current($error)[0];//获取错误信息
+                return ['code' => -20004, 'msg' => $msg];
+            }
+            if(!$u_mdl->save()){
+                $transaction->rollBack();
+                throw new Exception('用户信息保存失败');
+            }
+            $uid = self::getDb()->getLastInsertID();
+
+            //认证表插入记录
+            $param['uid'] = $uid;
+            $res_a = $a_mdl->_save($param);
+            if(!$res_a){
+                $transaction->rollBack();
+                throw new Exception('认证信息保存失败');
+            }
+
+            //执行
+            $transaction->commit();
+            return ['code' => 20001, 'msg' => '保存成功！'];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+
+    }
+
+
 
 
 
