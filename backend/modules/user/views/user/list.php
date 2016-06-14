@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use common\models\User;
 ?>
 <!doctype html>
 <html>
@@ -33,65 +34,42 @@ use yii\helpers\Html;
             <form id="usersearch" class="form-horizontal">
                 <div class="row">
                     <div class="control-group span12">
+                        <label class="control-label">微信昵称：</label>
+                        <div class="controls" data-type="city">
+                            <input type="text" class="control-text" name="nick" id="name">
+                        </div>
+                    </div>
+                    <div class="control-group span10">
+                        <label class="control-label">用户类型：</label>
+                        <div class="controls" >
+                            <select name="user_type" id="grouptype">
+                                <option value="">请选择</option>
+                                <?php foreach (User::_get_user_type_list() as $key => $name): ?>
+                                    <option value="<?php echo $key ?>"><?php echo $name ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group span10">
+                        <label class="control-label">用户状态：</label>
+                        <div class="controls" >
+                            <select name="user_status" id="checkstatus">
+                                <option value="">请选择</option>
+                                <?php foreach (User::_get_user_status_list() as $key => $name): ?>
+                                    <option value="<?php echo $key ?>"><?php echo  $name ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="control-group span16">
                         <label class="control-label">时间范围：</label>
                         <div class="controls">
                             <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <label class="control-label">用户等级：</label>
-                        <div class="controls" >
-                            <select name="grouptype" id="grouptype">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $val): ?>
-                                    <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span12">
-                        <label class="control-label">销售员：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="inputer" id="inputer">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">用户：</label>
-                        <div class="controls" data-type="city">
-                            <select name="filtertype" id="filtertype">
-                                <option value="">请选择</option>
-                                <option value="1">用户注册ID</option>
-                                <option value="2">用户名称</option>
-                            </select>
-                        </div>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="filtercontent" id="name">
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">审核状态：</label>
-                        <div class="controls" >
-                            <select name="checkstatus" id="checkstatus">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">所属公司：</label>
-                        <div class="controls" >
-                            <select name="inputercompany" id="inputercompany">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
+
                     <div class="control-group span10">
                         <button type="button" id="btnSearch" class="button button-primary"  onclick="searchUsers()">查询</button>
                     </div>
@@ -178,7 +156,7 @@ use yii\helpers\Html;
                         width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
+                            return "<img class='user_avatar'  src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
@@ -187,18 +165,18 @@ use yii\helpers\Html;
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
                     {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
-                    {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
+                    {title: '更新时间', dataIndex: 'update_at', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.status == 1){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
+                            if(parseInt(obj.status) == <?php echo User::NO_DELETE ?>){
+                                return "<a class='button button-success' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
                                 " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
                                 " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
-                            }else if(obj.status == 2){
-                                return "<a class='button button-info' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
+                            }else if(parseInt(obj.status) == <?php echo User::IS_DELETE ?>){
+                                return "<a class='button button-success' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
+                                " <a class='button button-info' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
                                 " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
                             }
 
@@ -372,7 +350,6 @@ function disableUser(uid) {
     }, 'error');
 
 }
-
 
 </script>
 

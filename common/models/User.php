@@ -244,6 +244,18 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * 用户类型列表
+     * @return array|boolean
+     */
+    public static function _get_user_type_list(){
+        return [
+            self::TYPE_COMMON => '普通用户',
+            self::TYPE_SELLER => '销售',
+            self::TYPE_DESIGNER => '家装设计师',
+        ];
+    }
+
+    /**
      * 用户状态
      * @param $status int
      * @return array|boolean
@@ -253,7 +265,7 @@ class User extends \yii\db\ActiveRecord
             case self::NO_DELETE:
                 $_name = '启用';
                 break;
-            case self::TYPE_SELLER:
+            case self::IS_DELETE:
                 $_name = '禁用';
                 break;
             default:
@@ -261,6 +273,17 @@ class User extends \yii\db\ActiveRecord
                 break;
         }
         return $_name;
+    }
+
+    /**
+     * 用户状态列表
+     * @return array|boolean
+     */
+    public static function _get_user_status_list(){
+        return [
+            self::NO_DELETE => '启用',
+            self::IS_DELETE => '禁用',
+        ];
     }
 
 

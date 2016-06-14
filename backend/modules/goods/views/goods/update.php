@@ -78,7 +78,7 @@ use yii\helpers\Html;
                 <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $goods['name'] ?>">
             </div>
         </div>
-        
+
         <div class="control-group">
             <label class="control-label"><s>*</s>兑换积分：</label>
             <div class="controls">
