@@ -80,6 +80,13 @@ use yii\helpers\Html;
         </div>
         
         <div class="control-group">
+            <label class="control-label"><s>*</s>兑换积分：</label>
+            <div class="controls">
+                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['redeem_pionts'] ?>">
+            </div>
+        </div>
+        
+        <div class="control-group">
             <label class="control-label"><s>*</s>商品缩略图：</label>
             <div id="thumbpic" class="controls">
                 <span class="button button-primary">上传图片</span>
@@ -128,12 +135,6 @@ use yii\helpers\Html;
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>兑换积分：</label>
-            <div class="controls">
-                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['redeem_pionts'] ?>">
-            </div>
-        </div>
         <div class="control-group" id="description_content">
             <label class="control-label">商品描述：</label>
             <div class="controls  control-row-auto">
