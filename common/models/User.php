@@ -55,7 +55,9 @@ class User extends \yii\db\ActiveRecord
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
-            [['create_at', 'update_at'], 'default', 'value' => time()]
+            [['create_at', 'update_at'], 'default', 'value' => time()],
+            ['mobile', 'unique'],
+            ['wechat_openid', 'unique'],
         ];
     }
 
@@ -181,9 +183,6 @@ class User extends \yii\db\ActiveRecord
             try {
                 foreach ($data as $k => $v) {
                     $_mdl->$k = $v;
-                }
-                if(!$_mdl->validate()) {//校验数据
-                    return false;
                 }
 
                 if (!empty($data['uid'])) {//修改

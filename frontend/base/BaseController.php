@@ -14,75 +14,24 @@ class BaseController extends Controller
 {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
+    public $open_id = '';//微信公众号
 
-//    public function behaviors()
-//    {
-//        $actions = $this->limitActions();
-//        if (empty($actions))
-//        {
-//            return true;
-//        }
-//        else
-//        {
-//            return [
-//                'access' => [
-//                    'class' => AccessControl::className(),
-//                    'rules' => [
-//                        [
-//                            'actions' => $actions,
-//                            'allow' => true,
-//                            'matchCallback' => function ($rule, $action)
-//                            {
-//                                $prilist = Role::prilist();
-//                                $route = $this->module->id . '/' . $this->id . '/' . $this->action->id;
-//                                $privilege = Privilege::findOne(['route' => $route]);
-//                                $isSuperAdmin = false;
-//                                if (Yii::$app->user->identity->uid == 1 && Yii::$app->user->identity->role_id == 1)
-//                                {
-//                                    $isSuperAdmin = true;
-//                                }
-//                                //超级管理
-//                                if ($isSuperAdmin)
-//                                {
-//                                    return true;
-//                                }
-//                                //无权限配置或权限配置为空也是超管
-//                                elseif (empty($privilege) || !$prilist)
-//                                {
-//                                    return true;
-//                                }
-//                                elseif (!empty($privilege) && in_array($privilege->id, $prilist))
-//                                {
-//                                    return true;
-//                                }
-//                                else
-//                                {
-//                                    if (isset($_GET['ajax']))
-//                                    {
-//                                        $result = ['result' => false, 'message' => '对不起！权限错误或访问未授权！如有需要请联系管理员'];
-//                                        echo json_encode($result);
-//                                    }
-//                                    else
-//                                    {
-//                                        echo "对不起！访问未授权！如有需要请联系管理员";
-//                                    }
-//                                    die();
-//                                }
-//                            }
-//                        ]
-//                    ]
-//                ]
-//            ];
-//        }
-//    }
 
     /**
-     * 限制action数组，用于权限过滤，子类可以重写
-     * @return array 限制actions数组
+     * 初始化
      */
-    public function limitActions()
+    public function init()
     {
-        return [];
+
+    }
+
+    /**
+     * 获取微信公众号
+     * @return string
+     */
+    public function _get_openid()
+    {
+        return md5(time() + rand(1, 1000));
     }
 
     /**
