@@ -242,6 +242,16 @@ class Points extends \yii\db\ActiveRecord
         return false;
     }
 
+    /**
+     * 获取积分
+     * @param $type int
+     * @return array|boolean
+     */
+    public static function _get_points($type) {
+        return self::find()->select('points')
+            ->where(['type' => $type])
+            ->scalar();
+    }
 
 
 }

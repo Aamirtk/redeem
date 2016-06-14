@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\base\Exception;
 use common\models\Auth;
+use common\models\Points;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -313,6 +314,7 @@ class User extends \yii\db\ActiveRecord
             //用户表插入记录
             $u_mdl->mobile = $param['mobile'];
             $u_mdl->wechat_openid = $param['wechat_openid'];
+            $u_mdl->points = Points::_get_points(Points::POINTS_MOBILEAUTH);;
             if(!$u_mdl->validate()){
                 $error = $u_mdl->errors;
                 $msg = current($error)[0];//获取错误信息
@@ -334,7 +336,8 @@ class User extends \yii\db\ActiveRecord
 
             //执行
             $transaction->commit();
-            return ['code' => 20001, 'msg' => '保存成功！'];
+
+            return ['code' => 20001, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
 
         } catch (Exception $e) {
             $transaction->rollBack();
@@ -342,10 +345,5 @@ class User extends \yii\db\ActiveRecord
         }
 
     }
-
-
-
-
-
 
 }

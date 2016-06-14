@@ -43,8 +43,11 @@ class UserController extends BaseController
             'wechat_openid' => $opend_id,
         ];
         $res = (new User())->_add_user($param);
+        if($res['code'] < 0 ){
+            $this->_json($res['code'], $res['msg']);
+        }
+        $this->_json($res['code'], $res['msg'], $res['data']);
 
-        $this->_json($res['code'], $res['msg']);
     }
 
     /**

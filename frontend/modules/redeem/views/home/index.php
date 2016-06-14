@@ -10,11 +10,11 @@
     <meta name="x5-fullscreen" content="true">
     <meta name="browsermode" content="application">
     <meta name="x5-page-mode" content="app">
-    <link rel="stylesheet" type="text/css" href="css/swiper-3.3.1.min.css">
-    <link rel="stylesheet" type="text/css" href="css/header.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/swiper-3.3.1.jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/swiper-3.3.1.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/swiper-3.3.1.jquery.min.js"></script>
     <script type="text/javascript">
         $(function(){
             var mySwiper = new Swiper('.banner', {
@@ -36,67 +36,56 @@
 <body>
 <div class="body-All">
     <header>
-        <div class="left"><a><img src="images/search.png"></a></div>
-        <img src="images/logo.png" class="logo">
+        <div class="left"><a><img src="/images/search.png"></a></div>
+        <img src="/images/logo.png" class="logo">
         <div class="right">
-            <a href="个人中心.html"><img src="images/icon07.png"></a>
-            <a href="购物车.html"><img src="images/icon06.png"></a>
+            <a href="/redeem/my/index?uid=<?php echo $user['uid'] ?>"><img src="/images/icon07.png"></a>
+            <a href="/redeem/cart/list"><img src="/images/icon06.png"></a>
         </div>
     </header>
     <div class="search-box">
         <input type="text" placeholder="请输入您想要搜索的产品">
-        <img src="images/search01.png">
+        <img src="/images/search01.png">
     </div>
     <div class="banner top">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="images/banner.png"></div>
-            <div class="swiper-slide"><img src="images/head_portrait.png"></div>
+            <div class="swiper-slide"><img src="/images/banner.png"></div>
+            <div class="swiper-slide"><img src="/images/head_portrait.png"></div>
         </div>
     </div>
     <div class="personal-container">
         <div class="personal">
             <div class="personal-left">
                 <div class="head_portrait">
-                    <img src="images/head_portrait.png">
+                    <img src="<?php echo _value($user['avatar'], '/images/head_portrait.png', true) ?>">
                 </div>
                 <div class="text">
-                    <div><span>张玛丽</span></div>
-                    <div class="integral"><span>我的积分：</span><span class="color">61000</span></div>
+                    <div><span><?php echo $user['name'] . '哈哈' ?></span></div>
+                    <div class="integral"><span>我的积分：</span><span class="color"><?php echo $user['points'] ?></span></div>
                     <div class="btn"><span>签到赚积分</span></div>
                 </div>
             </div>
             <div class="personal-right">
-                <img src="images/text.png">
+                <img src="/images/text.png">
             </div>
         </div>
     </div>
     <ul class="box">
-        <a href="/goods/view">
-            <li>
-                <div class="pic">
-                    <img src="images/pic05.png">
-                </div>
-                <div class="exchange">我要<br>兑换</div>
-                <div class="go"><img src="images/go1.png"></div>
-                <div class="title">
-                    <div class="text">东芝U盘16G 速闪USB3.0  迷你防水创意车载优盘</div>
-                    <div class="integral"><span>999</span>积分</div>
-                </div>
-            </li>
-        </a>
-        <a href="/goods/view">
-            <li>
-                <div class="pic">
-                    <img src="images/pic05.png">
-                </div>
-                <div class="exchange">我要<br>兑换</div>
-                <div class="go"><img src="images/go1.png"></div>
-                <div class="title">
-                    <div class="text">东芝U盘16G 速闪USB3.0  迷你防水创意车载优盘</div>
-                    <div class="integral"><span>999</span>积分</div>
-                </div>
-            </li>
-        </a>
+        <?php foreach($goods_list as $good): ?>
+            <a href="/redeem/goods/view?gid=<?php echo $good['gid'] ?>">
+                <li>
+                    <div class="pic">
+                        <img src="<?php echo $good['thumb'] ?>">
+                    </div>
+                    <div class="exchange">我要<br>兑换</div>
+                    <div class="go"><img src="/images/go1.png"></div>
+                    <div class="title">
+                        <div class="text"><?php echo $good['name'] ?></div>
+                        <div class="integral"><span><?php echo $good['redeem_pionts'] ?></span>积分</div>
+                    </div>
+                </li>
+            </a>
+        <?php endforeach ?>
     </ul>
 </div>
 </body>

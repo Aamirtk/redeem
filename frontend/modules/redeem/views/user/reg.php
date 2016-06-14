@@ -58,7 +58,8 @@
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/reg', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
-                $._alert('成功提示', json.msg);
+//                $._alert('成功提示', json.msg);
+                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
             }else{
                 $._alert('错误提示', json.msg);
             }

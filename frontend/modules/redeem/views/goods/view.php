@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</title>
+    <title><?php echo $goods['name'] ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="screen-orientation" content="portrait">
@@ -60,21 +60,26 @@
     <div class="box">
         <div class="pic">
             <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="/images/pic02.png"></div>
-                <div class="swiper-slide"><img src="/images/head_portrait.png"></div>
+                <?php
+                    $thumb_list = json_decode($goods['thumb_list']);
+                    if(!empty($thumb_list)){
+                        foreach($thumb_list as $val){
+                ?>
+                        <div class="swiper-slide"><img src="http://www.redeem_back.com/<?php echo $val ?>"></div>
+                <?php }} ?>
             </div>
         </div>
         <div class="title">
-            【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘
+            <?php echo $goods['name'] ?>
         </div>
         <div class="integral">
-            兑换积分：<span>999</span>分
+            兑换积分：<span><?php echo $goods['redeem_pionts'] ?></span>分
         </div>
         <div class="prompt">
             温馨提示：兑换商品在下单之后3日内按照顺序安排发货。
         </div>
         <div class="details">
-            <a href="/goods/detail">图文详情<span>（建议在wifi环境下进行浏览）</span>
+            <a href="/goods/detail?gid=<?php echo $goods['gid'] ?>">图文详情<span>（建议在wifi环境下进行浏览）</span>
                 <img src="/images/go.png"></a>
         </div>
     </div>
