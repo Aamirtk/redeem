@@ -29,13 +29,8 @@ class UserController extends BaseController
             return $this->render('reg', ['open_id' => $opend_id]);
         }
         //保存
-        $mobile = $this->_request('mobile');
+        $mobile = intval($this->_request('mobile'));
         $verifycode = intval($this->_request('verifycode'));
-        //验证手机格式
-        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
-        if(!preg_match($pattern, $mobile)){
-            $this->_json(-20001, '手机号格式不正确');
-        }
         lg($mobile);
         //验证验证码
         $verifycode = 1;
@@ -49,13 +44,13 @@ class UserController extends BaseController
         if(!$user->validate()){
             $error = $user->errors;
             $msg = current($error)[0];//获取错误信息
-            return ['code' =>  -20003, 'msg' => $msg];
+            $this->_json(-20003, $msg);
         }
         if(!$user->save()){
-            return ['code' =>  -20004, 'msg' => '保存失败'];
+            $this->_json(-20004, '保存失败');
         }
 
-        return ['code' =>  20000, 'msg' => '保存成功'];
+        $this->_json(20000, '保存成功');
 
     }
 

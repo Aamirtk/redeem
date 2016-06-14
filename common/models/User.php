@@ -55,18 +55,11 @@ class User extends \yii\db\ActiveRecord
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
-            [['create_at', 'update_at'], 'default', 'value' => time()],
-            ['mobile', 'unique'],
-            ['wechat_openid', 'unique'],
+            [['mobile'], 'unique'],
+            [['wechat_openid'], 'unique'],
+            [['mobile'], 'validateMobile'],
+            [['wechat_openid'], 'validateOpenid'],
         ];
-    }
-
-    /**
-     * @return \yii\db\Connection the database connection used by this AR class.
-     */
-    public static function getDb()
-    {
-        return Yii::$app->get('db');
     }
 
     /**
@@ -81,14 +74,59 @@ class User extends \yii\db\ActiveRecord
             'avatar' => '用户微信头像',
             'mobile' => '用户手机号码',
             'email' => '用户邮箱',
-            'points' => '积分',
             'name_card' => '名片',
+            'points' => '积分',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
             'wechat_openid' => '微信Open Id',
             'user_status' => '状态（1-启用；2-禁用）',
+            'update_at' => '更新时间',
             'create_at' => '创建时间',
         ];
     }
+
+    /**
+     * @return \yii\db\Connection the database connection used by this AR class.
+     */
+    public static function getDb()
+    {
+        return Yii::$app->get('db');
+    }
+
+    /**
+     * 给mobile字段增加额外条件
+     **/
+    public function validateMobile($attribute, $params)
+    {
+        if (!$this->hasErrors())
+        {
+            $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+//            if(!preg_match($pattern, $this->mobile)){
+//                $this->addError($attribute, '手机号格式不正确');
+//            }
+            $user = (new self)->_get_info(['mobile' => $this->mobile]);
+            if($user){
+                $this->addError($attribute, '手机号码已经注册过了');
+            }
+        }
+    }
+
+    /**
+     * 给mobile字段增加额外条件
+     **/
+    public function validateOpenid($attribute, $params)
+    {
+        if (!$this->hasErrors())
+        {
+            $user = (new self)->_get_info(['wechat_openid' => $this->wechat_openid]);
+            if($user){
+                $this->addError($attribute, '微信已经注册过了');
+            }
+        }
+    }
+
+
+
+
 
     /**
      * 获取信息
