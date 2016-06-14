@@ -210,7 +210,7 @@ use yii\helpers\Html;
                 //文件数量
                 fileNumLimit: 1,
                 //文件大小 byte
-                fileSizeLimit: 2 * 1024 * 1024,
+                fileSizeLimit: 5 * 1024 * 1024,
                 // 只允许选择图片文件。
                 accept: {
                     title: 'Images',
@@ -248,6 +248,9 @@ use yii\helpers\Html;
                         '</div>'+
                         '</div>';
                     $('#thumbpic-content').append(div);
+                    uploaderlist.addButton({
+                        id: '#thumblistpic'
+                    });
                     $('.img-delete').off('click').on('click', function(){
                         var dom = $(this);
                         var filePath = dom.attr('file-path');
@@ -285,7 +288,7 @@ use yii\helpers\Html;
                 //文件数量
                 fileNumLimit: 5,
                 //文件大小 byte
-                fileSizeLimit: 2 * 1024 * 1024,
+                fileSizeLimit: 5 * 1024 * 1024,
                 // 只允许选择图片文件。
                 accept: {
                     title: 'Images',
