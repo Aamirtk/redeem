@@ -178,7 +178,7 @@ use yii\helpers\Html;
                         width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
+                            return "<img class='user_avatar name_card'  onclick='viewNameCard(this)' src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
@@ -223,6 +223,7 @@ use yii\helpers\Html;
 </script>
 
 <script>
+
 /**
  * 搜索用户,刷新列表
  */
@@ -260,7 +261,7 @@ function getAuthGridSearchConditions() {
  */
 function showCheckInfo(auth_id) {
     var width = 700;
-    var height = 450;
+    var height = 500;
     var Overlay = BUI.Overlay;
     var buttons = [
         {
@@ -366,6 +367,37 @@ function checkUnPass(auth_id) {
         ],
     });
     dialog_reason.show();
+}
+
+
+/**
+ * 查看名片
+ */
+function viewNameCard(dom){
+    var src = $(dom).attr('src');
+    BUI.use('bui/overlay',function(Overlay){
+        var dialog = new Overlay.Dialog({
+            title:'名片',
+            width:600,
+            height:500,
+            closeAction: 'destroy',
+            buttons: [
+                {
+                    text:'确认',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                        this.close();
+                    }
+                },
+            ],
+            //配置文本
+            bodyContent:'<div style="text-align: center"><img style="width: 560px; height:400px;" src="'+ src +'"></div>',
+            success:function () {
+                this.close();
+            }
+        });
+        dialog.show();
+    });
 }
 
 </script>

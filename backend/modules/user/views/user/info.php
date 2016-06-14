@@ -4,11 +4,15 @@
         width: 140px;
         display: block;
         margin-bottom: 20px;
+        margin-right: 160px;
     }
     .avatar_img{
-        height: auto;
-        width: 100px;
-        margin: 0 auto 80px 120px;
+        height: 100px;
+        width: 120px;
+        margin: 10px 40px;
+    }
+    .pic-content{
+        margin-bottom: 15px;
     }
 
 
@@ -30,12 +34,21 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pic-content">
 
-            <div class="control-group span8 avatar_content" >
+            <div class="control-group span10 avatar_content" >
                 <label class="control-label">微信头像：</label>
-                <div class="controls ">
+                <div class="controls">
                     <img class="avatar_img" src="<?php echo $user['avatar'] ?>">
+                </div>
+            </div>
+            <div  class="control-group span10 avatar_content" >
+                <label class="control-label " id="upload_img">
+                    名片
+                </label>
+                <div  class="controls " >
+                    <img id="name_card_img" class="avatar_img" onclick="viewNameCard(this)" src="<?php echo $user['name_card'] ?>">
+                    <input id="name_card_input" type="hidden" value="<?php echo $user['name_card'] ?>">
                 </div>
             </div>
         </div>
