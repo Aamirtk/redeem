@@ -141,7 +141,6 @@ use yii\helpers\Html;
                     {title: '商品序号', dataIndex: 'gid', width: 80, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center',},
-                    {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
                         title: '缩略图',
                         width: 140,
@@ -150,9 +149,9 @@ use yii\helpers\Html;
                             return "<img class='user_avatar' src='"+ obj.thumb +"'>";
                         }
                     },
-                    {title: '兑换积分', dataIndex: 'redeem_pionts', width: 90, elCls : 'center'},
+                    {title: '兑换积分', dataIndex: 'redeem_pionts', width: 80, elCls : 'center'},
                     {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '创建时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
+                    {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
