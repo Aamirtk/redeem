@@ -26,6 +26,18 @@ class PointsRecord extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['uid', 'point_id', 'points', 'create_at'], 'integer'],
+            [['points_name'], 'string', 'max' => 50],
+            [['create_at'], 'default', 'value' => time()],
+        ];
+    }
+
+    /**
      * @return \yii\db\Connection the database connection used by this AR class.
      */
     public static function getDb()
@@ -33,18 +45,6 @@ class PointsRecord extends \yii\db\ActiveRecord
         return Yii::$app->get('db');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id'], 'required'],
-            [['id', 'uid', 'point_id', 'points', 'create_at'], 'integer'],
-            [['points_name'], 'string', 'max' => 50],
-            [['create_at'], 'default', 'value' => time()],
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -59,61 +59,6 @@ class PointsRecord extends \yii\db\ActiveRecord
             'points_name' => '积分赠送名称',
             'create_at' => '创建时间',
         ];
-    }
-
-    /**
-     * 获取信息
-     * @param $where array
-     * @return array|boolean
-     **/
-    public function _get_info($where = []) {
-        if (empty($where)) {
-            return false;
-        }
-
-        $obj = self::findOne($where);
-        if (!empty($obj)) {
-            return $obj->toArray();
-        }
-        return false;
-    }
-
-    /**
-     * 获取列表
-     * @param $where array
-     * @param $order string
-     * @return array|boolean
-     */
-    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 20) {
-        $_obj = self::find();
-        if (isset($where['sql']) || isset($where['params'])) {
-            $_obj->where($where['sql'], $where['params']);
-        } else if (is_array($where)) {
-            $_obj->where($where);
-        }
-
-        $_obj->orderBy($order);
-
-        if (!empty($limit)) {
-            $offset = max(($page - 1), 0) * $limit;
-            $_obj->offset($offset)->limit($limit);
-        }
-        return $_obj->asArray(true)->all();
-    }
-
-    /**
-     * 获取总条数
-     * @param $where array
-     * @return int
-     */
-    public function _get_count($where = []) {
-        $_obj = self::find();
-        if (isset($where['sql']) || isset($where['params'])) {
-            $_obj->where($where['sql'], $where['params']);
-        } else {
-            $_obj->where($where);
-        }
-        return intval($_obj->count());
     }
 
     /**
@@ -140,22 +85,6 @@ class PointsRecord extends \yii\db\ActiveRecord
                     return true;
                 }
                 return false;
-            } catch (Exception $e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 删除记录
-     * @param $where array
-     * @return array|boolean
-     */
-    public function _delete($where) {
-        if (!empty($where)) {
-            try {
-                return (new self)->deleteAll($where);
             } catch (Exception $e) {
                 return false;
             }
