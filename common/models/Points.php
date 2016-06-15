@@ -254,10 +254,4 @@ class Points extends \yii\db\ActiveRecord
     }
 
 
-
-
-
-
-
-
 }

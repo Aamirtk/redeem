@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\Exception;
 use common\models\User;
+use common\models\Points;
 
 
 /**
@@ -296,6 +297,11 @@ class Auth extends \yii\db\ActiveRecord
         if (!$auth) {
             return ['code' => -20003, 'msg' => '审核信息不存在'];
         }
+        $user = $mdl_us->_get_info(['uid' => $auth['uid']]);
+        if (!$user) {
+            return ['code' => -20003, 'msg' => '用户信息不存在'];
+        }
+
         //审核通过
         if ($auth_status == $mdl::CHECK_PASS) {
 
@@ -323,6 +329,7 @@ class Auth extends \yii\db\ActiveRecord
                     'name_card' => $auth['name_card'],
                     'mobile' => $auth['mobile'],
                     'email' => $auth['email'],
+                    'points' => $user['points'] + Points::POINTS_IDAUTH,
                     'user_type' => $auth['user_type'],
                     'wechat_openid' => $auth['wechat_openid'],
                     'update_at' => time(),
