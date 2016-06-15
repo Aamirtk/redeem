@@ -32,8 +32,8 @@
             <img src="/images/head_portrait.png">
         </div>
         <div class="basic">
-            <div class="name">张玛丽</div>
-            <div class="integral">我的积分：<span>61000</span></div>
+            <div class="name"><?php echo $user['name'] ?></div>
+            <div class="integral">我的积分：<span><?php echo $user['points'] ?></span></div>
         </div>
     </div>
     <table class="box" cellspacing="0">
@@ -42,26 +42,13 @@
             <th>积分</th>
             <th>操作</th>
         </tr>
-        <tr>
-            <td>2016-05-06</td>
-            <td>+10</td>
-            <td>签到</td>
-        </tr>
-        <tr>
-            <td>2016-05-06</td>
-            <td>+560</td>
-            <td>抽奖</td>
-        </tr>
-        <tr>
-            <td>2016-05-06</td>
-            <td>+80</td>
-            <td>手机认证</td>
-        </tr>
-        <tr>
-            <td>2016-05-06</td>
-            <td>+980</td>
-            <td>身份认证</td>
-        </tr>
+        <?php foreach($record_list as $record): ?>
+            <tr>
+                <td><?php echo date('Y-m-d', $record['create_at']) ?></td>
+                <td>+<?php echo $record['points'] ?></td>
+                <td><?php echo $record['points_name'] ?></td>
+            </tr>
+        <?php endforeach ?>
     </table>
 </div>
 </body>

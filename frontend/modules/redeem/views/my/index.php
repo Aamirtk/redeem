@@ -12,7 +12,7 @@
     <meta name="x5-page-mode" content="app">
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/gerenzhongxin.css">
-    <script src="/jquery-1.11.3.min.js"></script>
+    <script src="/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $('.back').click(function(){
@@ -47,7 +47,7 @@
                 我的地址
                 <img src="/images/go.png" class="go">
             </li></a>
-        <a href="积分管理.html"><li>
+        <a href="/redeem/my/points/?uid=<?php echo $user['uid'] ?>"><li>
                 <img src="/images/icon03.png" class="icon">
                 积分管理
                 <img src="/images/go.png" class="go">

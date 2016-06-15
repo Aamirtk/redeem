@@ -292,7 +292,7 @@ class Points extends \yii\db\ActiveRecord
             $ret = $pr_mdl->_save([
                 'uid' => $uid,
                 'point_id' => $point_id,
-                'points' => $points,
+                'points' => $addnum,
                 'points_name' => self::_get_points_type($point_id),
             ]);
             if(!$ret){
