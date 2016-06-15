@@ -323,7 +323,6 @@ class PointsController extends BaseController
         $ids = $this->_request('ids');
         $mdl = new Points();
         $id_arry = array_values($ids);
-        lg($this->_request());
 
         //参数检验
         if (empty($id_arry))
