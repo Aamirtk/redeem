@@ -339,7 +339,6 @@ class User extends \yii\db\ActiveRecord
             //用户表插入记录
             $u_mdl->mobile = $mobile;
             $u_mdl->wechat_openid = $wechat_openid;
-            $u_mdl->points = Points::_get_points(Points::POINTS_MOBILEAUTH);;
             if(!$u_mdl->validate()){
                 $error = $u_mdl->errors;
                 $msg = current($error)[0];//获取错误信息
@@ -350,6 +349,13 @@ class User extends \yii\db\ActiveRecord
                 throw new Exception('用户信息保存失败');
             }
             $uid = self::getDb()->getLastInsertID();
+
+            //添加积分更新记录
+            $ret = Points::_add_points($uid, Points::POINTS_MOBILEAUTH);
+            if($ret['code'] < 0){
+                $transaction->rollBack();
+                throw new Exception($ret['msg']);
+            }
 
             //认证表插入记录
             $res_a = $a_mdl->_save([
@@ -372,66 +378,6 @@ class User extends \yii\db\ActiveRecord
             return ['code' => -20000, 'msg' => $e->getMessage()];
         }
 
-    }
-
-    /**
-     * 添加积分
-     * @param $uid int 用户id
-     * @param $type int 获取积分类型
-     * @return array|boolean
-     */
-    public static function _add_points($uid, $type) {
-        if(empty($uid) || empty($type)){
-            return false;
-        }
-        $mdl = new self();
-        $user = $mdl->_get_info(['uid' => $uid]);
-        if(!$user){
-            return false;
-        }
-        $points = $user['points'];
-        $addnum = Points::_get_points($type);
-        if(empty($addnum)){
-            return false;
-        }
-        $res = $mdl->_save([
-            'uid' => $uid,
-            'points' => $points + $addnum,
-        ]);
-        if(!$res){
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 更新积分
-     * @param $uid int 用户id
-     * @param $num int 积分数量，可正可负
-     * @return array|boolean
-     */
-    public static function _update_points($uid, $num) {
-        if(empty($uid) || empty($num)){
-            return false;
-        }
-        $mdl = new self();
-        $user = $mdl->_get_info(['uid' => $uid]);
-        if(!$user){
-            return false;
-        }
-        $points = $user['points'];
-        $newpoints = $points + $num;
-        if($newpoints < 0){
-            return false;
-        }
-        $res = $mdl->_save([
-            'uid' => $uid,
-            'points' => $newpoints,
-        ]);
-        if(!$res){
-            return false;
-        }
-        return true;
     }
 
 }

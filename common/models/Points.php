@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\Exception;
-use common\models\User;
+use common\models\PointsRecord;
 
 /**
  * This is the model class for table "{{%points}}".
@@ -251,6 +251,126 @@ class Points extends \yii\db\ActiveRecord
         return self::find()->select('points')
             ->where(['type' => $type])
             ->scalar();
+    }
+
+    /**
+     * 添加积分
+     * @param $uid int 用户id
+     * @param $point_id int 获取积分类型
+     * @return array|boolean
+     */
+    public static function _add_points($uid, $point_id) {
+        if(empty($uid) || empty($point_id)){
+            return false;
+        }
+        $mdl = new User();
+        $user = $mdl->_get_info(['uid' => $uid]);
+        if(!$user){
+            return false;
+        }
+        $points = $user['points'];
+        $addnum = Points::_get_points($point_id);
+        if(empty($addnum)){
+            return false;
+        }
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //用户表更新记录
+            $res = $mdl->_save([
+                'uid' => $uid,
+                'points' => $points + $addnum,
+            ]);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('用户表更新记录失败');
+            }
+
+            //增加积分记录
+            $pr_mdl = new PointsRecord();
+            $ret = $pr_mdl->_save([
+                'uid' => $uid,
+                'point_id' => $point_id,
+                'points' => $points,
+                'points_name' => self::_get_points_type($point_id),
+            ]);
+            if(!$ret){
+                $transaction->rollBack();
+                throw new Exception('积分记录更新失败');
+            }
+
+            //执行
+            $transaction->commit();
+
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 更新积分
+     * @param $uid int 用户id
+     * @param $num int 积分数量，可正可负
+     * @return array|boolean
+     */
+    public static function _update_points($uid, $num) {
+        if(empty($uid) || empty($num)){
+            return false;
+        }
+        $mdl = new User();
+        $user = $mdl->_get_info(['uid' => $uid]);
+        if(!$user){
+            return false;
+        }
+        $points = $user['points'];
+        $newpoints = $points + $num;
+        if($newpoints < 0){
+            return false;
+        }
+        $res = $mdl->_save([
+            'uid' => $uid,
+            'points' => $newpoints,
+        ]);
+        if(!$res){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 积分类型
+     * @param $points_id int
+     * @return array|boolean
+     */
+    public static function _get_points_type($points_id = 1){
+        switch(intval($points_id)){
+            case self::POINTS_CONCERN:
+                $_name = '关注';
+                break;
+            case self::POINTS_IDAUTH:
+                $_name = '身份认证';
+                break;
+            case self::POINTS_MOBILEAUTH:
+                $_name = '手机认证';
+                break;
+            case self::POINTS_SIGNIN:
+                $_name = '签到';
+                break;
+            case self::POINTS_WECHAT:
+                $_name = '分享微信';
+                break;
+            case self::POINTS_PRAISE:
+                $_name = '奖励积分';
+                break;
+            default:
+                $_name = '';
+                break;
+        }
+        return $_name;
     }
 
 

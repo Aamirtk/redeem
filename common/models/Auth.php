@@ -297,7 +297,8 @@ class Auth extends \yii\db\ActiveRecord
         if (!$auth) {
             return ['code' => -20003, 'msg' => '审核信息不存在'];
         }
-        $user = $mdl_us->_get_info(['uid' => $auth['uid']]);
+        $uid = $auth['uid'];
+        $user = $mdl_us->_get_info(['uid' => $uid]);
         if (!$user) {
             return ['code' => -20003, 'msg' => '用户信息不存在'];
         }
@@ -322,14 +323,13 @@ class Auth extends \yii\db\ActiveRecord
 
                 //保存用户信息
                 $res = $mdl_us->_save([
-                    'uid' => $auth['uid'],
+                    'uid' => $uid,
                     'nick' => $auth['nick'],
                     'name' => $auth['name'],
                     'avatar' => $auth['avatar'],
                     'name_card' => $auth['name_card'],
                     'mobile' => $auth['mobile'],
                     'email' => $auth['email'],
-                    'points' => $user['points'] + Points::POINTS_IDAUTH,
                     'user_type' => $auth['user_type'],
                     'wechat_openid' => $auth['wechat_openid'],
                     'update_at' => time(),
@@ -337,6 +337,13 @@ class Auth extends \yii\db\ActiveRecord
                 if (!$res) {
                     $transaction->rollBack();
                     throw new Exception('用户信息保存失败');
+                }
+
+                //添加积分更新记录
+                $ret = Points::_add_points($uid, Points::POINTS_IDAUTH);
+                if($ret['code'] < 0){
+                    $transaction->rollBack();
+                    throw new Exception($ret['msg']);
                 }
 
                 //待完成：发送微信通知
