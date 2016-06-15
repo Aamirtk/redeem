@@ -27,6 +27,12 @@
             position:absolute;
             right:20px;
         }
+        .msg-error{
+            color: darkorange;
+            font-size: 12px;
+            text-align: center;
+            margin: 5px auto 10px auto;
+        }
     </style>
 </head>
 <body>
@@ -39,11 +45,15 @@
         <div class="form-group">
             <label>手机号码</label>
             <input type="text" name="mobile" placeholder="请输入您的手机号码"/>
+<!--            <p class="msg-error">验证码错误</p>-->
+
         </div>
+
         <div class="form-group">
             <label>验&nbsp;证&nbsp;码</label>
             <input class="verificationCode" name="verifycode" type="text" placeholder="请输入验证码"/>
             <div class="send">发送验证码</div>
+
         </div>
         <div class="pb"></div>
         <div class="button">
@@ -57,11 +67,32 @@
     $("#submit").on('click', function(){
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/reg', param, 'POST', 'JSON', function(json){
-            if(json.code > 0){
-//                $._alert('成功提示', json.msg);
+            var code = json.code;
+            var msg = json.msg
+            if(code > 0){
                 window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+            }else if(code == -20001 || code == -20002 ){
+                var error = $('<p class="msg-error">'+ msg +'</p>');
+                $("input[name=mobile]").closest('div').after(error);
+                error.fadeOut(1500);
+            }else if(code == -20003 || code == -20004  || code == -20005 ){
+                var error = $('<p class="msg-error">'+ msg +'</p>');
+                $("input[name=verifycode]").closest('div').after(error);
+                error.fadeOut(1500);
+            }
+        });
+    });
+
+    //发送验证码
+    $(".send").on('click', function(){
+        var param = $._get_form_json('#reg');
+        $._ajax('/redeem/user/send-sms', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+
             }else{
-                $._alert('错误提示', json.msg);
+                var error = $('<p class="msg-error">'+ json.msg +'</p>');
+                $("input[name=verifycode]").closest('div').after(error);
+                error.fadeOut(1500);
             }
         });
     });

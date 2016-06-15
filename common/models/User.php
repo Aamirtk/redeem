@@ -294,17 +294,42 @@ class User extends \yii\db\ActiveRecord
      * @return array|boolean
      */
     public static function _add_user($param){
-        if(empty($param['mobile']) || empty($param['wechat_openid'])){
-            return ['code' => -20001, 'msg' => '参数格式不正确'];
+        session_start();
+        //验证手机号
+        if(empty($param['mobile'])){
+            return ['code' => -20001, 'msg' => '手机号不能为空'];
         }
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $param['mobile'])){
+            return ['code' => -20002, 'msg' => '手机号格式不正确'];
+        }
+        $mobile = $param['mobile'];
+
+        //验证验证码
+        if(!isset($_SESSION[md5($mobile)])){
+            return ['code' => -20003, 'msg' => '请获取验证码'];
+        }
+        if(empty($param['verifycode'])){
+            return ['code' => -20004, 'msg' => '验证码不能为空'];
+        }
+        if($_SESSION[md5($mobile)] != $param['verifycode']){
+            return ['code' => -20005, 'msg' => '验证码不正确'];
+        }
+
+        //验证微信公众号
+        if(empty($param['wechat_openid'])){
+            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        }
+
+        $wechat_openid = $param['wechat_openid'];
 
         $u_mdl = new self;
         $a_mdl = new Auth();
 
-        //验证手机号
-        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
-        if(!preg_match($pattern, $param['mobile'])){
-            return ['code' => -20003, 'msg' => '手机号格式不正确'];
+        //验证是否已经手机认证
+        $user = $u_mdl->_get_info(['mobile' => $mobile]);
+        if($user){
+            return ['code' => 20001, 'msg' => '已经手机认证过了，直接登录', 'data' => ['uid' => $user['uid']]];
         }
 
         //开启事务
@@ -312,13 +337,13 @@ class User extends \yii\db\ActiveRecord
         try {
 
             //用户表插入记录
-            $u_mdl->mobile = $param['mobile'];
-            $u_mdl->wechat_openid = $param['wechat_openid'];
+            $u_mdl->mobile = $mobile;
+            $u_mdl->wechat_openid = $wechat_openid;
             $u_mdl->points = Points::_get_points(Points::POINTS_MOBILEAUTH);;
             if(!$u_mdl->validate()){
                 $error = $u_mdl->errors;
                 $msg = current($error)[0];//获取错误信息
-                return ['code' => -20004, 'msg' => $msg];
+                return ['code' => -20007, 'msg' => $msg];
             }
             if(!$u_mdl->save()){
                 $transaction->rollBack();
@@ -328,7 +353,10 @@ class User extends \yii\db\ActiveRecord
 
             //认证表插入记录
             $param['uid'] = $uid;
-            $res_a = $a_mdl->_save($param);
+            $res_a = $a_mdl->_save([
+                'mobile' => $mobile,
+                'wechat_openid' => $wechat_openid
+            ]);
             if(!$res_a){
                 $transaction->rollBack();
                 throw new Exception('认证信息保存失败');
@@ -337,7 +365,7 @@ class User extends \yii\db\ActiveRecord
             //执行
             $transaction->commit();
 
-            return ['code' => 20001, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
 
         } catch (Exception $e) {
             $transaction->rollBack();
