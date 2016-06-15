@@ -76,7 +76,7 @@ use yii\widgets\LinkPager;
                                 <td><?= $k ?></td>
                                 <td><a href="<?= Yii::$app->urlManager->createUrl(['team/team/review', 'id' => $v->uid]) ?>" class="btn btn-group review"><?= $v->username ?></a></td>
                                 <td><?= $v->nickname ?></td>
-                                <td><?= $rolearr[$v->role_id] ?></td>
+                                <td><?= isset($rolearr[$v->role_id]) ? $rolearr[$v->role_id] : first($rolearr) ?></td>
                                 <td><?= $v->email ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-success" href="<?= Yii::$app->urlManager->createUrl(['team/team/update', 'id' => $v->uid]) ?>">编辑</a>
