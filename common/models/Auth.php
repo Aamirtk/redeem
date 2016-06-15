@@ -365,4 +365,89 @@ class Auth extends \yii\db\ActiveRecord
 
         }
     }
+
+    /**
+     * 新增认证记录
+     *@param $param array
+     * @return array|boolean
+     */
+    public static function _add_auth($param){
+
+        //验证真实姓名
+        if(empty($param['name'])){
+            return ['code' => -20001, 'msg' => '真实姓名不能为空'];
+        }
+        $name = $param['name'];
+        if(!strlen($name) > 10){
+            return ['code' => -20001, 'msg' => '真实姓名字数不能超过10个字'];
+        }
+
+        //验证手机号
+        if(empty($param['mobile'])){
+            return ['code' => -20002, 'msg' => '手机号不能为空'];
+        }
+        $mobile = $param['mobile'];
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $mobile)){
+            return ['code' => -20002, 'msg' => '手机号格式不正确'];
+        }
+
+        //验证邮箱
+        if(empty($param['email'])){
+            return ['code' => -20003, 'msg' => '邮箱不能为空'];
+        }
+        $email = $param['email'];
+        $pattern = '/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/';
+        if(!preg_match($pattern, $email)){
+            return ['code' => -20003, 'msg' => '邮箱格式不正确'];
+        }
+
+        //验证uid
+        if(empty($param['uid'])){
+            return ['code' => -20004, 'msg' => 'uid不能为空'];
+        }
+        $uid = $param['uid'];
+        $user = (new User())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
+        $auth = (new self())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
+        lg($auth);
+        if(!$user || !$auth){
+            return ['code' => -20005, 'msg' => '用户信息或者认证信息不存在'];
+        }
+
+        //验证微信公众号
+        if(empty($param['wechat_openid'])){
+            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        }
+        $wechat_openid = $param['wechat_openid'];
+
+        $a_mdl = new self();
+
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //认证表插入记录
+            $res_a = $a_mdl->_save([
+                'auth_id' => $auth['auth_id'],
+                'name' => $name,
+                'mobile' => $mobile,
+                'email' => $email,
+                'wechat_openid' => $wechat_openid
+            ]);
+            if(!$res_a){
+                $transaction->rollBack();
+                throw new Exception('认证信息保存失败');
+            }
+
+            //执行
+            $transaction->commit();
+
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+
+    }
 }

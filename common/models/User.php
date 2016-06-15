@@ -374,4 +374,64 @@ class User extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 添加积分
+     * @param $uid int 用户id
+     * @param $type int 获取积分类型
+     * @return array|boolean
+     */
+    public static function _add_points($uid, $type) {
+        if(empty($uid) || empty($type)){
+            return false;
+        }
+        $mdl = new self();
+        $user = $mdl->_get_info(['uid' => $uid]);
+        if(!$user){
+            return false;
+        }
+        $points = $user['points'];
+        $addnum = Points::_get_points($type);
+        if(empty($addnum)){
+            return false;
+        }
+        $res = $mdl->_save([
+            'uid' => $uid,
+            'points' => $points + $addnum,
+        ]);
+        if(!$res){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 更新积分
+     * @param $uid int 用户id
+     * @param $num int 积分数量，可正可负
+     * @return array|boolean
+     */
+    public static function _update_points($uid, $num) {
+        if(empty($uid) || empty($num)){
+            return false;
+        }
+        $mdl = new self();
+        $user = $mdl->_get_info(['uid' => $uid]);
+        if(!$user){
+            return false;
+        }
+        $points = $user['points'];
+        $newpoints = $points + $num;
+        if($newpoints < 0){
+            return false;
+        }
+        $res = $mdl->_save([
+            'uid' => $uid,
+            'points' => $newpoints,
+        ]);
+        if(!$res){
+            return false;
+        }
+        return true;
+    }
+
 }

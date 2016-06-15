@@ -5,7 +5,6 @@ namespace frontend\modules\redeem\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\api\VsoApi;
 use common\models\User;
 use common\models\Auth;
 use common\lib\Sms;
@@ -43,7 +42,6 @@ class UserController extends BaseController
             $this->_json($res['code'], $res['msg']);
         }
         $this->_json($res['code'], $res['msg'], $res['data']);
-
     }
 
     /**
@@ -69,7 +67,31 @@ class UserController extends BaseController
      */
     public function actionAuth()
     {
-        return $this->render('auth');
+
+        $opend_id = $this->_get_openid();
+        //加载
+        $uid = intval($this->_request('uid'));
+        if(!$this->isAjax()){
+            return $this->render('auth', ['uid' => $uid]);
+        }
+
+        //保存
+        $name = trim($this->_request('name'));
+        $email = trim($this->_request('email'));
+        $mobile = trim($this->_request('mobile'));
+        lg($uid);
+        $param = [
+            'uid' => $uid,
+            'name' => $name,
+            'email' => $email,
+            'mobile' => $mobile,
+            'wechat_openid' => $opend_id,
+        ];
+        $res = (new Auth())->_add_auth($param);
+        if($res['code'] < 0 ){
+            $this->_json($res['code'], $res['msg']);
+        }
+        $this->_json($res['code'], $res['msg'], $res['data']);
     }
 
 

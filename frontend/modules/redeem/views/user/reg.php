@@ -45,15 +45,12 @@
         <div class="form-group">
             <label>手机号码</label>
             <input type="text" name="mobile" placeholder="请输入您的手机号码"/>
-<!--            <p class="msg-error">验证码错误</p>-->
-
         </div>
 
         <div class="form-group">
             <label>验&nbsp;证&nbsp;码</label>
             <input class="verificationCode" name="verifycode" type="text" placeholder="请输入验证码"/>
             <div class="send">发送验证码</div>
-
         </div>
         <div class="pb"></div>
         <div class="button">

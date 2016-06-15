@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\Exception;
-use common\models\Goods;
+use common\models\User;
 
 /**
  * This is the model class for table "{{%points}}".
@@ -252,6 +252,12 @@ class Points extends \yii\db\ActiveRecord
             ->where(['type' => $type])
             ->scalar();
     }
+
+
+
+
+
+
 
 
 }
