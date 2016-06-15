@@ -79,7 +79,6 @@ class UserController extends BaseController
         $name = trim($this->_request('name'));
         $email = trim($this->_request('email'));
         $mobile = trim($this->_request('mobile'));
-        lg($uid);
         $param = [
             'uid' => $uid,
             'name' => $name,

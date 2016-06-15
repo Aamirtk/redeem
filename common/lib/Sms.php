@@ -44,7 +44,7 @@ class Sms
             return false;
         }
         //发送成功,保存sessoin
-        if($data[1] == 0){
+        if(!$data[1] == 0){
             //开启会话并设置过期时间
             session_set_cookie_params($this->expire);
             session_start();

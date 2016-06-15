@@ -409,7 +409,6 @@ class Auth extends \yii\db\ActiveRecord
         $uid = $param['uid'];
         $user = (new User())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
         $auth = (new self())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
-        lg($auth);
         if(!$user || !$auth){
             return ['code' => -20005, 'msg' => '用户信息或者认证信息不存在'];
         }

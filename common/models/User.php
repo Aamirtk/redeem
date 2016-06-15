@@ -352,8 +352,8 @@ class User extends \yii\db\ActiveRecord
             $uid = self::getDb()->getLastInsertID();
 
             //认证表插入记录
-            $param['uid'] = $uid;
             $res_a = $a_mdl->_save([
+                'uid' => $uid,
                 'mobile' => $mobile,
                 'wechat_openid' => $wechat_openid
             ]);
