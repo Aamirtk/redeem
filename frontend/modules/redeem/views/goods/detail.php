@@ -1,7 +1,7 @@
 <!DOCTYPE html
     <html>
 <head>
-    <title>【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</title>
+    <title><?php echo $goods['name'] ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="screen-orientation" content="portrait">
@@ -51,11 +51,11 @@
 <body>
 <div class="body-All">
     <header>
-        <div class="back"><a><img src="/images/back.png"></a></div>
-        【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘
+        <div class="back"><a><img src="<?php echo $goods['thumb'] ?>"></a></div>
+        <?php echo $goods['name'] ?>
     </header>
     <div class="box">
-        <img src="/images/pic03.png">
+        <?php echo $goods['description'] ?>
     </div>
 </div>
 </body>

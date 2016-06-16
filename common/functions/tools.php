@@ -41,6 +41,45 @@ function _value($data, $default = '', $empty = false)
 }
 
 /**
+ * 从对象，数组中获取获取数据
+ * @param $array mixed 数组或者对象
+ * @param $key array|string 对象的属性，或者数组的键值/索引，以'.'链接或者放入一个数组
+ * @param $default mix 如果对象或者属性中不存在该值事返回的值
+ * @return mixed mix
+ **/
+function getValue($array, $key, $default = '')
+{
+    if ($key instanceof \Closure) {
+        return $key($array, $default);
+    }
+
+    if (is_array($key)) {
+        $lastKey = array_pop($key);
+        foreach ($key as $keyPart) {
+            $array = getValue($array, $keyPart);
+        }
+        $key = $lastKey;
+    }
+
+    if (is_array($array) && array_key_exists($key, $array)) {
+        return $array[$key];
+    }
+
+    if (($pos = strrpos($key, '.')) !== false) {
+        $array = getValue($array, substr($key, 0, $pos), $default);
+        $key = substr($key, $pos + 1);
+    }
+
+    if (is_object($array)) {
+        return $array->$key;
+    } elseif (is_array($array)) {
+        return array_key_exists($key, $array) ? $array[$key] : $default;
+    } else {
+        return $default;
+    }
+}
+
+/**
  * 判断客户端是否为移动端
  * @param nothing
  * @return boolean

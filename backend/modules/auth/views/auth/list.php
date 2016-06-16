@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use common\models\Auth;
 ?>
 <!doctype html>
 <html>
@@ -33,65 +34,37 @@ use yii\helpers\Html;
             <form id="authsearch" class="form-horizontal">
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">时间范围：</label>
-                        <div class="controls">
-                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
+                        <label class="control-label">姓名：</label>
+                        <div class="controls" data-type="city">
+                            <input type="text" class="control-text" name="name" id="name">
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <label class="control-label">用户等级：</label>
-                        <div class="controls" >
-                            <select name="grouptype" id="grouptype">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $val): ?>
-                                    <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span12">
-                        <label class="control-label">销售员：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="inputer" id="inputer">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">用户：</label>
+                        <label class="control-label">手机号：</label>
                         <div class="controls" data-type="city">
-                            <select name="filtertype" id="filtertype">
-                                <option value="">请选择</option>
-                                <option value="1">用户注册ID</option>
-                                <option value="2">用户名称</option>
-                            </select>
-                        </div>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="filtercontent" id="name">
+                            <input type="text" class="control-text" name="mobile" id="name">
                         </div>
                     </div>
                     <div class="control-group span10">
                         <label class="control-label">审核状态：</label>
                         <div class="controls" >
-                            <select name="checkstatus" id="checkstatus">
+                            <select name="auth_status" id="checkstatus">
                                 <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
+                                <?php foreach (Auth::_get_auth_type_list() as $key => $name): ?>
+                                    <option value="<?php echo $key ?>" <?php echo $key == Auth::CHECK_WAITING ? 'selected="selected"' : '' ?>><?php echo $name ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <label class="control-label">所属公司：</label>
-                        <div class="controls" >
-                            <select name="inputercompany" id="inputercompany">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
+                </div>
+                <div class="row">
+                    <div class="control-group span16">
+                        <label class="control-label">时间范围：</label>
+                        <div class="controls">
+                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
                         </div>
                     </div>
+
                     <div class="control-group span10">
                         <button type="button" id="btnSearch" class="button button-primary"  onclick="searchAuth()">查询</button>
                     </div>
@@ -178,7 +151,7 @@ use yii\helpers\Html;
                         width: 140,
                         elCls : 'center',
                         renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.name_card +"'>";
+                            return "<img class='user_avatar name_card'  onclick='viewNameCard(this)' src='"+ obj.name_card +"'>";
                         }
                     },
                     {title: '手机号码', dataIndex: 'mobile', width: 90},
@@ -186,7 +159,7 @@ use yii\helpers\Html;
                     {title: '微信公众号', dataIndex: 'wechat', width: 120},
                     {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
                     {title: '审核状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
+                    {title: '更新时间', dataIndex: 'update_at', width: 150, elCls : 'center'},
                     {
                         title: '审核',
                         width: 300,
@@ -223,6 +196,7 @@ use yii\helpers\Html;
 </script>
 
 <script>
+
 /**
  * 搜索用户,刷新列表
  */
@@ -260,7 +234,7 @@ function getAuthGridSearchConditions() {
  */
 function showCheckInfo(auth_id) {
     var width = 700;
-    var height = 450;
+    var height = 500;
     var Overlay = BUI.Overlay;
     var buttons = [
         {
@@ -366,6 +340,37 @@ function checkUnPass(auth_id) {
         ],
     });
     dialog_reason.show();
+}
+
+
+/**
+ * 查看名片
+ */
+function viewNameCard(dom){
+    var src = $(dom).attr('src');
+    BUI.use('bui/overlay',function(Overlay){
+        var dialog = new Overlay.Dialog({
+            title:'名片',
+            width:600,
+            height:500,
+            closeAction: 'destroy',
+            buttons: [
+                {
+                    text:'确认',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                        this.close();
+                    }
+                },
+            ],
+            //配置文本
+            bodyContent:'<div style="text-align: center"><img style="width: 560px; height:400px;" src="'+ src +'"></div>',
+            success:function () {
+                this.close();
+            }
+        });
+        dialog.show();
+    });
 }
 
 </script>

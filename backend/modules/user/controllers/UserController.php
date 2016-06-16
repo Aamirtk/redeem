@@ -66,44 +66,34 @@ class UserController extends BaseController
         $page = $this->_request('page', 0);
         $pageSize = $this->_request('pageSize', 10);
         $offset = $page * $pageSize;
-        $memTb = $mdl::tableName();
-        $teamTb = Team::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', $memTb . '.created_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', 'update_at', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', $memTb . '.created_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', 'update_at', strtotime($search['uptimeEnd'])]);
             }
-            if (isset($search['grouptype'])) //时间范围
+            if (isset($search['user_type'])) //用户类型
             {
-                $query = $query->andWhere(['group_id' => $search['grouptype']]);
+                $query = $query->andWhere(['user_type' => $search['user_type']]);
             }
-            if (isset($search['filtertype']) && !empty($search['filtercontent'])) {
-                if ($search['filtertype'] == 2)//按照用户名称筛选
-                {
-                    $query = $query->andWhere(['like', $memTb . '.name', trim($search['filtercontent'])]);
-                } elseif ($search['filtertype'] == 1)//按照用户ID筛选
-                {
-                    $query = $query->andWhere([$memTb . '.username' => trim($search['filtercontent'])]);
-                }
-            }
-            if (isset($search['inputer']) && !empty($search['inputer'])) {
-                $query = $query->andWhere(['like', $teamTb . '.nickname', trim($search['filtercontent'])]);
-            }
-            if (isset($search['inputercompany'])) //筛选条件
+            if (isset($search['user_status'])) //用户状态
             {
-                $query = $query->andWhere([$teamTb . '.company_id' => $search['inputercompany']]);
+                $query = $query->andWhere(['user_status' => $search['user_status']]);
             }
-            if (isset($search['checkstatus'])) //筛选条件
+            if (isset($search['mobile'])) //手机号码
             {
-                $query->andWhere([$memTb . '.check_status' => $search['checkstatus']]);
+                $query = $query->andWhere(['mobile' => $search['mobile']]);
+            }
+            if (isset($search['name'])) //用户名称
+            {
+                 $query = $query->andWhere(['like', 'name', $search['name']]);
             }
         }
 
-        $_order_by = 'uid ASC';
+        $_order_by = 'uid DESC';
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)

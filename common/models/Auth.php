@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\Exception;
 use common\models\User;
+use common\models\Points;
 
 
 /**
@@ -60,7 +61,8 @@ class Auth extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'mobile', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
+            [['uid', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
+            [['mobile'], 'string', 'max' => 11],
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
@@ -157,9 +159,7 @@ class Auth extends \yii\db\ActiveRecord
                 foreach ($data as $k => $v) {
                     $_mdl->$k = $v;
                 }
-                if (!$_mdl->validate()) {//校验数据
-                    return false;
-                }
+
                 $ret = $_mdl->insert();
                 if ($ret !== false) {
                     return self::getDb()->getLastInsertID();
@@ -270,6 +270,18 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
+     * 审核类型列表
+     * @return array|boolean
+     */
+    public static function _get_auth_type_list(){
+        return [
+            self::CHECK_PASS => '审核通过',
+            self::CHECK_UNPASS => '审核未通过',
+            self::CHECK_WAITING => '待审核',
+        ];
+    }
+
+    /**
      * 保存审核状态
      * @param $auth_id int 审核记录id
      * @param $auth_status int 认证记录id
@@ -285,6 +297,12 @@ class Auth extends \yii\db\ActiveRecord
         if (!$auth) {
             return ['code' => -20003, 'msg' => '审核信息不存在'];
         }
+        $uid = $auth['uid'];
+        $user = $mdl_us->_get_info(['uid' => $uid]);
+        if (!$user) {
+            return ['code' => -20003, 'msg' => '用户信息不存在'];
+        }
+
         //审核通过
         if ($auth_status == $mdl::CHECK_PASS) {
 
@@ -305,7 +323,7 @@ class Auth extends \yii\db\ActiveRecord
 
                 //保存用户信息
                 $res = $mdl_us->_save([
-                    'uid' => $auth['uid'],
+                    'uid' => $uid,
                     'nick' => $auth['nick'],
                     'name' => $auth['name'],
                     'avatar' => $auth['avatar'],
@@ -316,10 +334,16 @@ class Auth extends \yii\db\ActiveRecord
                     'wechat_openid' => $auth['wechat_openid'],
                     'update_at' => time(),
                 ]);
-
                 if (!$res) {
                     $transaction->rollBack();
                     throw new Exception('用户信息保存失败');
+                }
+
+                //添加积分更新记录
+                $ret = Points::_add_points($uid, Points::POINTS_IDAUTH);
+                if($ret['code'] < 0){
+                    $transaction->rollBack();
+                    throw new Exception($ret['msg']);
                 }
 
                 //待完成：发送微信通知
@@ -354,5 +378,89 @@ class Auth extends \yii\db\ActiveRecord
             return ['code' => 20000, 'msg' => '用户信息保存成功'];
 
         }
+    }
+
+    /**
+     * 新增认证记录
+     *@param $param array
+     * @return array|boolean
+     */
+    public static function _add_auth($param){
+
+        //验证真实姓名
+        if(empty($param['name'])){
+            return ['code' => -20001, 'msg' => '真实姓名不能为空'];
+        }
+        $name = $param['name'];
+        if(!strlen($name) > 10){
+            return ['code' => -20001, 'msg' => '真实姓名字数不能超过10个字'];
+        }
+
+        //验证手机号
+        if(empty($param['mobile'])){
+            return ['code' => -20002, 'msg' => '手机号不能为空'];
+        }
+        $mobile = $param['mobile'];
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $mobile)){
+            return ['code' => -20002, 'msg' => '手机号格式不正确'];
+        }
+
+        //验证邮箱
+        if(empty($param['email'])){
+            return ['code' => -20003, 'msg' => '邮箱不能为空'];
+        }
+        $email = $param['email'];
+        $pattern = '/^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,3}$/';
+        if(!preg_match($pattern, $email)){
+            return ['code' => -20003, 'msg' => '邮箱格式不正确'];
+        }
+
+        //验证uid
+        if(empty($param['uid'])){
+            return ['code' => -20004, 'msg' => 'uid不能为空'];
+        }
+        $uid = $param['uid'];
+        $user = (new User())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
+        $auth = (new self())->_get_info(['uid' => $uid, 'mobile' => $mobile]);
+        if(!$user || !$auth){
+            return ['code' => -20005, 'msg' => '用户信息或者认证信息不存在'];
+        }
+
+        //验证微信公众号
+        if(empty($param['wechat_openid'])){
+            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        }
+        $wechat_openid = $param['wechat_openid'];
+
+        $a_mdl = new self();
+
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //认证表插入记录
+            $res_a = $a_mdl->_save([
+                'auth_id' => $auth['auth_id'],
+                'name' => $name,
+                'mobile' => $mobile,
+                'email' => $email,
+                'wechat_openid' => $wechat_openid
+            ]);
+            if(!$res_a){
+                $transaction->rollBack();
+                throw new Exception('认证信息保存失败');
+            }
+
+            //执行
+            $transaction->commit();
+
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+
     }
 }

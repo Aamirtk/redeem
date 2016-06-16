@@ -38,7 +38,7 @@ class Team extends ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'role_id', 'company_id'], 'required'],
+            [['username', 'password', 'role_id'], 'required'],
             [['username', 'nickname'], 'string'],
             [['username'], 'unique'],
             [['nickname', 'username', 'email'], 'string', 'max' => 225]
@@ -67,7 +67,6 @@ class Team extends ActiveRecord
             'username' => '登录帐号',
             'nickname' => '显示名称',
             'role_id' => '团队分组',
-            'company_id' => '所属公司',
             'password' => '后台密码',
             'email' => '联系邮箱'
         ];

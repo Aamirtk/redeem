@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\Goods;
+use common\models\City;
 use app\modules\team\models\Team;
 
 class GoodsController extends BaseController
@@ -56,6 +57,9 @@ class GoodsController extends BaseController
      */
     public function actionList()
     {
+        $city = new City();
+        $city->_get_tree();
+
         if ($this->isGet()) {
             return $this->render('list');
         }

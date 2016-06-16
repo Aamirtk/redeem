@@ -326,12 +326,12 @@ class Uploader
     private function getFilePath()
     {
         $fullname = $this->fullName;
-        $rootPath = dirname($_SERVER['DOCUMENT_ROOT']).'/webrc';
+        $rootPath = dirname($_SERVER['DOCUMENT_ROOT']).'/web';
 
         if (substr($fullname, 0, 1) != '/') {
             $fullname = '/' . $fullname;
         }
-
+        // var_dump($rootPath . $fullname);
         return $rootPath . $fullname;
     }
 
@@ -361,7 +361,7 @@ class Uploader
     {
         return array(
             "state" => $this->stateInfo,
-            "url" => 'http://rc.vsochina.com/'.$this->fullName,
+            "url" => $this->fullName,
             "title" => $this->fileName,
             "original" => $this->oriName,
             "type" => $this->fileType,

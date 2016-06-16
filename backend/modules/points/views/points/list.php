@@ -30,77 +30,10 @@ use yii\helpers\Html;
 <div class="container">
     <div class="row">
         <div class="search-bar form-horizontal well">
-            <form id="usersearch" class="form-horizontal">
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">时间范围：</label>
-                        <div class="controls">
-                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">用户等级：</label>
-                        <div class="controls" >
-                            <select name="grouptype" id="grouptype">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $val): ?>
-                                    <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span12">
-                        <label class="control-label">销售员：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="inputer" id="inputer">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">用户：</label>
-                        <div class="controls" data-type="city">
-                            <select name="filtertype" id="filtertype">
-                                <option value="">请选择</option>
-                                <option value="1">用户注册ID</option>
-                                <option value="2">用户名称</option>
-                            </select>
-                        </div>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="filtercontent" id="name">
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">审核状态：</label>
-                        <div class="controls" >
-                            <select name="checkstatus" id="checkstatus">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <label class="control-label">所属公司：</label>
-                        <div class="controls" >
-                            <select name="inputercompany" id="inputercompany">
-                                <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
-                                    <option value="<?= $key ?>"><?= $name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span10">
-                        <button type="button" id="btnSearch" class="button button-primary"  onclick="searchPoints()">查询</button>
-                    </div>
-                </div>
-            </form>
+
         </div>
         <div class="bui-grid-tbar">
-            <a class="button button-primary" title="添加积分类型"  href="#" onclick="addPoints()" id="addVip1">添加积分类型</a>
-            <a class="button button-danger" href="javascript:void(0);" onclick="deletePoints()">批量删除</a>
+            <a class="button button-primary" title="添加积分对象"  href="#" onclick="addPoints()" id="addVip1">添加积分对象</a>
         </div>
         <div class="bui-grid-tbar">
         </div>
@@ -171,9 +104,7 @@ use yii\helpers\Html;
                     {title: '积分数量', dataIndex: 'points', width: 90, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 130, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 130, elCls : 'center'},
-                    {title: '录入人员', dataIndex: 'inputer', width: 80, elCls : 'center'},
-                    {title: '录入时间', dataIndex: 'create_at', width: 130, elCls : 'center'},
-                    {title: '更新时间', dataIndex: 'update_at', width: 130, elCls : 'center'},
+                    {title: '更新时间', dataIndex: 'update_at', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,

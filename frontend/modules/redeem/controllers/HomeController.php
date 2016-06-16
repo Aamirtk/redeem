@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\api\VsoApi;
 use common\models\User;
-use common\models\Auth;
+use common\models\Goods;
 
 
 class HomeController extends BaseController
@@ -23,7 +23,26 @@ class HomeController extends BaseController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $uid = $this->_request('uid');
+        $u_mdl = new User();
+        $g_mdl = new Goods();
+
+        //判断用户是否手机认证
+        if(empty($uid)){
+            $this->redirect('/redeem/user/reg');
+            exit();
+        }
+        $user = $u_mdl->_get_info(['uid' => $uid]);
+        if(empty($user)){
+            $this->redirect('/redeem/user/reg');
+            exit();
+        }
+        $_goods_list = $g_mdl->_get_list(['>' , 'gid', 0], 'gid DESC', 1, 20);
+        $_data = [
+            'user' => $user,
+            'goods_list' => $_goods_list,
+        ];
+        return $this->render('index', $_data);
     }
 
     /**

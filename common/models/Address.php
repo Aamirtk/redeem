@@ -30,13 +30,24 @@ class Address extends \yii\db\ActiveRecord
     const REC_ALLDAY = 1;//一周七日
     const REC_WORKDAY = 2;//工作日
     const REC_HOLIDAY = 3;//双休及节假
-
     /**
      * 地址类型
      */
     const ADDR_HOME = 1;//家庭地址
     const ADDR_COMPANY = 2;//公司地址
     const ADDR_OTHER = 3;//其他
+
+    /**
+     * 是否默认
+     */
+    const DEFAULT_NO = 1;//非默认
+    const DEFAULT_YES = 2;//默认
+    /**
+     * 是否删除
+     */
+    const NO_DELETE = 1;//未删除、正常
+    const IS_DELETE = 2;//删除
+
 
     /**
      * @inheritdoc
@@ -60,11 +71,13 @@ class Address extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid','add_id', 'province', 'city', 'county', 'receive_time', 'type', 'is_default', 'is_deleted', 'create_at'], 'integer'],
+            [['uid', 'receive_time', 'type', 'is_default', 'is_deleted', 'create_at'], 'integer'],
             [['detail'], 'required'],
             [['detail'], 'string'],
             [['receiver_name'], 'string', 'max' => 50],
-            [['receiver_phone'], 'string', 'max' => 12]
+            [['receiver_phone'], 'string', 'max' => 12],
+            [['province', 'city', 'county'], 'string', 'max' => 30],
+            [['create_at'], 'default', 'value' => time()]
         ];
     }
 
@@ -120,7 +133,7 @@ class Address extends \yii\db\ActiveRecord
      * @param $order string
      * @return array|boolean
      */
-    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 20) {
+    public function _get_list($where = [], $order = '', $page = 1, $limit = 0) {
         $_obj = self::find();
         if (isset($where['sql']) || isset($where['params'])) {
             $_obj->where($where['sql'], $where['params']);
@@ -128,7 +141,9 @@ class Address extends \yii\db\ActiveRecord
             $_obj->where($where);
         }
 
-        $_obj->orderBy($order);
+        if(!empty($order)){
+            $_obj->orderBy($order);
+        }
 
         if (!empty($limit)) {
             $offset = max(($page - 1), 0) * $limit;
@@ -227,6 +242,125 @@ class Address extends \yii\db\ActiveRecord
             }
         }
         return false;
+    }
+
+    /**
+     * 添加地址
+     * @param $param array
+     * @return array|boolean
+     */
+    public function _add_address($param) {
+        //收货人姓名校验
+        if(empty($param['receiver_name'])){
+            return ['code' => -20001, 'msg' => '收货人姓名不能为空'];
+        }
+        $receiver_name = $param['receiver_name'];
+        if(strlen($receiver_name) > 50){
+            return ['code' => -20001, 'msg' => '收货人姓名太长'];
+        }
+
+        //收货人联系方式校验
+        if(empty($param['receiver_phone'])){
+            return ['code' => -20002, 'msg' => '收货人手机号不能为空'];
+        }
+        $receiver_phone = $param['receiver_phone'];
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $receiver_phone)){
+            return ['code' => -20002, 'msg' => '手机号格式不正确'];
+        }
+
+        //收货地址，省市县
+        if($param['province'] == '省份' && $param['city'] == '地级市' && $param['county'] == '市、县级市'){
+            return ['code' => -20003, 'msg' => '收货地址不能为空'];
+        }
+
+        //详细地址
+        if(empty($param['detail'])) {
+            return ['code' => -20004, 'msg' => '详细地址不能为空'];
+        }
+
+        //检验uid
+        if(empty($param['uid'])){
+            return ['code' => -20005, 'msg' => 'uid不能为空'];
+        }
+        $uid = $param['uid'];
+
+        //add_id存在，则为修改
+        if(!empty($param['add_id'])){
+            $add = (new self())->_get_info(['add_id' => $param['add_id']]);
+            if(!$add){
+                return ['code' => -20006, 'msg' => '地址不存在'];
+            }
+        }
+
+        //是否设为默认地址
+        if(!in_array(intval($param['is_default']), [self::DEFAULT_YES, self::DEFAULT_NO])){
+            return ['code' => -20007, 'msg' => '是否为默认地址状态错误'];
+        }
+        $param['is_default'] = intval($param['is_default']);
+
+        //地址
+        $param['province'] = getValue($param, 'province', '');
+        $param['city'] = getValue($param, 'city', '');
+        $param['county'] = getValue($param, 'county', '');
+
+        $mdl = new self();
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //如果为默认地址，更新已有的地址为非默认
+            if($param['is_default'] == self::DEFAULT_YES){
+                $ret = $mdl->updateAll(['is_default' => self::DEFAULT_NO], ['uid' => $uid]);
+                if($ret === false){
+                    $transaction->rollBack();
+                    throw new Exception('默认地址信息更新失败');
+                }
+            }
+
+            //认证表保存记录
+            $res = $mdl->_save($param);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('认证信息保存失败');
+            }
+            $add_id = self::getDb()->getLastInsertID();
+
+            //执行
+            $transaction->commit();
+            $_data = [
+                'uid' => $uid,
+                'add_id' => $add_id,
+            ];
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => $_data];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 地址类型
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function _get_address_type_name($status = 1){
+        switch(intval($status)){
+            case self::ADDR_HOME:
+                $_name = '家庭地址';
+                break;
+            case self::ADDR_COMPANY:
+                $_name = '公司地址';
+                break;
+            case self::ADDR_OTHER:
+                $_name = '其他';
+                break;
+            default:
+                $_name = '家庭地址';
+                break;
+        }
+        return $_name;
     }
 
 }

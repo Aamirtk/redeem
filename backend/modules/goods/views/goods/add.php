@@ -15,6 +15,8 @@ use yii\helpers\Html;
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
     <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.all.js"></script>
     <style>
         .user_avatar {
             width: 120px;
@@ -75,7 +77,14 @@ use yii\helpers\Html;
                 <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
-        
+
+        <div class="control-group">
+            <label class="control-label"><s>*</s>兑换积分：</label>
+            <div class="controls">
+                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}">
+            </div>
+        </div>
+
         <div class="control-group">
             <label class="control-label"><s>*</s>商品缩略图：</label>
             <div id="thumbpic" class="controls">
@@ -104,18 +113,14 @@ use yii\helpers\Html;
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>兑换积分：</label>
-            <div class="controls">
-                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}">
-            </div>
-        </div>
-        <div class="control-group">
+        <div class="control-group" id="description_content">
             <label class="control-label">商品描述：</label>
             <div class="controls  control-row-auto">
-                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>
+<!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
+                <script type="text/plain" id="editor_content" name="goods[description]"></script>
             </div>
         </div>
+
         <div class="row actions-bar">
             <div class="form-actions span13 offset3">
                 <button type="submit" class="button button-primary" id="save-goods">保存</button>
@@ -159,6 +164,14 @@ use yii\helpers\Html;
 
     <script>
         $(function () {
+            var editor = UE.getEditor('editor_content', {
+                "initialFrameWidth": "700",
+                "initialFrameHeight": "360",
+                "lang": "zh-cn",
+            });
+        })
+
+        $(function () {
             /*上传缩略图*/
             var uploader = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -174,7 +187,7 @@ use yii\helpers\Html;
                 //文件数量
                 fileNumLimit: 1,
                 //文件大小 byte
-                fileSizeLimit: 2 * 1024 * 1024,
+                fileSizeLimit: 5 * 1024 * 1024,
                 // 只允许选择图片文件。
                 accept: {
                     title: 'Images',
@@ -212,6 +225,9 @@ use yii\helpers\Html;
                         '</div>'+
                         '</div>';
                     $('#thumbpic-content').append(div);
+                    uploaderlist.addButton({
+                        id: '#thumblistpic'
+                    });
                     $('.img-delete').off('click').on('click', function(){
                         var dom = $(this);
                         var filePath = dom.attr('file-path');
@@ -247,9 +263,9 @@ use yii\helpers\Html;
                 // 选择文件的按钮。可选。
                 pick: '#thumblistpic',
                 //文件数量
-                fileNumLimit: 5,
+                fileNumLimit: 10,
                 //文件大小 byte
-                fileSizeLimit: 2 * 1024 * 1024,
+                fileSizeLimit: 5 * 1024 * 1024,
                 // 只允许选择图片文件。
                 accept: {
                     title: 'Images',

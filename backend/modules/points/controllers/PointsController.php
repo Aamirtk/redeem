@@ -227,7 +227,6 @@ class PointsController extends BaseController
             'typeList' => $typeList,
             'is_goods' => $points['type'] == $mdl::POINTS_PRAISE ? true : false
         ];
-        lg($_data);
         return $this->render('edit', $_data);
     }
 
@@ -324,7 +323,6 @@ class PointsController extends BaseController
         $ids = $this->_request('ids');
         $mdl = new Points();
         $id_arry = array_values($ids);
-        lg($this->_request());
 
         //参数检验
         if (empty($id_arry))

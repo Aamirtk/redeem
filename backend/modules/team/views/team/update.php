@@ -55,7 +55,6 @@ use yii\bootstrap\Alert;
                 <?= $form->field($model, 'nickname')->textInput(); ?>
                 <?= $form->field($model, 'email')->textInput(); ?>
                 <?= $form->field($model, 'role_id')->dropDownList($rolearr); ?>
-                <?= $form->field($model, 'company_id')->dropDownList($companyarr); ?>
                 <?= $form->field($model, 'password')->passwordInput(['placeholder' => '密码']); ?>
                 <?= Html::submitButton('保存', ['class' => 'btn btn-primary']) ?>
                 <?php ActiveForm::end() ?>

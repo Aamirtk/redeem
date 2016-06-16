@@ -28,7 +28,6 @@ use yii\helpers\Html;
 
         <div class="bui-grid-tbar">
             <a class="button button-primary" title="添加积分类型"  href="#" onclick="addConfig()" id="addVip1">添加积分类型</a>
-            <a class="button button-danger" href="javascript:void(0);" onclick="deleteConfig()">批量删除</a>
         </div>
 
         <div class="bui-grid-tbar">
