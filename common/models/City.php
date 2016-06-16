@@ -113,20 +113,15 @@ class City extends \yii\db\ActiveRecord
 
     /**
      * 获取所有列表
-     * @param $where array
+     * @param $pid int 父id
      * @return int
      */
-    public function _get_tree($where = []) {
-        $mdl = new self();
-        $_list = $mdl->_get_list();
-        $cat = new Category($_list);
-        $_res = $cat->_tree();
-        $cid = 9;
-        $_res = $cat->_sons(9, false);
-        lg($_res);
-        return $_res;
+    public static function _get_cities($pid = 0){
+        return self::find()
+            ->where(['pid' => $pid])
+            ->indexBy('id')
+            ->asArray(true)
+            ->all();
     }
-
-
 
 }
