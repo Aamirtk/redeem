@@ -257,7 +257,7 @@ class Goods extends \yii\db\ActiveRecord
      * 生成商品id
      * @return sting
      */
-    public static function _gen_goods_id(){
+    private static function _gen_goods_id(){
         return date('YmdHis', time()) . substr(md5(microtime() . rand(0, 10000)), 0, 5);
     }
 
