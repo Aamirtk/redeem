@@ -60,11 +60,13 @@ class Address extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid','add_id', 'province', 'city', 'county', 'receive_time', 'type', 'is_default', 'is_deleted', 'create_at'], 'integer'],
+            [['uid', 'receive_time', 'type', 'is_default', 'is_deleted', 'create_at'], 'integer'],
             [['detail'], 'required'],
             [['detail'], 'string'],
             [['receiver_name'], 'string', 'max' => 50],
-            [['receiver_phone'], 'string', 'max' => 12]
+            [['receiver_phone'], 'string', 'max' => 12],
+            [['province', 'city', 'county'], 'string', 'max' => 30],
+            [['create_at'], 'default', 'value' => time()]
         ];
     }
 
