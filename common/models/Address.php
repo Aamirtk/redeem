@@ -39,6 +39,12 @@ class Address extends \yii\db\ActiveRecord
     const ADDR_OTHER = 3;//其他
 
     /**
+     * 是否默认
+     */
+    const DEFAULT_NO = 1;//非默认
+    const DEFAULT_YES = 2;//默认
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -230,5 +236,96 @@ class Address extends \yii\db\ActiveRecord
         }
         return false;
     }
+
+    /**
+     * 添加地址
+     * @param $param array
+     * @return array|boolean
+     */
+    public function _add_address($param) {
+
+        //收货人姓名校验
+        if(empty($param['receiver_name'])){
+            return ['code' => -20001, 'msg' => '收货人姓名不能为空'];
+        }
+        $receiver_name = $param['receiver_name'];
+        if(strlen($receiver_name) > 50){
+            return ['code' => -20001, 'msg' => '收货人姓名太长'];
+        }
+
+        //收货人联系方式校验
+        if(empty($param['receiver_phone'])){
+            return ['code' => -20002, 'msg' => '收货人手机号不能为空'];
+        }
+        $receiver_phone = $param['receiver_phone'];
+        $pattern = '/^1[3|5|7|8][0-9]{9}$/';
+        if(!preg_match($pattern, $receiver_phone)){
+            return ['code' => -20002, 'msg' => '手机号格式不正确'];
+        }
+
+        //收货地址，省市县
+        if($param['province'] == '省份' && $param['city'] == '地级市' && $param['county'] == '市、县级市'){
+            return ['code' => -20003, 'msg' => '收货地址不能为空'];
+        }
+
+        //详细地址
+        if(empty($param['detail'])) {
+            return ['code' => -20004, 'msg' => '详细地址不能为空'];
+        }
+        $detail = $param['detail'];
+
+        //检验uid
+        if(empty($param['uid'])){
+            return ['code' => -20005, 'msg' => 'uid不能为空'];
+        }
+        $uid = $param['uid'];
+
+        //是否设为默认地址
+        if(isset($param['is_default']) && intval($param['is_default']) === self::DEFAULT_YES){
+            $is_default = self::DEFAULT_YES;
+        }else{
+            $is_default = self::DEFAULT_NO;
+        }
+
+        $mdl = new self();
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //认证表插入记录
+            $res = $mdl->_save([
+                'uid' => $uid,
+                'receiver_name' => $receiver_name,
+                'receiver_phone' => $receiver_phone,
+                'province' => getValue($param, 'province', ''),
+                'city' => getValue($param, 'city', ''),
+                'county' => getValue($param, 'county', ''),
+                'is_default' => $is_default,
+                'detail' => $detail,
+                'type' => intval(getValue($param, 'type', self::ADDR_HOME)),
+                'receive_time' => intval(getValue($param, 'receive_time', self::REC_ALLDAY))
+            ]);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('认证信息保存失败');
+            }
+            $add_id = self::getDb()->getLastInsertID();
+
+            //执行
+            $transaction->commit();
+
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['add_id' => $add_id]];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+
+
+
+
+    }
+
+
 
 }
