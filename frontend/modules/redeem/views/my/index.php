@@ -42,7 +42,7 @@
                 我的订单
                 <img src="/images/go.png" class="go">
             </li></a>
-        <a href="我的地址.html"><li>
+        <a href="/redeem/my/address?uid=<?php echo $user['uid'] ?>"><li>
                 <img src="/images/icon02.png" class="icon">
                 我的地址
                 <img src="/images/go.png" class="go">

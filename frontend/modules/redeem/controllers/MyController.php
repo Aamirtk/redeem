@@ -8,6 +8,7 @@ use app\base\BaseController;
 use common\models\User;
 use common\models\Points;
 use common\models\PointsRecord;
+use common\models\Address;
 
 
 class MyController extends BaseController
@@ -15,13 +16,10 @@ class MyController extends BaseController
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
+    private $uid;
+    private $user;
 
-    /**
-     * 个人中心
-     * @return type
-     */
-    public function actionIndex()
-    {
+    public function init(){
         $uid = $this->_request('uid');
         $u_mdl = new User();
 
@@ -35,8 +33,19 @@ class MyController extends BaseController
             $this->redirect('/redeem/user/reg');
             exit();
         }
+        $this->uid = $uid;
+        $this->user = $user;
+    }
+
+    /**
+     * 个人中心
+     * @return type
+     */
+    public function actionIndex()
+    {
+
         $_data = [
-            'user' => $user
+            'user' => $this->user
         ];
         return $this->render('index', $_data);
     }
@@ -56,7 +65,19 @@ class MyController extends BaseController
      */
     public function actionAddress()
     {
-        return $this->render('address');
+
+        $a_mdl = new Address();
+        $list = $a_mdl->_get_list(['uid' => $this->uid, 'is_deleted' => $a_mdl::NO_DELETE]);
+        if(!empty($list)){
+            foreach($list as $key => $val){
+                $list[$key]['type_name'] = $a_mdl::_get_address_type_name($val['type']);
+            }
+        }
+        $_data = [
+            'list' => $list,
+            'uid' => $this->uid,
+        ];
+        return $this->render('address', $_data);
     }
 
     /**
@@ -65,23 +86,10 @@ class MyController extends BaseController
      */
     public function actionPoints()
     {
-        $uid = $this->_request('uid');
-        $u_mdl = new User();
-        //判断用户是否手机认证
-        if(empty($uid)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $user = $u_mdl->_get_info(['uid' => $uid]);
-        if(empty($user)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-
         $pr_mdl = new PointsRecord();
         $record_list = $pr_mdl->_get_list(['>', 'id', 0], 'id DESC');
         $_data = [
-            'user' => $user,
+            'user' => $this->user,
             'record_list' => $record_list
         ];
         return $this->render('points', $_data);

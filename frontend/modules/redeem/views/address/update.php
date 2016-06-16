@@ -1,3 +1,6 @@
+<?php
+use common\models\Address;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +16,9 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/xinzengdizhi.css">
     <script>
-        var Province = '省份';
-        var City = '地级市';
-        var County = '市、县级市';
+        var Province = '<?php echo $add['province'] ?>';
+        var City = '<?php echo $add['city'] ?>';
+        var County = '<?php echo $add['county'] ?>';
     </script>
     <script src="/js/jquery-1.11.3.min.js"></script>
     <script class="resources library" src="/js/area.js" type="text/javascript"></script>
@@ -57,13 +60,14 @@
     <form id="address">
         <div class="box">
             <input type="hidden" name="uid" value="<?php echo $uid ?>">
+            <input type="hidden" name="add_id" value="<?php echo $add['add_id'] ?>">
             <div class="form-group">
                 <label>收货人姓名</label>
-                <input type="text" name="receiver_name" placeholder="请输入收货人姓名" />
+                <input type="text" name="receiver_name" placeholder="请输入收货人姓名" value="<?php echo $add['receiver_name'] ?>"/>
             </div>
             <div class="form-group">
                 <label>收货人手机</label>
-                <input type="text" name="receiver_phone" placeholder="请输入收货人手机号码" />
+                <input type="text" name="receiver_phone" placeholder="请输入收货人手机号码" value="<?php echo $add['receiver_phone'] ?>"/>
             </div>
             <div class="address">
                 <div>收货地址</div>
@@ -89,6 +93,7 @@
                 <div class="mt">
                     <label>详细<br>地址</label>
                     <textarea name="detail"></textarea>
+
                 </div>
                 <div class="mt">
                     <div class="top">地址类型</div>
@@ -96,7 +101,7 @@
                         <span class="active" addtype="1">家庭地址</span>
                         <span addtype="2">公司地址</span>
                         <span addtype="3">其他</span>
-                        <input type="hidden" name="type" value="1">
+                        <input type="hidden" name="type" value="<?php echo $add['type'] ?>">
                     </div>
                 </div>
                 <div class="mt">
@@ -105,11 +110,11 @@
                         <span class="active" receive_time="1">一周七日</span>
                         <span receive_time="2">工作日</span>
                         <span receive_time="3">双休及节假</span>
-                        <input type="hidden" name="receive_time" value="1">
+                        <input type="hidden" name="receive_time" value="<?php echo $add['receive_time'] ?>">
                     </div>
                 </div>
-                <div class="mt checkbox">
-                    <input type="checkbox" name="is_default" value=""/>设为默认地址
+                <div class="mt checkbox <?php echo $add['is_default'] == Address::DEFAULT_YES ? "checked" : '' ?>">
+                    <input type="checkbox" name="is_default"  value=""/>设为默认地址
                 </div>
             </div>
         </div>
@@ -123,16 +128,6 @@
     //省市县联动
     _init_area();
 
-    var Gid  = document.getElementById ;
-    var showArea = function(){
-        Gid('show').innerHTML = "<h3>省" + Gid('s_province').value + " - 市" +
-        Gid('s_city').value + " - 县/区" +
-        Gid('s_county').value + "</h3>"
-    }
-    $("#s_county").on('onchange', function(){
-        showArea();
-    });
-
     $("div.addtype > span").on('click', function(){
         var dom = $(this);
         $("input[name=type]").val(dom.attr('addtype'));
@@ -142,6 +137,21 @@
         $("input[name=receive_time]").val(dom.attr('receive_time'));
     });
 
+    $(".addtype > span").each(function(){
+        var dom = $(this);
+        if(dom.attr('addtype') == $("input[name=type]").val()){
+            dom.addClass('active').siblings().removeClass('active');
+        }
+    });
+
+    $(".receive_time > span").each(function(){
+        var dom = $(this);
+        if(dom.attr('receive_time') == $("input[name=receive_time]").val()){
+            dom.addClass('active').siblings().removeClass('active');
+        }
+    });
+
+    $("[name=detail]").val("<?php echo $add['detail'] ?>");
 
     $("#submit").on('click', function(){
         var param = $._get_form_json('#address');
@@ -150,7 +160,7 @@
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-//                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+                window.location.href = '/redeem/my/address?uid=' + json.data.uid;
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=receiver_name]").closest('div').after(error);

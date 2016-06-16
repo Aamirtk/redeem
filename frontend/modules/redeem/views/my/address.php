@@ -28,23 +28,27 @@
         收货地址
     </header>
     <ul class="box">
-        <li>
-            <div class="top">
-                <span>张玛丽</span>&nbsp;&nbsp;
-                <span>134xxxx1234</span>&nbsp;
-                <span class="default">默认</span>
-            </div>
-            <div class="middle">
-                <span>上海市</span>&nbsp;
-                <span>上海市</span>&nbsp;
-                <span>浦东新区</span>&nbsp;
-                <span>金湘路225弄11号</span>
-                <span class="edit"><a href="新增地址.html"><img src="/images/icon05.png"></a></span>
-            </div>
-            <div class="bottom">地址类型：公司地址</div>
-        </li>
+        <?php foreach($list as $add): ?>
+            <li>
+                <div class="top">
+                    <span><?php echo $add['receiver_name'] ?></span>&nbsp;&nbsp;
+                    <span><?php echo $add['receiver_phone'] ?></span>&nbsp;
+                    <?php if($add['is_default'] == \common\models\Address::DEFAULT_YES): ?>
+                        <span class="default">默认</span>
+                    <?php endif ?>
+                </div>
+                <div class="middle">
+                    <span><?php echo $add['province'] ?></span>&nbsp;
+                    <span><?php echo $add['city'] ?></span>&nbsp;
+                    <span><?php echo $add['county'] ?></span>&nbsp;
+                    <span><?php echo $add['detail'] ?></span>
+                    <span class="edit"><a href="/redeem/address/update?uid=<?php echo $uid ?>&add_id=<?php echo $add['add_id'] ?>"><img src="/images/icon05.png"></a></span>
+                </div>
+                <div class="bottom">地址类型：<?php echo $add['type_name'] ?></div>
+            </li>
+        <?php endforeach ?>
     </ul>
-    <div class="button"><a href="新增地址.html" class="btn">新增地址</a></div>
+    <div class="button"><a href="/redeem/address/add?uid=<?php echo $uid ?>" class="btn">新增地址</a></div>
 </div>
 </body>
 </html>
