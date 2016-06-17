@@ -54,7 +54,7 @@ class UserController extends BaseController
         $sms = new Sms();
         $randnum = $sms->randnum();
         $res = $sms->send($mobile, $randnum);
-        if($res === 0){
+        if($res == 0){
             $this->_json(20000, '发送成功');
         }else{
             $this->_json(-20000, '验证码发送失败，请重新发送');
