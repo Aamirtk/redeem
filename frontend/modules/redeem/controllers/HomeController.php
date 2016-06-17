@@ -16,14 +16,13 @@ class HomeController extends BaseController
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
-
     /**
      * 用户列表
      * @return type
      */
     public function actionIndex()
     {
-        $uid = $this->_request('uid');
+        $uid = $this->_request('uid', 2);
         $u_mdl = new User();
         $g_mdl = new Goods();
 
