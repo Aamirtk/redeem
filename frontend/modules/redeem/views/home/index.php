@@ -75,7 +75,7 @@
             <a href="/redeem/goods/view?gid=<?php echo $good['gid'] ?>">
                 <li>
                     <div class="pic">
-                        <img src="<?php echo $good['thumb'] ?>">
+                        <img src="<?php echo yiiParams('img_host') . $good['thumb'] ?>">
                     </div>
                     <div class="exchange">我要<br>兑换</div>
                     <div class="go"><img src="/images/go1.png"></div>

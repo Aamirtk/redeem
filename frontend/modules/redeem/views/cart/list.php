@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/gouwuche.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/tools.js"></script>
     <script type="text/javascript">
         $(function(){
             $('.back').click(function(){
@@ -26,7 +27,11 @@
         function numAdd(thi) {
             var num_root = $(thi).parents('.count').find('input');
             var num_add = parseInt(num_root.val())+1;
-            num_root.val(num_add);
+            var cg_id = parseInt($(thi).attr('c_g_id'));
+            var param = {num: num_add, cg_id: cg_id};
+            $._ajax('/redeem/cart/ajax-change-goods-num', param, 'POST', 'JSON', function(json){
+                num_root.val(num_add);
+            });
 
             // var total = parseFloat($("#price").text())*parseInt(num_root.val());
             // $("#totalPrice").html(total.toFixed(2));
@@ -36,15 +41,20 @@
             var num_root = $(thi).parents('.count').find('input');
             var num_dec = parseInt(num_root.val())-1;
             var num_name = num_root.attr('name');
+            var cg_id = parseInt($(thi).attr('c_g_id'));
 
             if((num_name=='2' && num_dec<3) || (num_name=='4' && num_dec<1) || num_dec<1){
                 return false;
             }else{
-                num_root.val(num_dec);
+                var param = {num: num_dec, cg_id: cg_id};
+                $._ajax('/redeem/cart/ajax-change-goods-num', param, 'POST', 'JSON', function(json){
+                    num_root.val(num_dec);
+                });
                 // var total = parseFloat($("#price").text())*parseInt(num_root.val());
                 // $("#totalPrice").html(total.toFixed(2));
             }
         }
+
     </script>
 </head>
 <body>
@@ -55,34 +65,24 @@
         <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
     </header>
     <div class="box-container">
-        <div class="box">
-            <div class="pic"><img src="/images/pic.png"></div>
-            <div class="text">
-                <div class="title">【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</div>
-                <div>
-                    <div class="integral">积分&nbsp;&nbsp;<span>999</span></div>
-                    <div class="count">
-                        <img src="/images/+.png" onclick="numAdd(this)">
-                        <input type="text" name="number" value="1" />
-                        <img src="/images/-.png" onclick="numDec(this)">
+        <?php if(!empty($cart_goods)): ?>
+            <?php foreach($cart_goods as $val): ?>
+                <div class="box">
+                    <div class="pic"><img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>"></div>
+                    <div class="text">
+                        <div class="title"><?php echo getValue($val, 'goods.name', '') ?></div>
+                        <div>
+                            <div class="integral">积分&nbsp;&nbsp;<span><?php echo getValue($val, 'goods.redeem_pionts', 0) ?></span></div>
+                            <div class="count">
+                                <img c_g_id="<?php echo $val['id'] ?>" src="/images/+.png" onclick="numAdd(this)">
+                                <input type="text" name="number" value="<?php echo $val['count'] ?>" />
+                                <img c_g_id="<?php echo $val['id'] ?>"  src="/images/-.png" onclick="numDec(this)">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="box">
-            <div class="pic"><img src="/images/pic.png"></div>
-            <div class="text">
-                <div class="title">【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</div>
-                <div>
-                    <div class="integral">积分&nbsp;&nbsp;<span>999</span></div>
-                    <div class="count">
-                        <img src="/images/+.png" onclick="numAdd(this)">
-                        <input type="text" name="number" value="1" />
-                        <img src="/images/-.png" onclick="numDec(this)">
-                    </div>
-                </div>
-            </div>
-        </div>
+            <?php endforeach ?>
+        <?php endif ?>
     </div>
     <div class="exchange">
         <div class="needIntegral">共&nbsp;<span>1998</span>&nbsp;积分</div>
@@ -90,4 +90,9 @@
     </div>
 </div>
 </body>
+<script>
+    function changeNum(dom){
+
+    }
+</script>
 </html>

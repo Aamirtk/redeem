@@ -36,29 +36,60 @@ class CartController extends BaseController
     }
 
     /**
-     * 添加商品
+     * 添加购物车商品
      * @return type
      */
-    public function actionAddGoods()
+    public function actionAjaxAddGoods()
     {
         $gid = intval($this->_request('gid'));
-        $count = intval($this->_request('num'));
+        $count = intval($this->_request('count'));
 
         $cg_mdl = new CartGoods();
-        //参数校验
-        $res = $cg_mdl->_add_goods(['gid' => $gid, 'count' => $count]);
-        $_list = $cg_mdl->_get_list_all();
+        $res = $cg_mdl->_add_goods(['uid' => $this->uid, 'gid' => $gid, 'count' => $count]);
+        $this->_json($res['code'], $res['msg']);
+    }
+
+    /**
+     * 购物车商品列表
+     * @return type
+     */
+    public function actionGoodsList()
+    {
+        $cg_mdl = new CartGoods();
+        $_list = $cg_mdl->_get_list_all([$cg_mdl::tableName() . '.uid' => $this->uid]);
         $_data = [
             'cart_goods' => $_list
         ];
         return $this->render('list', $_data);
     }
 
+    /**
+     *改变向购物车商品数量
+     * @return array|boolean
+     */
+    public function actionAjaxChangeGoodsNum()
+    {
+        $newnum = intval($this->_request('num'));
+        $cg_id = intval($this->_request('cg_id'));
+        $mdl = new CartGoods();
+        $cg = $mdl->_get_info(['id' => $cg_id]);
+        if(!$cg){
+            $this->_json(-20001, '购物车商品不存在');
+        }
 
+        if($newnum < 0){
+            $this->_json(-20002, '购物车商品数量不能为负数');
+        }
 
+        $ret = $mdl->_save([
+            'id' => $cg_id,
+            'count' => $newnum,
+        ]);
+        if(!$ret){
+            $this->_json(-20003, '购物车商品更改失败');
+        }
 
-
-
-
+        $this->_json(20000, '保存成功');
+    }
 
 }

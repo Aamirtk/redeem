@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="/css/xiangqing.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
     <script src="/js/swiper-3.3.1.jquery.min.js"></script>
+    <script src="/js/tools.js"></script>
     <script type="text/javascript">
         $(function(){
             var mySwiper = new Swiper('.pic', {
@@ -95,19 +96,26 @@
 </div>
 <script>
     $(".redeem-now").click(function(){
-        var num = parseInt($("input[name=number]").val());
-        if(num <= 0){
+        var count = parseInt($("input[name=number]").val());
+        if(count <= 0){
             return
         }
         window.location.href = '/redeem/order/add?gid=<?php echo $goods['gid'] ?>&num=' + num;
     });
 
     $(".add-to-cart").click(function(){
-        var num = parseInt($("input[name=number]").val());
-        if(num <= 0){
+        var count = parseInt($("input[name=number]").val());
+        if(count <= 0){
             return
         }
-        window.location.href = '/redeem/cart/add-goods?gid=<?php echo $goods['gid'] ?>&num=' + num;
+        var param = {count: count, gid: <?php echo $goods['gid'] ?>};
+        $._ajax('/redeem/cart/ajax-add-goods', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                window.location.href = '/redeem/cart/goods-list';
+            }else{
+                alert('添加失败');
+            }
+        });
     });
 
 

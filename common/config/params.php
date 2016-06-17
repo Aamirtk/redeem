@@ -16,4 +16,9 @@ return [
     'no_found_pic' => 'http://back_growth.vsochina.com/Images/nopic.jpg',
     //从接口中获取新的行业分类信息
     'industryListUrl' => 'http://api.vsochina.com/industry/get-industry-list',
+
+
+
+    //图片访问域名
+    'img_host' => 'http://www.redeem_back.com'
 ];

@@ -11,6 +11,7 @@ use yii\db\Exception;
  * @property integer $id
  * @property integer $cart_id
  * @property integer $gid
+ * @property integer $uid
  * @property integer $count
  * @property integer $create_at
  */
@@ -38,7 +39,7 @@ class CartGoods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cart_id', 'gid', 'count', 'create_at'], 'integer']
+            [['cart_id', 'gid',  'uid', 'count', 'create_at'], 'integer']
         ];
     }
 
@@ -51,6 +52,7 @@ class CartGoods extends \yii\db\ActiveRecord
             'id' => '购物车商品ID',
             'cart_id' => '购物车ID',
             'gid' => '商品ID',
+            'uid' => '用户ID',
             'count' => '商品数量',
             'create_at' => '创建时间',
         ];
@@ -134,7 +136,7 @@ class CartGoods extends \yii\db\ActiveRecord
             $offset = max(($page - 1), 0) * $limit;
             $_obj->offset($offset)->limit($limit);
         }
-        return $_obj->with('user')->with('goods')->asArray(true)->all();
+        return $_obj->with('goods')->asArray(true)->all();
     }
 
     /**
@@ -207,7 +209,23 @@ class CartGoods extends \yii\db\ActiveRecord
     }
 
     /**
-     * 添加商品
+     * 删除记录
+     * @param $where array
+     * @return array|boolean
+     */
+    public function _delete($where) {
+        if (!empty($where)) {
+            try {
+                return (new self)->deleteAll($where);
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 向购物车添加商品
      * @param $data array
      * @return array|boolean
      */
@@ -215,36 +233,50 @@ class CartGoods extends \yii\db\ActiveRecord
     {
         $g_mdl = new Goods();
         $c_mdl = new self();
+        //uid
+        if(empty($data['uid'])){
+            return ['code' => -20000, 'msg' => '用户id不能为空'];
+        }
+        $uid = $data['uid'];
         //gid
         if(empty($data['gid'])){
-            return [-20001, '商品id为空'];
+            return ['code' => -20001, 'msg' => '商品id不能为空'];
         }
         $gid = $data['gid'];
         $goods = $g_mdl->_get_info(['gid' => $gid, 'goods_status' => $g_mdl::STATUS_UPSHELF]);
         if(!$goods){
-            return [-20002, '商品不存在'];
+            return ['code' => -20002, 'msg' => '商品不存在'];
         }
-        $uid = $goods['uid'];
         //count
         if(empty($data['count']) || intval($data['count']) <= 0){
-            return [-20003, '商品数量必须为正'];
+            return ['code' => -20003, 'msg' => '商品数量必须为正'];
         }
         $count = intval($data['count']);
 
         $cart_id = User::_get_cart($uid);;
         if(!$cart_id){
-            return [-20004, '购物车不存在'];
+            return ['code' => -20004, 'msg' => '购物车不存在'];
         }
 
-        $res = $c_mdl->_save([
+        $_save_data = [
             'cart_id' => $cart_id,
             'gid' => $gid,
+            'uid' => $uid,
             'count' => $count,
-            'update_at' => time(),
-        ]);
+            'create_at' => time(),
+        ];
+
+        //如果购物车已经有该商品
+        $g_c = $c_mdl->_get_info(['gid' => $gid, 'uid' => $uid]);
+        $_save_data['id'] = $g_c['id'];
+        $_save_data['count'] = $count + $g_c['count'];
+
+        $res = $c_mdl->_save($_save_data);
         if(!$res){
-            return [-20005, '保存失败'];
+            return ['code' => -20000, 'msg' => '保存失败'];
         }
-        return [20000, '保存成功'];
+        return ['code' => 20000, 'msg' => '保存成功'];
     }
+
+
 }

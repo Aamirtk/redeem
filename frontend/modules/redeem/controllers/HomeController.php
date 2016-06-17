@@ -25,7 +25,7 @@ class HomeController extends BaseController
         $g_mdl = new Goods();
 
         //判断用户是否手机认证
-        $_goods_list = $g_mdl->_get_list(['>' , 'gid', 0], 'gid DESC', 1, 20);
+        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC', 1, 20);
         $_data = [
             'user' => $this->user,
             'goods_list' => $_goods_list,

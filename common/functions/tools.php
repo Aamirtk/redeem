@@ -24,6 +24,7 @@ function yiiUrl($params) {
     return yii::$app->urlManager->createUrl($params);
 }
 
+
 /**
  * 获取值
  * @param $data mixed 要判断是否存在的值
@@ -44,7 +45,7 @@ function _value($data, $default = '', $empty = false)
  * 从对象，数组中获取获取数据
  * @param $array mixed 数组或者对象
  * @param $key array|string 对象的属性，或者数组的键值/索引，以'.'链接或者放入一个数组
- * @param $default mix 如果对象或者属性中不存在该值事返回的值
+ * @param $default string 如果对象或者属性中不存在该值事返回的值
  * @return mixed mix
  **/
 function getValue($array, $key, $default = '')
