@@ -81,10 +81,10 @@ class OrderController extends BaseController
      * 兑换
      * @return type
      */
-    public function actionDetail()
+    public function actionList()
     {
 
-        return $this->render('pay');
+        return $this->render('list');
     }
 
     /**

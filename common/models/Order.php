@@ -10,6 +10,7 @@ use common\models\Address;
  * This is the model class for table "{{%order}}".
  *
  * @property integer $oid
+ * @property integer $order_id
  * @property integer $gid
  * @property integer $uid
  * @property string $goods_id
@@ -62,9 +63,9 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gid', 'uid', 'order_status', 'points_cost', 'add_id', 'is_deleted', 'update_at', 'create_at'], 'integer'],
+            [['gid', 'order_id',  'uid', 'order_status', 'points_cost', 'add_id', 'is_deleted', 'update_at', 'create_at'], 'integer'],
             [['goods_id'], 'string', 'max' => 40],
-            [['goods_name'], 'string', 'max' => 50],
+            [['goods_name', 'order_id'], 'string', 'max' => 50],
             [['create_at'], 'default', 'value' => time()],
         ];
     }
@@ -76,6 +77,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'oid' => '订单ID',
+            'order_id' => '订单编号',
             'gid' => '商品ID',
             'uid' => '用户ID',
             'goods_id' => '商品编号',
@@ -119,7 +121,7 @@ class Order extends \yii\db\ActiveRecord
      * @param $order string
      * @return array|boolean
      */
-    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 20) {
+    public function _get_list($where = [], $order = '', $page = 1, $limit = 0) {
         $_obj = self::find();
         if (isset($where['sql']) || isset($where['params'])) {
             $_obj->where($where['sql'], $where['params']);
@@ -232,6 +234,14 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
+     * 生成商品id
+     * @return sting
+     */
+    private static function _gen_order_id(){
+        return date('YmdHis', time()) . substr(md5(microtime() . rand(0, 10000)), 0, 7);
+    }
+
+    /**
      * 添加记录
      * @param $gids array
      * @param $uid int
@@ -277,6 +287,7 @@ class Order extends \yii\db\ActiveRecord
                 }
                 $cost_points =  $good['count'] * getValue($good, 'goods.redeem_pionts', 0);
                 $_data = [
+                    'order_id' => $r_mdl::_gen_order_id(),
                     'gid' => $good['gid'],
                     'uid' => $uid,
                     'goods_id' => getValue($good, 'goods.goods_id', ''),

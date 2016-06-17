@@ -104,8 +104,7 @@
         var param = {gids: gids, add_id: <?php echo $address['add_id'] ?>};
         $._ajax('/redeem/order/ajax-add', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
-                alert('成功');
-//                window.location.href = '/redeem/cart/goods-list';
+                window.location.href = '/redeem/my/order';
             }else{
                 alert('添加失败');
             }
