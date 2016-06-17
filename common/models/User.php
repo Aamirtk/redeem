@@ -37,7 +37,6 @@ class User extends \yii\db\ActiveRecord
     const NO_DELETE = 1;//启用
     const IS_DELETE = 2;//禁用
 
-
     /**
      * @inheritdoc
      */
@@ -294,26 +293,31 @@ class User extends \yii\db\ActiveRecord
      * @return array|boolean
      */
     public static function _add_user($param){
-        session_start();
+
         //验证手机号
         if(empty($param['mobile'])){
             return ['code' => -20001, 'msg' => '手机号不能为空'];
         }
         $pattern = '/^1[3|5|7|8][0-9]{9}$/';
-        if(!preg_match($pattern, $param['mobile'])){
+        if(!preg_match($pattern, trim($param['mobile']))){
             return ['code' => -20002, 'msg' => '手机号格式不正确'];
         }
-        $mobile = $param['mobile'];
+        $mobile = trim($param['mobile']);
 
         //验证验证码
-        if(!isset($_SESSION[md5($mobile)])){
+        $vf_mdl = new VerifyCode();
+        $res = $vf_mdl->_get_info(['mobile' => $mobile]);
+        if(!$res){
             return ['code' => -20003, 'msg' => '请获取验证码'];
         }
         if(empty($param['verifycode'])){
-            return ['code' => -20004, 'msg' => '验证码不能为空'];
+            return ['code' => -20003, 'msg' => '验证码不能为空'];
         }
-        if($_SESSION[md5($mobile)] != $param['verifycode']){
-            return ['code' => -20005, 'msg' => '验证码不正确'];
+        if($res['verify_code'] != intval($param['verifycode'])){
+            return ['code' => -20003, 'msg' => '验证码不正确'];
+        }
+        if($res['update_at'] < time() - $vf_mdl::EXPIRE_TIME ){
+            return ['code' => -20003, 'msg' => '验证码已经失效，请重新获取'];
         }
 
         //验证微信公众号
