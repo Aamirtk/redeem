@@ -3,10 +3,7 @@
 namespace frontend\modules\redeem\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\models\User;
-use common\models\Goods;
 use common\models\CartGoods;
 
 
@@ -56,9 +53,16 @@ class CartController extends BaseController
     public function actionGoodsList()
     {
         $cg_mdl = new CartGoods();
-        $_list = $cg_mdl->_get_list_all([$cg_mdl::tableName() . '.uid' => $this->uid]);
+        $list = $cg_mdl->_get_list_all([$cg_mdl::tableName() . '.uid' => $this->uid]);
+        $total_points = 0;
+        if($list){
+            foreach($list as $val){
+                $total_points += $val['count'] * getValue($val, 'goods.redeem_pionts', 0);
+            }
+        }
         $_data = [
-            'cart_goods' => $_list
+            'cart_goods' => $list,
+            'total_points' => $total_points,
         ];
         return $this->render('list', $_data);
     }

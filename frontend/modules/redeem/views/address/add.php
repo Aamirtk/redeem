@@ -142,7 +142,6 @@
         $("input[name=receive_time]").val(dom.attr('receive_time'));
     });
 
-
     $("#submit").on('click', function(){
         var param = $._get_form_json('#address');
         param.is_default  = $(".checkbox").hasClass("checked") ? 2 : 1;
@@ -150,7 +149,7 @@
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-//                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+                history.back();
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=receiver_name]").closest('div').after(error);

@@ -14,26 +14,6 @@ class AddressController extends BaseController
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-    private $uid;
-    private $user;
-
-    public function init(){
-        $uid = $this->_request('uid');
-        $u_mdl = new User();
-
-        //判断用户是否手机认证
-        if(empty($uid)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $user = $u_mdl->_get_info(['uid' => $uid]);
-        if(empty($user)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $this->uid = $uid;
-        $this->user = $user;
-    }
 
     /**
      * 添加地址
@@ -82,8 +62,6 @@ class AddressController extends BaseController
         }
         $this->_json($res['code'], $res['msg'], $res['data']);
     }
-
-
 
     /**
      * 异步获取城市列表
