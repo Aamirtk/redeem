@@ -89,9 +89,27 @@
             <input type="text" name="number" value="1" />
             <img src="/images/-.png" onclick="numDec(this)">
         </div>
-        <div class="button"><a href="/order/add" class="btn">立即兑换</a></div>
-        <div class="button add"><a href="" class="btn">加入购物车</a></div>
+        <div class="button"><a href="javaScript:void(0)" class="btn redeem-now">立即兑换</a></div>
+        <div class="button add"><a href="javaScript:void(0)" class="btn add-to-cart">加入购物车</a></div>
     </div>
 </div>
-</body>
+<script>
+    $(".redeem-now").click(function(){
+        var num = parseInt($("input[name=number]").val());
+        if(num <= 0){
+            return
+        }
+        window.location.href = '/redeem/order/add?gid=<?php echo $goods['gid'] ?>&num=' + num;
+    });
+
+    $(".add-to-cart").click(function(){
+        var num = parseInt($("input[name=number]").val());
+        if(num <= 0){
+            return
+        }
+        window.location.href = '/redeem/cart/add-goods?gid=<?php echo $goods['gid'] ?>&num=' + num;
+    });
+
+
+</script>
 </html>

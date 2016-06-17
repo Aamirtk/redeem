@@ -17,6 +17,13 @@ class UserController extends BaseController
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
+    public function init(){
+        $this->_uncheck = [
+            'reg',
+            'send-sms',
+        ];
+    }
+
     /**
      * 用户注册
      * @return type
@@ -44,6 +51,18 @@ class UserController extends BaseController
         }
         $this->_json($res['code'], $res['msg'], $res['data']);
     }
+
+    /**
+     * 退出登录
+     * @return type
+     */
+    public function actionLogout()
+    {
+        $session = Yii::$app->session;
+        $session->remove('user_id');
+        $this->redirect('/redeem/user/reg');
+    }
+
 
     /**
      * 发送验证码

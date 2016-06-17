@@ -22,23 +22,12 @@ class HomeController extends BaseController
      */
     public function actionIndex()
     {
-        $uid = $this->_request('uid', 2);
-        $u_mdl = new User();
         $g_mdl = new Goods();
 
         //判断用户是否手机认证
-        if(empty($uid)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $user = $u_mdl->_get_info(['uid' => $uid]);
-        if(empty($user)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
         $_goods_list = $g_mdl->_get_list(['>' , 'gid', 0], 'gid DESC', 1, 20);
         $_data = [
-            'user' => $user,
+            'user' => $this->user,
             'goods_list' => $_goods_list,
         ];
         return $this->render('index', $_data);

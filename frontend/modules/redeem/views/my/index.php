@@ -59,8 +59,9 @@
             </li></a>
     </ul>
     <div class="button">
-        <a class="btn">退出登录</a>
+        <a class="btn" href="/redeem/user/logout" id="login-out" >退出登录</a>
     </div>
 </div>
 </body>
+
 </html>

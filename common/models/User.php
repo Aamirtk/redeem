@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Exception;
 use common\models\Auth;
 use common\models\Points;
+use common\models\Cart;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -93,6 +94,13 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * 关联购物车
+     **/
+    public function getCart() {
+        return $this->hasOne(Cart::className(), ['uid' => 'uid']);
+    }
+
+    /**
      * 获取信息
      * @param $where array
      * @return array|boolean
@@ -105,6 +113,23 @@ class User extends \yii\db\ActiveRecord
         $obj = self::findOne($where);
         if (!empty($obj)) {
             return $obj->toArray();
+        }
+        return false;
+    }
+
+    /**
+     * 获取信息-关联
+     * @param $where array
+     * @return array|boolean
+     **/
+    public function _get_info_all($where = []) {
+        if (empty($where)) {
+            return false;
+        }
+
+        $obj = self::find();
+        if (!empty($obj)) {
+            return $obj->where($where)->joinWith('cart')->asArray(true)->one();
         }
         return false;
     }
@@ -222,6 +247,21 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取用户购物车
+     * @return array|boolean
+     */
+    public static function _get_cart($uid){
+        if(empty($uid)){
+            return false;
+        }
+        $cart = Cart::findOne(['uid' => $uid]);
+        if($cart){
+            return $cart['cart_id'];
+        }
+        return $cart->_add(['cart_id' => $cart]);
+    }
+
+    /**
      * 用户类型
      * @param $type int
      * @return array|boolean
@@ -293,6 +333,11 @@ class User extends \yii\db\ActiveRecord
      * @return array|boolean
      */
     public static function _add_user($param){
+        //开启session
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
 
         //验证手机号
         if(empty($param['mobile'])){
@@ -333,6 +378,7 @@ class User extends \yii\db\ActiveRecord
         //验证是否已经手机认证
         $user = $u_mdl->_get_info(['mobile' => $mobile]);
         if($user){
+            $session->set('user_id', $user['uid']);
             return ['code' => 20001, 'msg' => '已经手机认证过了，直接登录', 'data' => ['uid' => $user['uid']]];
         }
 
@@ -353,6 +399,13 @@ class User extends \yii\db\ActiveRecord
                 throw new Exception('用户信息保存失败');
             }
             $uid = self::getDb()->getLastInsertID();
+
+            //添加用户购物车
+            $res = (new Cart())->_save(['uid' => $uid]);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('购物车添加失败');
+            }
 
             //添加积分更新记录
             $ret = Points::_add_points($uid, Points::POINTS_MOBILEAUTH);
@@ -375,6 +428,7 @@ class User extends \yii\db\ActiveRecord
             //执行
             $transaction->commit();
 
+            $session->set('user_id', $uid);
             return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
 
         } catch (Exception $e) {
