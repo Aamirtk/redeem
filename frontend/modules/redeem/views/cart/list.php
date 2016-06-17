@@ -107,17 +107,7 @@
             gid_arr.push($(dom).attr('c_g_id'))
         });
         var gids = JSON.stringify(gid_arr)
-
         window.location.href = '/redeem/order/add?gids=' + gids;
-
-//        var param = {gids: gids};
-//        $._ajax('/redeem/order/ajax-add', param, 'POST', 'JSON', function(json){
-//            if(json.code > 0){
-//                window.location.href = '/redeem/order/detail';
-//            }else{
-//                alert('添加失败');
-//            }
-//        });
     });
 </script>
 </html>

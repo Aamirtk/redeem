@@ -3,6 +3,7 @@
 namespace frontend\modules\redeem\controllers;
 
 use common\models\CartGoods;
+use common\models\Order;
 use Yii;
 use app\base\BaseController;
 use common\models\User;
@@ -63,23 +64,17 @@ class OrderController extends BaseController
     public function actionAjaxAdd()
     {
         $gids = json_decode($this->_request('gids'));
+        $add_id = intval($this->_request('add_id'));
         if(empty($gids)){
             $this->_json(-20001, '没有选择购物车的任何商品');
         }
-
-        $u_mdl = new User();
-
-        $cg_mdl = new CartGoods();
-        $total_points = 0;
-        $list = $cg_mdl->_get_list_all(['in' , 'id', $gids]);
-        if($list){
-            foreach($list as $val){
-                $total_points += $val['count'] * getValue($val, 'goods.redeem_pionts', 0);
-            }
+        if(empty($add_id)){
+            $this->_json(-20002, '订单不能为空');
         }
-        $cart_id = $u_mdl->_get_cart($this->uid);
-        $cg_mdl = new CartGoods();
-        $this->_json(20000, '保存成功');
+
+        $order = new Order();
+        $res = $order->_add_orders($this->uid, $gids, $add_id);
+        $this->_json($res['code'], $res['msg']);
     }
 
     /**

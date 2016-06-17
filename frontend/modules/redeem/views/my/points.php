@@ -45,7 +45,7 @@
         <?php foreach($record_list as $record): ?>
             <tr>
                 <td><?php echo date('Y-m-d', $record['create_at']) ?></td>
-                <td>+<?php echo $record['points'] ?></td>
+                <td><?php echo $record['points'] > 0 ? '+' . $record['points'] : $record['points']  ?></td>
                 <td><?php echo $record['points_name'] ?></td>
             </tr>
         <?php endforeach ?>

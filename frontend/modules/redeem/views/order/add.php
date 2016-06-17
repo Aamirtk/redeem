@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/dingdanqueren.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/tools.js"></script>
     <script type="text/javascript">
         $(function(){
             $('.back').click(function(){
@@ -85,8 +86,30 @@
         </div>
     </div>
     <div class="button">
-        <a href="" class="btn">立即支付</a>
+        <a href="javaScript:void(0)" class="btn paynow">立即支付</a>
     </div>
 </div>
 </body>
+<script>
+    $(".paynow").on('click', function(){
+        var boxex = $(".box");
+        if(boxex.length == 0){
+            return
+        }
+        var gid_arr = Array();
+        $.each(boxex, function(i, dom){
+            gid_arr.push($(dom).attr('c_g_id'))
+        });
+        var gids = JSON.stringify(gid_arr)
+        var param = {gids: gids, add_id: <?php echo $address['add_id'] ?>};
+        $._ajax('/redeem/order/ajax-add', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert('成功');
+//                window.location.href = '/redeem/cart/goods-list';
+            }else{
+                alert('添加失败');
+            }
+        });
+    });
+</script>
 </html>

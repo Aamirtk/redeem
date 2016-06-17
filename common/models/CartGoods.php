@@ -90,6 +90,23 @@ class CartGoods extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取信息
+     * @param $where array
+     * @return array|boolean
+     **/
+    public function _get_info_all($where = []) {
+        if (empty($where)) {
+            return false;
+        }
+        $obj = self::find();
+        if (!empty($obj)) {
+            return $obj->where($where)->joinWith('goods')->asArray(true)->one();
+        }
+        return false;
+    }
+
+
+    /**
      * 获取列表
      * @param $where array
      * @param $order string

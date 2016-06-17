@@ -317,28 +317,55 @@ class Points extends \yii\db\ActiveRecord
      * @param $num int 积分数量，可正可负
      * @return array|boolean
      */
-    public static function _update_points($uid, $num) {
+    public static function _dec_points($uid, $num) {
         if(empty($uid) || empty($num)){
-            return false;
+            return ['code' => -20001, 'msg' => '参数不合法'];
         }
         $mdl = new User();
         $user = $mdl->_get_info(['uid' => $uid]);
         if(!$user){
-            return false;
+            return ['code' => -20002, 'msg' => '用户信息不存在'];
         }
         $points = $user['points'];
-        $newpoints = $points + $num;
-        if($newpoints < 0){
+        if($points < $num){
             return false;
         }
-        $res = $mdl->_save([
-            'uid' => $uid,
-            'points' => $newpoints,
-        ]);
-        if(!$res){
-            return false;
+        //开启事务
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            //用户表更新记录
+            $res = $mdl->_save([
+                'uid' => $uid,
+                'points' => $points - $num,
+            ]);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('用户表更新记录失败');
+            }
+
+            //增加积分记录
+            $pr_mdl = new PointsRecord();
+            $ret = $pr_mdl->_save([
+                'uid' => $uid,
+                'point_id' => 0,
+                'points' => -$num,
+                'points_name' => self::_get_points_type(),
+            ]);
+            if(!$ret){
+                $transaction->rollBack();
+                throw new Exception('积分记录更新失败');
+            }
+
+            //执行
+            $transaction->commit();
+
+            return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
         }
-        return true;
     }
 
     /**
@@ -346,7 +373,7 @@ class Points extends \yii\db\ActiveRecord
      * @param $points_id int
      * @return array|boolean
      */
-    public static function _get_points_type($points_id = 1){
+    public static function _get_points_type($points_id = 0){
         switch(intval($points_id)){
             case self::POINTS_CONCERN:
                 $_name = '关注';
@@ -367,7 +394,7 @@ class Points extends \yii\db\ActiveRecord
                 $_name = '奖励积分';
                 break;
             default:
-                $_name = '';
+                $_name = '商品购买';
                 break;
         }
         return $_name;
