@@ -72,8 +72,12 @@
             <div class="address">
                 <div class="top">
                     <span><?php echo getValue($order, 'address.receiver_name', '') ?></span>&nbsp;&nbsp;
-                    <div class="fr"><span><?php echo getValue($order, 'address.receiver_phone', '') ?></span>&nbsp;
-                        <span class="default">默认</span></div>
+                    <div class="fr">
+                        <span><?php echo getValue($order, 'address.receiver_phone', '') ?></span>&nbsp;
+                        <?php if(getValue($order, 'address.is_default') == \common\models\Address::DEFAULT_YES): ?>
+                            <span class="default">默认</span>
+                        <?php endif ?>
+                    </div>
                 </div>
                 <div class="middle">
                     <span><?php echo getValue($order, 'address.province', '') ?></span>&nbsp;
