@@ -2,11 +2,11 @@
 
 namespace backend\modules\order\controllers;
 
-use frontend\modules\personal\models\Goods;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\Order;
+use common\models\Address;
 use app\modules\team\models\Team;
 
 class OrderController extends BaseController
@@ -67,14 +67,16 @@ class OrderController extends BaseController
         $page = $this->_request('page', 0);
         $pageSize = $this->_request('pageSize', 10);
         $offset = $page * $pageSize;
+        $ad_tb = Address::tableName();
+        $or_tb = Order::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', 'update_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', $or_tb . '.update_at', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', 'update_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', $or_tb . '.update_at', strtotime($search['uptimeEnd'])]);
             }
             if (isset($search['goods_id'])) //商品编号
             {
@@ -88,14 +90,6 @@ class OrderController extends BaseController
             {
                 $query = $query->andWhere(['like', 'goods_name', $search['goods_name']]);
             }
-            if (isset($search['buyer_name'])) //购买者名称
-            {
-                $query = $query->andWhere(['like', 'buyer_name', $search['buyer_name']]);
-            }
-            if (isset($search['buyer_phone'])) //购买者手机
-            {
-                $query = $query->andWhere(['buyer_phone' => $search['buyer_phone']]);
-            }
         }
 
         //只能是上架，或者下架的产品
@@ -104,6 +98,7 @@ class OrderController extends BaseController
         $query_count = clone($query);
         $orderArr = $query
             ->with('address')
+            ->with('user')
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
@@ -115,11 +110,12 @@ class OrderController extends BaseController
                 'gid',
                 'goods_id',
                 'goods_name',
-                'buyer_phone',
-                'buyer_name',
                 'order_status',
                 'status_name' => function ($m) {
                     return Order::_get_order_status($m->order_status);
+                },
+                'buyer_name' => function ($m) {
+                    return getValue($m, 'user.name', '');
                 },
                 'address' => function ($m) {
                     return _value($m['address']['detail']);

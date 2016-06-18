@@ -108,6 +108,13 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
+     * 关联表-hasMany
+     **/
+    public function getUser() {
+        return $this->hasOne(User::className(), ['uid' => 'uid']);
+    }
+
+    /**
      * 获取信息
      * @param $where array
      * @return array|boolean
