@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</title>
+    <title>个人中心</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="screen-orientation" content="portrait">
@@ -29,30 +29,30 @@
         <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
     </header>
     <div class="head_portrait">
-        <img src="/images/head_portrait.png">
+        <img src="<?php echo $user['avatar'] ?>">
     </div>
-    <div class="name">喵喵</div>
-    <div class="integral"><img src="/images/heart.png">&nbsp;&nbsp;我的积分&nbsp;&nbsp;<span>1000</span></div>
+    <div class="name"><?php echo $user['nick'] ?></div>
+    <div class="integral"><img src="/images/heart.png">&nbsp;&nbsp;我的积分&nbsp;&nbsp;<span><?php echo $user['points'] ?></span></div>
     <div class="signature">
-        <input type="text" placeholder="签名" />
+<!--        <input type="text" placeholder="签名" />-->
     </div>
     <ul class="box">
-        <a href="我的订单.html"><li>
+        <a href="/redeem/my/order"><li>
                 <img src="/images/icon01.png" class="icon">
                 我的订单
                 <img src="/images/go.png" class="go">
             </li></a>
-        <a href="/redeem/my/address?uid=<?php echo $user['uid'] ?>"><li>
+        <a href="/redeem/my/address"><li>
                 <img src="/images/icon02.png" class="icon">
                 我的地址
                 <img src="/images/go.png" class="go">
             </li></a>
-        <a href="/redeem/my/points/?uid=<?php echo $user['uid'] ?>"><li>
+        <a href="/redeem/my/points"><li>
                 <img src="/images/icon03.png" class="icon">
                 积分管理
                 <img src="/images/go.png" class="go">
             </li></a>
-        <a href="关于我们.html"><li>
+        <a href="/redeem/home/about"><li>
                 <img src="/images/icon04.png" class="icon">
                 关于我们
                 <img src="/images/go.png" class="go">

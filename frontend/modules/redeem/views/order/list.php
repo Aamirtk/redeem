@@ -70,26 +70,29 @@
 
         <div class="address-container">
             <div class="address">
-                <div class="top">
-                    <span><?php echo getValue($order, 'address.receiver_name', '') ?></span>&nbsp;&nbsp;
-                    <div class="fr">
-                        <span><?php echo getValue($order, 'address.receiver_phone', '') ?></span>&nbsp;
-                        <?php if(getValue($order, 'address.is_default') == \common\models\Address::DEFAULT_YES): ?>
-                            <span class="default">默认</span>
-                        <?php endif ?>
+                <?php if(!empty($order['address'])): ?>
+                    <div class="top">
+                        <span><?php echo getValue($order, 'address.receiver_name', '') ?></span>&nbsp;&nbsp;
+                        <div class="fr">
+                            <span><?php echo getValue($order, 'address.receiver_phone', '') ?></span>&nbsp;
+                            <?php if(getValue($order, 'address.is_default') == \common\models\Address::DEFAULT_YES): ?>
+                                <span class="default">默认</span>
+                            <?php endif ?>
+                        </div>
                     </div>
-                </div>
-                <div class="middle">
-                    <span><?php echo getValue($order, 'address.province', '') ?></span>&nbsp;
-                    <span><?php echo getValue($order, 'address.city', '') ?></span>&nbsp;
-                    <span><?php echo getValue($order, 'address.county', '') ?></span>&nbsp;
-                    <span><?php echo getValue($order, 'address.detail', '') ?></span>
-                </div>
-                <div class="bottom">地址类型：<?php echo \common\models\Address::_get_address_type_name(getValue($order, 'address.type', 0)) ?></div>
-                <a href="/redeem/address/change-order-address?oid=<?php echo $order['oid'] ?>"><div class="change" oid="<?php echo $order['oid'] ?>">更换地址</div></a>
+                    <div class="middle">
+                        <span><?php echo getValue($order, 'address.province', '') ?></span>&nbsp;
+                        <span><?php echo getValue($order, 'address.city', '') ?></span>&nbsp;
+                        <span><?php echo getValue($order, 'address.county', '') ?></span>&nbsp;
+                        <span><?php echo getValue($order, 'address.detail', '') ?></span>
+                    </div>
+                    <div class="bottom">地址类型：<?php echo \common\models\Address::_get_address_type_name(getValue($order, 'address.type', 0)) ?></div>
+                    <a href="/redeem/address/change-order-address?oid=<?php echo $order['oid'] ?>"><div class="change" oid="<?php echo $order['oid'] ?>">更换地址</div></a>
+                <?php else: ?>
+                    <a href="/redeem/address/change-order-address?oid=<?php echo $order['oid'] ?>"><div class="change" oid="<?php echo $order['oid'] ?>">添加地址</div></a>
+                <?php endif ?>
             </div>
         </div>
-
     <?php endforeach ?>
 
     <div class="button">

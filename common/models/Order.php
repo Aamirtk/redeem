@@ -314,7 +314,8 @@ class Order extends \yii\db\ActiveRecord
             $add_id = $add_id_al;
         }
         if(empty($add_id)){
-            return ['code' => -20004, 'msg' => '您还没有添加地址'];
+//            return ['code' => -20004, 'msg' => '您还没有添加地址'];
+            $add_id = 0;
         }
 
 

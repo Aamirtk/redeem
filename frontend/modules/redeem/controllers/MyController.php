@@ -117,6 +117,4 @@ class MyController extends BaseController
     }
 
 
-
-
 }
