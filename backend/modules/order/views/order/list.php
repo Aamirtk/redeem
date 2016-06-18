@@ -34,20 +34,19 @@ use common\models\Order;
             <form id="authsearch" class="form-horizontal">
 
                 <div class="row">
-                    <div class="control-group span12">
+                    <div class="control-group span8">
                         <label class="control-label">商品名称：</label>
                         <div class="controls">
                             <input type="text" class="control-text" name="goods_name">
                         </div>
                     </div>
-                    <div class="control-group span12">
+                    <div class="control-group span8">
                         <label class="control-label">商品编号：</label>
                         <div class="controls">
                             <input type="text" class="control-text" name="goods_id">
                         </div>
                     </div>
-
-                    <div class="control-group span10">
+                    <div class="control-group span8">
                         <label class="control-label">订单状态：</label>
                         <div class="controls" >
                             <select name="order_status" id="checkstatus">
@@ -58,7 +57,6 @@ use common\models\Order;
                             </select>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row">
@@ -125,9 +123,11 @@ use common\models\Order;
                     {title: '订单编号', dataIndex: 'oid', width: 80, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
+                    {title: '买家姓名', dataIndex: 'buyer_name', width: 80, elCls : 'center'},
+                    {title: '买家手机', dataIndex: 'buyer_phone', width: 110, elCls : 'center'},
                     {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
                     {title: '物流编号', dataIndex: '', width: 140, elCls : 'center'},
-                    {title: '收货地址', dataIndex: 'address', width: 160},
+                    {title: '收货地址', dataIndex: 'address', width: 180},
                     {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
                     {
                         title: '操作',

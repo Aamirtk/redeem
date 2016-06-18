@@ -5,6 +5,7 @@ namespace backend\modules\order\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
+use common\models\User;
 use common\models\Order;
 use common\models\Address;
 use app\modules\team\models\Team;
@@ -69,6 +70,7 @@ class OrderController extends BaseController
         $offset = $page * $pageSize;
         $ad_tb = Address::tableName();
         $or_tb = Order::tableName();
+        $ur_tb = User::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
@@ -88,17 +90,17 @@ class OrderController extends BaseController
             }
             if (isset($search['goods_name'])) //商品名称
             {
-                $query = $query->andWhere(['like', 'goods_name', $search['goods_name']]);
+                $query = $query->andWhere(['like', $or_tb . '.goods_name', $search['goods_name']]);
             }
         }
 
         //只能是上架，或者下架的产品
-        $query->andWhere(['is_deleted' => $mdl::NO_DELETE]);
+        $query->andWhere([$or_tb . '.is_deleted' => $mdl::NO_DELETE]);
         $_order_by = 'oid DESC';
         $query_count = clone($query);
         $orderArr = $query
-            ->with('address')
-            ->with('user')
+            ->joinWith('address')
+            ->joinWith('user')
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
@@ -117,6 +119,10 @@ class OrderController extends BaseController
                 'buyer_name' => function ($m) {
                     return getValue($m, 'user.name', '');
                 },
+                'buyer_phone' => function ($m) {
+                    return getValue($m, 'user.mobile', '');
+                },
+
                 'address' => function ($m) {
                     return _value($m['address']['detail']);
                 },
