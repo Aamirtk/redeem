@@ -108,7 +108,9 @@ class Goods extends \yii\db\ActiveRecord
             $_obj->where($where);
         }
 
-        $_obj->orderBy($order);
+        if(!empty($order)){
+            $_obj->orderBy($order);
+        }
 
         if (!empty($limit)) {
             $offset = max(($page - 1), 0) * $limit;

@@ -116,7 +116,10 @@
             if(json.code > 0){
                 window.location.href = '/redeem/my/order';
             }else{
-                alert('添加失败');
+                $alarr = [-20003];
+                if($.inArray(json.code, $alarr) !== -1){
+                    alert(json.msg);
+                }
             }
         });
     });

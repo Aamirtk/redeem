@@ -59,7 +59,7 @@ class MyController extends BaseController
     public function actionPoints()
     {
         $pr_mdl = new PointsRecord();
-        $record_list = $pr_mdl->_get_list(['>', 'id', 0], 'id DESC');
+        $record_list = $pr_mdl->_get_list(['uid' => $this->uid], 'id DESC');
         $_data = [
             'user' => $this->user,
             'record_list' => $record_list
@@ -74,7 +74,7 @@ class MyController extends BaseController
     public function actionOrder()
     {
         $r_mdl = new Order();
-        $_order_list = $r_mdl->_get_list();
+        $_order_list = $r_mdl->_get_list([Order::tableName() . '.uid' => $this->uid]);
         $_status_list = $r_mdl::_get_status_list();
         $_data = [
             'order_list' => $_order_list,
@@ -91,7 +91,6 @@ class MyController extends BaseController
     {
         $mdl = new Order();
         $type = trim($this->_request('order_status'));
-        lg($this->_request());
         if($type == 'topay'){
             $where = ['order_status' => $mdl::STATUS_PAY];
         }else if($type == 'payed'){

@@ -63,7 +63,6 @@ class OrderController extends BaseController
     public function actionList()
     {
         $r_mdl = new Order();
-
         $list = $r_mdl->_get_list_all([$r_mdl::tableName() . '.uid' => $this->uid, 'order_status' => Order::STATUS_PAY]);
         $_data = [
             'order_list' => $list,
