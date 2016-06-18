@@ -5,22 +5,25 @@
 </style>
 <form class="form-horizontal bui-form bui-form-field-container" id="user_info_form" aria-disabled="false"
       onsubmit="return false;" aria-pressed="false">
-    <input name="uid" v-role="proj-id" type="hidden" class="bui-form-field" aria-disabled="false"
-           value="<?php echo $user['uid'] ?>" style="display: none;">
+    <input name="oid" type="hidden" value="<?php echo $order['oid'] ?>" >
 
     <div class="control-group">
-        <label class="control-label">手机号码：</label>
-        <div class="controls">
-            <input name="mobile" class="input-normal control-text bui-form-field" data-rules="{required:true}"
-                   type="text" v-role="proj-name" aria-disabled="false" value="<?php echo $user['mobile'] ?>">
+        <label class="control-label">物流公司：</label>
+        <div class="controls" >
+            <select name="express_type" id="checkstatus">
+                <option value="">请选择</option>
+                <?php foreach ($exp_array as $key => $name): ?>
+                    <option value="<?php echo $key ?>" <?php if($order['express_type'] == $key)echo 'selected="selected"' ?>><?php echo $name ?></option>
+                <?php endforeach ?>
+            </select>
         </div>
     </div>
 
     <div class="control-group">
-        <label class="control-label">电子邮箱：</label>
+        <label class="control-label">物流单号：</label>
         <div class="controls">
-            <input name="email" class="input-normal control-text bui-form-field" data-rules="{required:true}"
-                   type="text" v-role="proj-name" aria-disabled="false" value="<?php echo $user['email'] ?>">
+            <input name="express_num" class="input-normal control-text bui-form-field" data-rules="{required:true}"
+                   type="text" v-role="proj-name" aria-disabled="false" value="<?php echo $order['express_num'] ?>">
         </div>
     </div>
 
@@ -37,10 +40,10 @@
 <script>
     function saveInfo(){
         var param = $._get_form_json("#user_info_form");
-        $._ajax('/user/user/ajax-save', param, 'POST', 'JSON', function(json){
+        $._ajax('/order/order/ajax-save-logestic', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
+                    window.location.href = '<?php echo yiiUrl('order/order/list') ?>';
                 }, 'success');
 
             }else{

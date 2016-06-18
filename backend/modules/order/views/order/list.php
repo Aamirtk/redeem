@@ -126,15 +126,23 @@ use common\models\Order;
                     {title: '买家姓名', dataIndex: 'buyer_name', width: 80, elCls : 'center'},
                     {title: '买家手机', dataIndex: 'buyer_phone', width: 110, elCls : 'center'},
                     {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '物流编号', dataIndex: '', width: 140, elCls : 'center'},
+                    {
+                        title: '物流编号',
+                        width: 140,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<a class='' href='javaScript:void(0)' onclick='checkLogDetail(" + obj.oid + ")'>" + obj.express_num + "</a>";
+                        }
+                    },
                     {title: '收货地址', dataIndex: 'address', width: 180},
                     {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
+
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
                             return "<a class='button button-primary' onclick='updateOrder(" + obj.oid + ")'>编辑</a>" +
-                            "<a class='button button-info' onclick=''>物流</a>" +
+                            "<a class='button button-info' onclick='checkLogestic("+ obj.oid +")'>物流</a>" +
                             " <a class='button button-danger' onclick='del(" + obj.oid + ")'>删除</a>";
                         }
                     }
@@ -251,6 +259,7 @@ function updateOrder(oid) {
     dialog.get('loader').load({oid: oid});
 }
 
+
 /**
  *删除
  */
@@ -270,6 +279,63 @@ function del(oid) {
         });
     }, 'question');
 }
+
+
+/**
+ * 查看用户物流
+ */
+function checkLogestic(oid) {
+    var width = 400;
+    var height = 250;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '请填写物流信息',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/order/order/logistic",
+            autoLoad: true, //不自动加载
+            params: {oid: oid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        buttons: buttons,
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({oid: oid});
+}
+
+/**
+ * 查看用户物流
+ */
+function checkLogDetail(oid) {
+    var width = 600;
+    var height = 400;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '物流详情',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/order/order/logestic-detail",
+            autoLoad: true, //不自动加载
+            params: {oid: oid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        success:function () {
+            this.close();
+        },
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({oid: oid});
+}
+
+
 
 </script>
 

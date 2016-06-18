@@ -19,6 +19,8 @@ use common\models\Address;
  * @property integer $order_status
  * @property integer $count
  * @property integer $add_id
+ * @property integer $express_type
+ * @property integer $express_num
  * @property integer $is_deleted
  * @property integer $update_at
  * @property integer $create_at
@@ -66,6 +68,8 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['gid', 'uid', 'order_status', 'points_cost', 'count', 'add_id', 'is_deleted', 'update_at', 'create_at'], 'integer'],
             [['goods_id'], 'string', 'max' => 40],
+            [['express_type'], 'string', 'max' => 20],
+            [['express_num'], 'string', 'max' => 30],
             [['goods_name', 'order_id'], 'string', 'max' => 50],
             [['create_at'], 'default', 'value' => time()],
         ];
@@ -87,6 +91,8 @@ class Order extends \yii\db\ActiveRecord
             'order_status' => '订单状态（1-待付款；2-待发货；3-待收货；4-已完成；5-已撤销；6-待评论）',
             'count' => '商品数量',
             'add_id' => '地址ID',
+            'express_type' => '物流公司类型',
+            'express_name' => '物流编号',
             'is_deleted' => '是否删除(1-未删除；2-已删除)',
             'update_at' => '更新时间',
             'create_at' => '创建时间',
