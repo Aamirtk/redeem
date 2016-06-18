@@ -73,7 +73,7 @@
     <div class="box-container">
         <?php if(!empty($cart_goods)): ?>
             <?php foreach($cart_goods as $val): ?>
-                <div class="box" c_g_id="<?php echo $val['id'] ?>">
+                <div class="box active" c_g_id="<?php echo $val['id'] ?>">
                     <div class="pic"><img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>"></div>
                     <div class="text">
                         <div class="title"><?php echo getValue($val, 'goods.name', '') ?></div>
@@ -106,8 +106,15 @@
         $.each(goods_chosen, function(i, dom){
             gid_arr.push($(dom).attr('c_g_id'))
         });
-        var gids = JSON.stringify(gid_arr)
-        window.location.href = '/redeem/order/add?gids=' + gids;
+        var gids = JSON.stringify(gid_arr);
+        var param = {gids: gids};
+        $._ajax('/redeem/order/ajax-add', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                window.location.href = '/redeem/order/list';
+            }else{
+                alert('添加失败');
+            }
+        });
     });
 </script>
 </html>

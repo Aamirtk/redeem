@@ -59,7 +59,6 @@ use common\models\Address;
     </header>
     <form id="address">
         <div class="box">
-            <input type="hidden" name="uid" value="<?php echo $uid ?>">
             <input type="hidden" name="add_id" value="<?php echo $add['add_id'] ?>">
             <div class="form-group">
                 <label>收货人姓名</label>

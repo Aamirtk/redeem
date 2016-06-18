@@ -100,14 +100,6 @@
         if(count <= 0){
             return
         }
-        window.location.href = '/redeem/order/add?gid=<?php echo $goods['gid'] ?>&num=' + num;
-    });
-
-    $(".add-to-cart").click(function(){
-        var count = parseInt($("input[name=number]").val());
-        if(count <= 0){
-            return
-        }
         var param = {count: count, gid: <?php echo $goods['gid'] ?>};
         $._ajax('/redeem/cart/ajax-add-goods', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
@@ -118,6 +110,19 @@
         });
     });
 
-
+    $(".add-to-cart").click(function(){
+        var count = parseInt($("input[name=number]").val());
+        if(count <= 0){
+            return
+        }
+        var param = {count: count, gid: <?php echo $goods['gid'] ?>};
+        $._ajax('/redeem/cart/ajax-add-goods', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+//                window.location.href = '/redeem/cart/goods-list';
+            }else{
+                alert('添加失败');
+            }
+        });
+    });
 </script>
 </html>

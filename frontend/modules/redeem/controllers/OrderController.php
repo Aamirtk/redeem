@@ -29,7 +29,6 @@ class OrderController extends BaseController
             $this->_json(-20001, '没有选择购物车的任何商品');
         }
 
-        $u_mdl = new User();
         $m_mdl = new Address();
 
         $cg_mdl = new CartGoods();
@@ -58,33 +57,34 @@ class OrderController extends BaseController
     }
 
     /**
+     * 订单列表
+     * @return type
+     */
+    public function actionList()
+    {
+        $r_mdl = new Order();
+
+        $list = $r_mdl->_get_list_all([$r_mdl::tableName() . '.uid' => $this->uid, 'order_status' => Order::STATUS_PAY]);
+        $_data = [
+            'order_list' => $list,
+        ];
+        return $this->render('list', $_data);
+    }
+
+    /**
      * 生成订单
      * @return type
      */
     public function actionAjaxAdd()
     {
         $gids = json_decode($this->_request('gids'));
-        $add_id = intval($this->_request('add_id'));
         if(empty($gids)){
             $this->_json(-20001, '没有选择购物车的任何商品');
         }
-        if(empty($add_id)){
-            $this->_json(-20002, '订单不能为空');
-        }
 
         $order = new Order();
-        $res = $order->_add_orders($this->uid, $gids, $add_id);
+        $res = $order->_add_orders($this->uid, $gids);
         $this->_json($res['code'], $res['msg']);
-    }
-
-    /**
-     * 兑换
-     * @return type
-     */
-    public function actionList()
-    {
-
-        return $this->render('list');
     }
 
     /**
@@ -93,12 +93,14 @@ class OrderController extends BaseController
      */
     public function actionPay()
     {
-        return $this->render('pay');
+        $oids = json_decode($this->_request('oids'));
+        if(empty($oids)){
+            $this->_json(-20001, '您没有选择任何订单');
+        }
+
+        $order = new Order();
+        $res = $order->_pay_orders($this->uid, $oids);
+        $this->_json($res['code'], $res['msg']);
     }
-
-
-
-
-
 
 }

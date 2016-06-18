@@ -56,6 +56,7 @@
     </header>
     <form id="address">
         <div class="box">
+            <input type="hidden" name="oid" value="<?php echo $oid ?>">
             <div class="form-group">
                 <label>收货人姓名</label>
                 <input type="text" name="receiver_name" placeholder="请输入收货人姓名" />
@@ -144,7 +145,7 @@
     $("#submit").on('click', function(){
         var param = $._get_form_json('#address');
         param.is_default  = $(".checkbox").hasClass("checked") ? 2 : 1;
-        $._ajax('/redeem/address/add', param, 'POST', 'JSON', function(json){
+        $._ajax('/redeem/address/change-order-address', param, 'POST', 'JSON', function(json){
             var code = json.code;
             var msg = json.msg
             if(code > 0){

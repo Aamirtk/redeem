@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Somfy 积分兑换商城</title>
+    <title>【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="screen-orientation" content="portrait">
@@ -10,94 +10,108 @@
     <meta name="x5-fullscreen" content="true">
     <meta name="browsermode" content="application">
     <meta name="x5-page-mode" content="app">
-    <link rel="stylesheet" type="text/css" href="/css/swiper-3.3.1.min.css">
     <link rel="stylesheet" type="text/css" href="/css/header.css">
-    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/css/dingdanqueren.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
-    <script src="/js/swiper-3.3.1.jquery.min.js"></script>
+    <script src="/js/tools.js"></script>
     <script type="text/javascript">
         $(function(){
-            var mySwiper = new Swiper('.banner', {
-                autoplay: 5000,
-                direction : 'horizontal',
-                loop : true,
-            });
-
-            $('.swiper-slide').height(mySwiper.width/2.3);
-            $('.head_portrait').height($('.head_portrait img').outerWidth());
-
-            $('header .left img').click(function(){
-                $('.search-box').toggleClass('active');
-                $('.banner').toggleClass('top');
+            $('.back').click(function(){
+                history.back();
             });
         });
+        <!-- 增加数量 -->
+        function numAdd(thi) {
+            var num_root = $(thi).parents('.count').find('input');
+            var num_add = parseInt(num_root.val())+1;
+            num_root.val(num_add);
+
+            // var total = parseFloat($("#price").text())*parseInt(num_root.val());
+            // $("#totalPrice").html(total.toFixed(2));
+        }
+        <!-- 减少数量 -->
+        function numDec(thi) {
+            var num_root = $(thi).parents('.count').find('input');
+            var num_dec = parseInt(num_root.val())-1;
+            var num_name = num_root.attr('name');
+
+            if((num_name=='2' && num_dec<3) || (num_name=='4' && num_dec<1) || num_dec<1){
+                return false;
+            }else{
+                num_root.val(num_dec);
+                // var total = parseFloat($("#price").text())*parseInt(num_root.val());
+                // $("#totalPrice").html(total.toFixed(2));
+            }
+        }
     </script>
 </head>
 <body>
 <div class="body-All">
     <header>
-        <div class="left"><a><img src="/images/search.png"></a></div>
-        <img src="/images/logo.png" class="logo">
-        <div class="right">
-            <a href="个人中心.html"><img src="/images/icon07.png"></a>
-            <a href="购物车.html"><img src="/images/icon06.png"></a>
-        </div>
+        <div class="back"><a><img src="///images/back.png"></a></div>
+        我的订单
+        <div class="home"><a href="index.html"><img src="///images/home.png"></a></div>
     </header>
-    <div class="search-box">
-        <input type="text" placeholder="请输入您想要搜索的产品">
-        <img src="/images/search01.png">
-    </div>
-    <div class="banner top">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="/images/banner.png"></div>
-            <div class="swiper-slide"><img src="/images/head_portrait.png"></div>
-        </div>
-    </div>
-    <div class="personal-container">
-        <div class="personal">
-            <div class="personal-left">
-                <div class="head_portrait">
-                    <img src="/images/head_portrait.png">
-                </div>
+    <?php foreach($order_list as $order): ?>
+        <?php if(!empty($order['goods'])): ?>
+            <div class="box" oid="<?php echo $order['oid'] ?>">
+                <div class="pic"><img src="<?php echo yiiParams('img_host') . getValue($order, 'goods.thumb', '') ?>"></div>
                 <div class="text">
-                    <div><span>张玛丽</span></div>
-                    <div class="integral"><span>我的积分：</span><span class="color">61000</span></div>
-                    <div class="btn"><span>签到赚积分</span></div>
+                    <div class="title"><?php echo getValue($order, 'goods.name', '') ?></div>
+                    <div>
+                        <div class="integral">积分&nbsp;&nbsp;<span><?php echo getValue($order, 'goods.redeem_pionts', 0) ?></span></div>
+                        <div class="count">
+                            <span type="text"><?php echo $order['count'] ?></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="personal-right">
-                <img src="/images/text.png">
+        <?php endif ?>
+
+        <div class="address-container">
+            <div class="address">
+                <div class="top">
+                    <span><?php echo getValue($order, 'address.receiver_name', '') ?></span>&nbsp;&nbsp;
+                    <div class="fr"><span><?php echo getValue($order, 'address.receiver_phone', '') ?></span>&nbsp;
+                        <span class="default">默认</span></div>
+                </div>
+                <div class="middle">
+                    <span><?php echo getValue($order, 'address.province', '') ?></span>&nbsp;
+                    <span><?php echo getValue($order, 'address.city', '') ?></span>&nbsp;
+                    <span><?php echo getValue($order, 'address.county', '') ?></span>&nbsp;
+                    <span><?php echo getValue($order, 'address.detail', '') ?></span>
+                </div>
+                <div class="bottom">地址类型：<?php echo \common\models\Address::_get_address_type_name(getValue($order, 'address.type', 0)) ?></div>
+                <a href="/redeem/address/change-order-address?oid=<?php echo $order['oid'] ?>"><div class="change" oid="<?php echo $order['oid'] ?>">更换地址</div></a>
             </div>
         </div>
+
+    <?php endforeach ?>
+
+    <div class="button">
+        <a href="javaScript:void(0)" class="btn paynow">立即支付</a>
     </div>
-    <ul class="box">
-        <a href="详情.html">
-            <li>
-                <div class="pic">
-                    <img src="/images/pic05.png">
-                </div>
-                <div class="exchange">我要<br>兑换</div>
-                <div class="go"><img src="/images/go1.png"></div>
-                <div class="title">
-                    <div class="text">东芝U盘16G 速闪USB3.0  迷你防水创意车载优盘</div>
-                    <div class="integral"><span>999</span>积分</div>
-                </div>
-            </li>
-        </a>
-        <a href="详情.html">
-            <li>
-                <div class="pic">
-                    <img src="/images/pic05.png">
-                </div>
-                <div class="exchange">我要<br>兑换</div>
-                <div class="go"><img src="/images/go1.png"></div>
-                <div class="title">
-                    <div class="text">东芝U盘16G 速闪USB3.0  迷你防水创意车载优盘</div>
-                    <div class="integral"><span>999</span>积分</div>
-                </div>
-            </li>
-        </a>
-    </ul>
 </div>
 </body>
+<script>
+    $(".paynow").on('click', function(){
+        var boxex = $(".box");
+        if(boxex.length == 0){
+            return
+        }
+        var oid_arr = Array();
+        $.each(boxex, function(i, dom){
+            oid_arr.push($(dom).attr('oid'))
+        });
+        var oids = JSON.stringify(oid_arr);
+        var param = {oids: oids};
+        $._ajax('/redeem/order/pay', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                window.location.href = '/redeem/my/order';
+            }else{
+                alert('添加失败');
+            }
+        });
+    });
+</script>
 </html>
