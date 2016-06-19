@@ -5,10 +5,10 @@ namespace frontend\modules\redeem\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\api\VsoApi;
-use common\lib\Filter;
 use common\models\User;
 use common\models\Goods;
+use common\models\Points;
+use common\models\PointsRecord;
 
 
 class HomeController extends BaseController
@@ -30,7 +30,7 @@ class HomeController extends BaseController
             'user' => $this->user,
             'goods_list' => $_goods_list,
         ];
-        lg($_data);
+
         return $this->render('index', $_data);
     }
 
@@ -56,6 +56,27 @@ class HomeController extends BaseController
             'goods' => $_goods_list,
         ];
         $this->_json(20000, '成功', $_data);
+    }
+
+    /**
+     * 签到赚积分
+     * @return type
+     */
+    public function actionSign()
+    {
+        $p_mdl = new Points();
+        $r_mdl = new PointsRecord();
+        $sign = $r_mdl::find()
+            ->where(['uid' => $this->uid])
+            ->andWhere(['>', 'create_at', strtotime('today')])
+            ->andWhere(['<', 'create_at', strtotime('today + 1 day')])
+            ->asArray()
+            ->one();
+        if($sign){
+            $this->_json(-20001, '今天已经签到过了');
+        }
+        $ret = $p_mdl->_add_points($this->uid, Points::POINTS_SIGNIN);
+        $this->_json($ret['code'], $ret['msg']);
     }
 
     /**

@@ -58,12 +58,12 @@
         <div class="personal">
             <div class="personal-left">
                 <div class="head_portrait">
-                    <img src="<?php echo _value($user['avatar'], '/images/head_portrait.png', true) ?>">
+                    <a href="/redeem/my/index"><img src="<?php echo _value($user['avatar'], '/images/head_portrait.png', true) ?>"></a>
                 </div>
                 <div class="text">
                     <div><span><?php echo $user['name'] ?></span></div>
                     <div class="integral"><span>我的积分：</span><span class="color"><?php echo $user['points'] ?></span></div>
-                    <div class="btn"><span>签到赚积分</span></div>
+                    <div class="btn qiandao"><span>签到赚积分</span></div>
                 </div>
             </div>
             <div class="personal-right">
@@ -119,6 +119,16 @@
                 });
                 $("#list-content").html(html);
             }else{
+            }
+        });
+    });
+
+    $(".qiandao").on('click', function(){
+        $._ajax('/redeem/home/sign', {}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                window.location.href = '/redeem/my/points';
+            }else{
+                $(".qiandao").off('click');
             }
         });
     });
