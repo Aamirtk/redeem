@@ -9,6 +9,7 @@ use common\models\User;
 use common\models\Auth;
 use common\models\VerifyCode;
 use common\lib\Sms;
+use common\lib\Wechat;
 
 
 class UserController extends BaseController
@@ -21,6 +22,7 @@ class UserController extends BaseController
         $this->_uncheck = [
             'reg',
             'send-sms',
+            'wechat',
         ];
     }
 
@@ -114,6 +116,22 @@ class UserController extends BaseController
             $this->_json($res['code'], $res['msg']);
         }
         $this->_json($res['code'], $res['msg'], $res['data']);
+    }
+
+    /**
+     * 用户列表
+     * @return type
+     */
+    public function actionWechat()
+    {
+        $wechat = new Wechat();
+        $echostr = $this->_request('echostr');
+        if($wechat->checkSignature()){
+            return $echostr;
+        }else{
+            return false;
+        }
+
     }
 
 

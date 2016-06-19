@@ -42,6 +42,23 @@ function _value($data, $default = '', $empty = false)
 }
 
 /**
+ * 获取Request参数
+ * @param string $key
+ * @param bool|array|string $default 当请求的参数不存在时的默认值
+ * @return string
+ */
+function _request($key = '', $default = false) {
+    $request = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
+    if(empty($key)){
+        return $request;
+    }
+    if(!isset($request[$key])){
+        return $default;
+    }
+    return $request[$key];
+}
+
+/**
  * 从对象，数组中获取获取数据
  * @param $array mixed 数组或者对象
  * @param $key array|string 对象的属性，或者数组的键值/索引，以'.'链接或者放入一个数组

@@ -46,7 +46,10 @@ return [
             ],
         ],
         'wechat' => [
-            'class' => 'frontend\components\EasyWeChat\Foundation\Application'
+            'class' => 'callmez\wechat\sdk\Wechat',
+            'appId' => 'wxd67d44974fa6111c',
+            'appSecret' => 'f4793ce52883b15c9da1a11054929bc4',
+            'token' => 're123de456m'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
