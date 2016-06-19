@@ -313,7 +313,7 @@ class Order extends \yii\db\ActiveRecord
             }
         }
         if($points < $total_points){
-            return ['code' => -20003, 'msg' => '您的积分数量不够'];
+            return ['code' => -20003, 'msg' => '由于您的积分有限，请您继续活跃获得积分'];
         }
 
         //获取默认地址
@@ -407,7 +407,7 @@ class Order extends \yii\db\ActiveRecord
             }
         }
         if($points < $total_points){
-            return ['code' => -20003, 'msg' => '您的积分数量不够'];
+            return ['code' => -20003, 'msg' => '由于您的积分有限，请您继续活跃获得积分'];
         }
 
         //开启事务

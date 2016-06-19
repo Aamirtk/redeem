@@ -39,7 +39,7 @@ class MyController extends BaseController
     {
 
         $a_mdl = new Address();
-        $list = $a_mdl->_get_list(['uid' => $this->uid, 'is_deleted' => $a_mdl::NO_DELETE]);
+        $list = $a_mdl->_get_list(['uid' => $this->uid, 'is_deleted' => $a_mdl::NO_DELETE], 'create_at desc');
         if(!empty($list)){
             foreach($list as $key => $val){
                 $list[$key]['type_name'] = $a_mdl::_get_address_type_name($val['type']);

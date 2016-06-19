@@ -20,7 +20,7 @@
                 history.back();
             });
             $('.box').click(function(){
-                $(this).toggleClass('active');
+//                $(this).toggleClass('active');
             });
         });
         <!-- 增加数量 -->
@@ -68,13 +68,15 @@
     <header>
         <div class="back"><a><img src="/images/back.png"></a></div>
         购物车
-        <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
+        <div class="home"><a href="/redeem/home/index"><img src="/images/home.png"></a></div>
     </header>
     <div class="box-container">
         <?php if(!empty($cart_goods)): ?>
             <?php foreach($cart_goods as $val): ?>
                 <div class="box active" c_g_id="<?php echo $val['id'] ?>">
-                    <div class="pic"><img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>"></div>
+                    <div class="pic">
+                        <a href="/redeem/goods/view?gid=<?php echo $val['gid'] ?>"><img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>">
+                    </div>
                     <div class="text">
                         <div class="title"><?php echo getValue($val, 'goods.name', '') ?></div>
                         <div>
@@ -112,7 +114,9 @@
             if(json.code > 0){
                 window.location.href = '/redeem/order/list';
             }else{
-                alert('添加失败');
+                if(json.code == -20003){
+                    alert('由于您的积分有限，请您继续活跃获得积分');
+                }
             }
         });
     });

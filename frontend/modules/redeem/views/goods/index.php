@@ -39,8 +39,8 @@
         <div class="left"><a><img src="images/search.png"></a></div>
         <img src="images/logo.png" class="logo">
         <div class="right">
-            <a href="个人中心.html"><img src="images/icon07.png"></a>
-            <a href="购物车.html"><img src="images/icon06.png"></a>
+            <a href="/redeem/my/home"><img src="images/icon07.png"></a>
+            <a href="/redeem/cart/goods-list"><img src="images/icon06.png"></a>
         </div>
     </header>
     <div class="search-box">

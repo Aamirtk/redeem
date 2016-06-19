@@ -48,9 +48,9 @@
 <body>
 <div class="body-All">
     <header>
-        <div class="back"><a><img src="///images/back.png"></a></div>
+        <div class="back"><a><img src="/images/back.png"></a></div>
         我的订单
-        <div class="home"><a href="index.html"><img src="///images/home.png"></a></div>
+        <div class="home"><a href="/redeem/home/index"><img src="/images/home.png"></a></div>
     </header>
     <?php foreach($order_list as $order): ?>
         <?php if(!empty($order['goods'])): ?>

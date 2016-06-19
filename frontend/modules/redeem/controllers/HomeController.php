@@ -25,7 +25,7 @@ class HomeController extends BaseController
     {
         $g_mdl = new Goods();
 
-        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC', 1, 30);
+        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC');
         $_data = [
             'user' => $this->user,
             'goods_list' => $_goods_list,

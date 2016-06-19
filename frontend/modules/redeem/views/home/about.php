@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/guanyuwomen.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
-    <script type="/text/javascript">
+    <script type="text/javascript">
         $(function(){
             $('.back').click(function(){
                 history.back();
