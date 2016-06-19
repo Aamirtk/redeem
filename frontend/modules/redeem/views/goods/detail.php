@@ -1,5 +1,4 @@
-<!DOCTYPE html
-    <html>
+<!DOCTYPE html>
 <head>
     <title><?php echo $goods['name'] ?></title>
     <meta charset="utf-8">
@@ -51,7 +50,7 @@
 <body>
 <div class="body-All">
     <header>
-        <div class="back"><a><img src="<?php echo $goods['thumb'] ?>"></a></div>
+        <div class="back"><a><img src="/images/back.png"></a></div>
         <?php echo $goods['name'] ?>
     </header>
     <div class="box">

@@ -30,6 +30,7 @@ class HomeController extends BaseController
             'user' => $this->user,
             'goods_list' => $_goods_list,
         ];
+        lg($_data);
         return $this->render('index', $_data);
     }
 

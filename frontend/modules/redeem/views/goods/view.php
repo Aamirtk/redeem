@@ -66,7 +66,7 @@
                     if(!empty($thumb_list)){
                         foreach($thumb_list as $val){
                 ?>
-                        <div class="swiper-slide"><img src="http://www.redeem_back.com/<?php echo $val ?>"></div>
+                        <div class="swiper-slide"><img src="<?php echo yiiParams('img_host') . $val ?>"></div>
                 <?php }} ?>
             </div>
         </div>
