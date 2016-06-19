@@ -25,7 +25,7 @@ class HomeController extends BaseController
     {
         $g_mdl = new Goods();
 
-        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC', 1, 20);
+        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC', 1, 30);
         $_data = [
             'user' => $this->user,
             'goods_list' => $_goods_list,
@@ -46,11 +46,19 @@ class HomeController extends BaseController
         }
 
         $g_mdl = new Goods();
-        $param = [
-            'sql' => "`goods_status` = :goods_status AND `name` like '%{$keywords}%'",
-            'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
-        ];
-        $_goods_list = $g_mdl->_get_list($param,'gid DESC', 1, 30);
+        if(!empty($keywords)){
+            $param = [
+                'sql' => "`goods_status` = :goods_status AND `name` like '%{$keywords}%'",
+                'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
+            ];
+        }else{
+            $param = [
+                'sql' => "`goods_status` = :goods_status",
+                'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
+            ];
+        }
+
+        $_goods_list = $g_mdl->_get_list($param,'gid DESC');
 
         $_data = [
             'goods' => $_goods_list,

@@ -100,7 +100,7 @@ class Goods extends \yii\db\ActiveRecord
      * @param $order string
      * @return array|boolean
      */
-    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 20) {
+    public function _get_list($where = [], $order = 'created_at desc', $page = 1, $limit = 0) {
         $_obj = self::find();
         if (isset($where['sql']) || isset($where['params'])) {
             $_obj->where($where['sql'], $where['params']);
