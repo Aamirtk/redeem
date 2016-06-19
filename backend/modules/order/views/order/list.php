@@ -120,7 +120,8 @@ use common\models\Order;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '订单编号', dataIndex: 'oid', width: 80, elCls : 'center'},
+                    {title: '序号', dataIndex: 'oid', width: 80, elCls : 'center'},
+                    {title: '订单编号', dataIndex: 'order_id', width: 160, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
                     {title: '买家姓名', dataIndex: 'buyer_name', width: 80, elCls : 'center'},

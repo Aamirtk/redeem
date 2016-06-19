@@ -113,6 +113,7 @@ class OrderController extends BaseController
             'common\models\Order' => [
                 'oid',
                 'gid',
+                'order_id',
                 'goods_id',
                 'goods_name',
                 'order_status',
@@ -306,14 +307,13 @@ class OrderController extends BaseController
 
         $ret = $mdl->_save([
             'oid' => $oid,
+            'order_status' => Order::STATUS_RECEIVE,
             'express_type' => $express_type,
             'express_num' => $express_num,
         ]);
         if(!$ret){
             $this->_json(-20000, '保存失败');
         }
-//        $lgt = new Logistic();
-//        $res = $lgt->express1($express_type, $express_num);
 
         $this->_json(20000, '保存成功');
     }

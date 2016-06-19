@@ -9,11 +9,17 @@
 namespace common\lib;
 
 use yii;
+use yii\helpers\ArrayHelper;
 
 class Logistic {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b';//物流接口
+    private $_exp_type_arr = [];//物流公司列表
+
+    public function __construct(){
+        $this->_exp_type_arr = ArrayHelper::index($this->express2()['result'], 'type');
+    }
 
     /**
      * 查询物流公司
@@ -61,5 +67,17 @@ class Logistic {
         curl_close($ch);
         return $res;
     }
+
+    /**
+     * 返回物流公司信息
+     * @return type
+     */
+    public function  exp_detail($type){
+        if(empty($type) || empty($this->_exp_type_arr)){
+            return false;
+        }
+        return ArrayHelper::getValue($this->_exp_type_arr, "$type", []);
+    }
+
 
 }

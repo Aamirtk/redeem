@@ -74,7 +74,7 @@ class MyController extends BaseController
     public function actionOrder()
     {
         $r_mdl = new Order();
-        $_order_list = $r_mdl->_get_list([Order::tableName() . '.uid' => $this->uid]);
+        $_order_list = $r_mdl->_get_list([Order::tableName() . '.uid' => $this->uid], 'oid DESC');
         $_status_list = $r_mdl::_get_status_list();
         $_data = [
             'order_list' => $_order_list,

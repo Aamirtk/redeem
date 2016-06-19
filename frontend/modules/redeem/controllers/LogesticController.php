@@ -3,28 +3,17 @@
 namespace frontend\modules\redeem\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\lib\Http;
-use common\api\VsoApi;
-use common\models\User;
+use common\models\Order;
+use common\lib\Logistic;
 
 
-class LogisticController extends BaseController
+class LogesticController extends BaseController
 {
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b';//物流接口
-
-    /**
-     * 生成订单
-     * @return type
-     */
-    public function actionDetail()
-    {
-        $this->render('detail');
-    }
 
     /**
      * 查询物流公司
@@ -72,6 +61,38 @@ class LogisticController extends BaseController
         $res = curl_exec($ch);
         curl_close($ch);
         return $res;
+    }
+
+    /**
+     * 异步获取订单信息
+     * @return array
+     */
+    function actionDetail()
+    {
+        $oid = intval($this->_request('oid'));
+
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+
+        $lgt = new Logistic();
+        $res = $lgt->express1($order['express_type'], $order['express_num']);
+        $type = getValue($res, 'result.type');
+        $express = $lgt->exp_detail(strtoupper($type));
+
+        $_data = [
+            'log_list' => getValue($res, 'result', []),
+            'express' => $express,
+        ];
+        return $this->render('detail', $_data);
     }
 
 }

@@ -1,3 +1,6 @@
+<?php
+use common\models\Order;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +39,8 @@
     </div>
     <ul id="quanbuer" class="box " style="display: block">
         <?php foreach($order_list as $order): ?>
-            <a href="物流配送.html">
+            <a href="<?php echo in_array($order['order_status'], [Order::STATUS_PAY, Order::STATUS_SEND])
+                ? 'javaScript:void(0)' : '/redeem/logestic/detail?oid=' . $order['oid'] ?>">
                 <li>
                     <div class="top">
                         <div class="number">订单编号：<?php echo $order['order_id'] ?></div>
