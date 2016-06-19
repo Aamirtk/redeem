@@ -45,6 +45,9 @@ return [
                 ],
             ],
         ],
+        'wechat' => [
+            'class' => 'frontend\components\EasyWeChat\Foundation\Application'
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

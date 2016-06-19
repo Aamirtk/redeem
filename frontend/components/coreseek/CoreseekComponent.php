@@ -1,5 +1,5 @@
 <?php
-frontend frontend\components\coreseek;
+namespace frontend\components\coreseek;
 
 use yii;
 use yii\base\Component;
