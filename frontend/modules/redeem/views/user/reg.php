@@ -26,6 +26,8 @@
             margin-top:-25px;
             position:absolute;
             right:20px;
+            width: 76px;
+            text-align: center;
         }
         .msg-error{
             color: darkorange;
@@ -85,7 +87,8 @@
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/send-sms', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
-
+                $(document).data('countdown', 60);
+                settime();
             }else{
                 var error = $('<p class="msg-error">'+ json.msg +'</p>');
                 $("input[name=verifycode]").closest('div').after(error);
@@ -93,6 +96,21 @@
             }
         });
     });
+
+    //自动获取
+    function settime() {
+        var dom = $('.send');
+        var count = parseInt($(document).data('countdown'));
+        if (count == 0) {
+            dom.text("发送验证码");
+        } else {
+            dom.text("重新发送(" + count + ")");
+            $(document).data('countdown', count-1)
+        }
+        setTimeout(function() {
+            settime()
+        },1000)
+    }
 
 </script>
 

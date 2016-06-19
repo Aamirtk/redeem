@@ -15,7 +15,7 @@ use yii\db\Exception;
  */
 class VerifyCode extends \yii\db\ActiveRecord
 {
-    const EXPIRE_TIME = 120;//验证码过期时间
+    const EXPIRE_TIME = 60;//验证码过期时间
 
     /**
      * @inheritdoc

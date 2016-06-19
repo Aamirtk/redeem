@@ -65,7 +65,6 @@ class UserController extends BaseController
         $this->redirect('/redeem/user/reg');
     }
 
-
     /**
      * 发送验证码
      * @return type
