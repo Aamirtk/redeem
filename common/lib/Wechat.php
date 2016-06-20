@@ -13,10 +13,10 @@ use yii;
 
 class Wechat
 {
-    private $_appId = 'wx4a7032faa3c317cb';
-    private $_appSecret = '38bf39dc2782fc66e98e829101464d17';
+    private $_appId = 'wx9462dd181a56c284';
+    private $_appSecret = '6a6d79adca5a20309e05350da253bdae';
     private $_token = 're123de456m';
-    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
+    private $_encodingAesKey = 'je3CZxBIjjPhTpeAUubOXCG6aVqMnygAdwmX6NCyGa0';
     public  $wechat = null;
 
     public function __construct()

@@ -23,10 +23,10 @@ class UserController extends BaseController
 //    private $_token = 're123de456m';
 //    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
 
-    private $_appId = 'wx9462dd181a56c284';
-    private $_appSecret = '6a6d79adca5a20309e05350da253bdae';
+    private $_appId = 'wxd67d44974fa6111c';
+    private $_appSecret = 'f4793ce52883b15c9da1a11054929bc4';
     private $_token = 're123de456m';
-    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
+    private $_encodingAesKey = 'je3CZxBIjjPhTpeAUubOXCG6aVqMnygAdwmX6NCyGa0';
 
 
 
@@ -142,6 +142,7 @@ class UserController extends BaseController
             'encodingAesKey' => $this->_encodingAesKey,
         ];
         $wechat = new WechatApp($options);
+//        $wechat = new Wechat();
 //        $echostr = $this->_request('echostr');
 //        if($wechat->checkSignature()){
 //            return $echostr;
@@ -149,11 +150,11 @@ class UserController extends BaseController
 //            return false;
 //        }
 
-        $wechat->valid();
+//        $wechat->valid();
         $type = $wechat->getRev()->getRevType();
         switch($type) {
             case WechatApp::MSGTYPE_TEXT:
-                $wechat->text("hello, I'm wechat")->reply();
+                $wechat->text("hello, I'm wechatdfsa")->reply();
                 exit;
                 break;
             case WechatApp::MSGTYPE_EVENT:
