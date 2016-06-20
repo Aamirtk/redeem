@@ -1,5 +1,8 @@
 <?php
 namespace common\utils;
+
+use yii;
+
 /**
  *	微信公众平台PHP-SDK, 官方API部分
  *  @author  dodge <dodgepudding@gmail.com>
@@ -234,14 +237,16 @@ class WechatApp
     public $errMsg = "no access";
     public $logcallback;
 
-    public function __construct($options)
+    public function __construct()
     {
-        $this->token = isset($options['token'])?$options['token']:'';
-        $this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';
-        $this->appid = isset($options['appid'])?$options['appid']:'';
-        $this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
-        $this->debug = isset($options['debug'])?$options['debug']:false;
-        $this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
+        //获取微信配置
+        $options = yii::$app->params['wechatConfig'];
+        $this->token = isset($options['token']) ? $options['token'] : '';
+        $this->encodingAesKey = isset($options['encodingaeskey']) ? $options['encodingaeskey'] : '';
+        $this->appid = isset($options['appid']) ? $options['appid'] : '';
+        $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
+        $this->debug = isset($options['debug']) ? $options['debug'] : false;
+        $this->logcallback = isset($options['logcallback']) ? $options['logcallback'] : false;
     }
 
     /**
@@ -1079,11 +1084,11 @@ class WechatApp
     {
         //格式化加密信息
         $format = "<xml>
-<Encrypt><![CDATA[%s]]></Encrypt>
-<MsgSignature><![CDATA[%s]]></MsgSignature>
-<TimeStamp>%s</TimeStamp>
-<Nonce><![CDATA[%s]]></Nonce>
-</xml>";
+                    <Encrypt><![CDATA[%s]]></Encrypt>
+                    <MsgSignature><![CDATA[%s]]></MsgSignature>
+                    <TimeStamp>%s</TimeStamp>
+                    <Nonce><![CDATA[%s]]></Nonce>
+                    </xml>";
         return sprintf($format, $encrypt, $signature, $timestamp, $nonce);
     }
 

@@ -11,6 +11,7 @@ use common\models\VerifyCode;
 use common\lib\Sms;
 use common\lib\Wechat;
 use common\utils\WechatApp;
+use common\utils\WechatAuth;
 
 
 class UserController extends BaseController
@@ -141,7 +142,7 @@ class UserController extends BaseController
             'appsecret' => $this->_appSecret,
             'encodingAesKey' => $this->_encodingAesKey,
         ];
-        $wechat = new WechatApp($options);
+        $wechat = new WechatApp();
 //        $wechat = new Wechat();
 //        $echostr = $this->_request('echostr');
 //        if($wechat->checkSignature()){
@@ -151,19 +152,25 @@ class UserController extends BaseController
 //        }
 
 //        $wechat->valid();
-        $type = $wechat->getRev()->getRevType();
-        switch($type) {
-            case WechatApp::MSGTYPE_TEXT:
-                $wechat->text("hello, I'm wechatdfsa")->reply();
-                exit;
-                break;
-            case WechatApp::MSGTYPE_EVENT:
-                break;
-            case WechatApp::MSGTYPE_IMAGE:
-                break;
-            default:
-                $wechat->text("help info")->reply();
-        }
+//        $type = $wechat->getRev()->getRevType();
+//        switch($type) {
+//            case WechatApp::MSGTYPE_TEXT:
+//                $wechat->text("hello, I'm 哈哈哈")->reply();
+//                exit;
+//                break;
+//            case WechatApp::MSGTYPE_EVENT:
+//                break;
+//            case WechatApp::MSGTYPE_IMAGE:
+//                break;
+//            default:
+//                $wechat->text("help info")->reply();
+//        }
+
+//        $userauth = new WechatAuth();
+//        var_dump($userauth);
+
+
+
 
 
     }
