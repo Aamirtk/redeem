@@ -10,6 +10,7 @@ use common\models\Auth;
 use common\models\VerifyCode;
 use common\lib\Sms;
 use common\lib\Wechat;
+use common\utils\WechatApp;
 
 
 class UserController extends BaseController
@@ -17,6 +18,17 @@ class UserController extends BaseController
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
+//    private $_appId = 'wx4a7032faa3c317cb';
+//    private $_appSecret = '38bf39dc2782fc66e98e829101464d17';
+//    private $_token = 're123de456m';
+//    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
+
+    private $_appId = 'wx9462dd181a56c284';
+    private $_appSecret = '6a6d79adca5a20309e05350da253bdae';
+    private $_token = 're123de456m';
+    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
+
+
 
     public function init(){
         $this->_uncheck = [
@@ -123,13 +135,35 @@ class UserController extends BaseController
      */
     public function actionWechat()
     {
-        $wechat = new Wechat();
-        $echostr = $this->_request('echostr');
-        if($wechat->checkSignature()){
-            return $echostr;
-        }else{
-            return false;
+        $options = [
+            'token' => $this->_token, //填写你设定的key
+            'appid' => $this->_appId,
+            'appsecret' => $this->_appSecret,
+            'encodingAesKey' => $this->_encodingAesKey,
+        ];
+        $wechat = new WechatApp($options);
+//        $echostr = $this->_request('echostr');
+//        if($wechat->checkSignature()){
+//            return $echostr;
+//        }else{
+//            return false;
+//        }
+
+        $wechat->valid();
+        $type = $wechat->getRev()->getRevType();
+        switch($type) {
+            case WechatApp::MSGTYPE_TEXT:
+                $wechat->text("hello, I'm wechat")->reply();
+                exit;
+                break;
+            case WechatApp::MSGTYPE_EVENT:
+                break;
+            case WechatApp::MSGTYPE_IMAGE:
+                break;
+            default:
+                $wechat->text("help info")->reply();
         }
+
 
     }
 

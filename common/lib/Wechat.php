@@ -8,13 +8,27 @@
 
 namespace common\lib;
 
-use common\api\VsoApi;
+use common\utils\WechatApp;
 use yii;
 
-class Wechat {
-    private $_appId = 'wxd67d44974fa6111c';
-    private $_appSecret = 'f4793ce52883b15c9da1a11054929bc4';
+class Wechat
+{
+    private $_appId = 'wx4a7032faa3c317cb';
+    private $_appSecret = '38bf39dc2782fc66e98e829101464d17';
     private $_token = 're123de456m';
+    private $_encodingAesKey = 'dDzF33LN5z5K0FHHfb4AgcbhssEMM6EMhGNr3oENVx9';
+    public  $wechat = null;
+
+    public function __construct()
+    {
+        $options = [
+            'token' => $this->_token, //填写你设定的key
+            'appid' => $this->_appId,
+            'appsecret' => $this->_appSecret,
+            'encodingAesKey' => $this->_encodingAesKey,
+        ];
+        $this->wechat = new WechatApp($options);
+    }
 
     /**
      * 检验signature
@@ -36,7 +50,19 @@ class Wechat {
         }else{
             return false;
         }
+    }
+
+    /**
+     * 检验signature
+     * @return type
+     */
+    public function replyText()
+    {
+        $this->wechat->valid();
+
 
     }
+
+
 
 }
