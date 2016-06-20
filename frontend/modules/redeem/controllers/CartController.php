@@ -84,13 +84,19 @@ class CartController extends BaseController
         if($newnum < 0){
             $this->_json(-20002, '购物车商品数量不能为负数');
         }
-
-        $ret = $mdl->_save([
-            'id' => $cg_id,
-            'count' => $newnum,
-        ]);
-        if(!$ret){
-            $this->_json(-20003, '购物车商品更改失败');
+        if($newnum > 0){
+            $ret = $mdl->_save([
+                'id' => $cg_id,
+                'count' => $newnum,
+            ]);
+            if(!$ret){
+                $this->_json(-20003, '购物车商品更改失败');
+            }
+        }else{ //删除
+            $ret = $mdl->_delete(['id' => $cg_id ]);
+            if($ret === false){
+                $this->_json(-20003, '购物车商品删除失败');
+            }
         }
 
         $this->_json(20000, '保存成功');

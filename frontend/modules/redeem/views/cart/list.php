@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>【兑换】东芝U盘16G 速闪USB3.0 迷你防水创意车载优盘</title>
+    <title>我的购物车</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="screen-orientation" content="portrait">
@@ -35,9 +35,6 @@
                 var total = parseInt($("#totalpoints").text());
                 $("#totalpoints").text(total + points);
             });
-
-            // var total = parseFloat($("#price").text())*parseInt(num_root.val());
-            // $("#totalPrice").html(total.toFixed(2));
         }
         <!-- 减少数量 -->
         function numDec(thi) {
@@ -46,8 +43,15 @@
             var num_name = num_root.attr('name');
             var cg_id = parseInt($(thi).attr('c_g_id'));
             var points = parseInt($(thi).attr('points'));
-
-            if((num_name=='2' && num_dec<3) || (num_name=='4' && num_dec<1) || num_dec<1){
+            if(num_dec == 0){
+                if(confirm('你确定要删除')){
+                    var param = {num: num_dec, cg_id: cg_id};
+                    $._ajax('/redeem/cart/ajax-change-goods-num', param, 'POST', 'JSON', function(json){
+                        $('div[c_g_id='+ cg_id +']').remove();
+                        var total = parseInt($("#totalpoints").text());
+                        $("#totalpoints").text(total - points);
+                    });
+                }
                 return false;
             }else{
                 var param = {num: num_dec, cg_id: cg_id};
@@ -56,8 +60,6 @@
                     var total = parseInt($("#totalpoints").text());
                     $("#totalpoints").text(total - points);
                 });
-                // var total = parseFloat($("#price").text())*parseInt(num_root.val());
-                // $("#totalPrice").html(total.toFixed(2));
             }
         }
 
@@ -75,7 +77,9 @@
             <?php foreach($cart_goods as $val): ?>
                 <div class="box active" c_g_id="<?php echo $val['id'] ?>">
                     <div class="pic">
-                        <a href="/redeem/goods/view?gid=<?php echo $val['gid'] ?>"><img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>">
+                        <a href="/redeem/goods/view?gid=<?php echo $val['gid'] ?>">
+                            <img src="<?php echo yiiParams('img_host') . getValue($val, 'goods.thumb', '') ?>">
+                        </a>
                     </div>
                     <div class="text">
                         <div class="title"><?php echo getValue($val, 'goods.name', '') ?></div>
