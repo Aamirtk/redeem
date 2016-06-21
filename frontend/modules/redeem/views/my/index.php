@@ -26,7 +26,7 @@
     <header>
         <div class="back"><a><img src="/images/back.png"></a></div>
         个人中心
-        <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
+        <div class="home"><a href="/redeem/home/index"><img src="/images/home.png"></a></div>
     </header>
     <div class="head_portrait">
         <img src="<?php echo $user['avatar'] ?>">

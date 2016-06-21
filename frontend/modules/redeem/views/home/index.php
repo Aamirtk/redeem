@@ -50,8 +50,8 @@
     </div>
     <div class="banner top">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="/images/banner.png"></div>
-            <div class="swiper-slide"><img src="/images/head_portrait.png"></div>
+            <div class="swiper-slide"><img src="/images/banner1.jpg"></div>
+            <div class="swiper-slide"><img src="/images/banner2.jpg"></div>
         </div>
     </div>
     <div class="personal-container">
