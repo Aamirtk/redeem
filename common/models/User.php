@@ -366,11 +366,20 @@ class User extends \yii\db\ActiveRecord
         }
 
         //验证微信公众号
-        if(empty($param['wechat_openid'])){
+        $wechat_openid = $session->get('wechat_openid');
+        if(empty($wechat_openid)){
             return ['code' => -20006, 'msg' => '微信公众号不能为空'];
         }
-
-        $wechat_openid = $param['wechat_openid'];
+        //验证昵称和头像
+        $nick = $session->get('nick');
+        if(empty($nick)){
+//            return ['code' => -20007, 'msg' => '微信昵称不能为空'];
+        }
+        //验证昵称和头像
+        $avatar = $session->get('avatar');
+        if(empty($avatar)){
+//            return ['code' => -20008, 'msg' => '微信头像不能为空'];
+        }
 
         $u_mdl = new self;
         $a_mdl = new Auth();
@@ -418,6 +427,8 @@ class User extends \yii\db\ActiveRecord
             $res_a = $a_mdl->_save([
                 'uid' => $uid,
                 'mobile' => $mobile,
+                'nick' => $nick,
+                'avatar' => $avatar,
                 'wechat_openid' => $wechat_openid
             ]);
             if(!$res_a){

@@ -41,7 +41,7 @@ return [
         ],
         'sphinx' => [
             'class' => 'backend\components\coreseek\CoreseekComponentNew'
-        ]
+        ],
     ],
 ];
 

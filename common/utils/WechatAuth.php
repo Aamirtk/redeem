@@ -17,11 +17,12 @@ class WechatAuth
         //获取微信配置
         $this->options = yii::$app->params['wechatConfig'];
 //        $this->WeOuth();
+        session_start();
+
     }
 
     public function WeOuth()
     {
-        session_start();
         $scope = 'snsapi_base';
         $code = isset($_GET['code']) ? $_GET['code'] : '';
         $token_time = isset($_SESSION['token_time']) ? $_SESSION['token_time'] : 0;

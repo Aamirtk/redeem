@@ -43,7 +43,6 @@
         <div class="title">
             <span>用户认证</span>
         </div>
-        <input type="hidden" value="<?php echo $open_id ?>">
         <div class="form-group">
             <label>手机号码</label>
             <input type="text" name="mobile" placeholder="请输入您的手机号码"/>
@@ -67,7 +66,8 @@
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/reg', param, 'POST', 'JSON', function(json){
             var code = json.code;
-            var msg = json.msg
+            var msg = json.msg;
+//            alert(code);
             if(code > 0){
                 window.location.href = '/redeem/home/index?uid=' + json.data.uid;
             }else if(code == -20001 || code == -20002 ){

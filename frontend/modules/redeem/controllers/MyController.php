@@ -16,14 +16,17 @@ class MyController extends BaseController
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-
+    public function init(){
+        $this->_uncheck = [
+            'index',
+        ];
+    }
     /**
      * 个人中心
      * @return type
      */
     public function actionIndex()
     {
-
         $_data = [
             'user' => $this->user
         ];
