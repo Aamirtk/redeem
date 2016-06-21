@@ -136,13 +136,13 @@ class UserController extends BaseController
      */
     public function actionWechat()
     {
-        $options = [
-            'token' => $this->_token, //填写你设定的key
-            'appid' => $this->_appId,
-            'appsecret' => $this->_appSecret,
-            'encodingAesKey' => $this->_encodingAesKey,
-        ];
-        $wechat = new WechatApp();
+//        $options = [
+//            'token' => $this->_token, //填写你设定的key
+//            'appid' => $this->_appId,
+//            'appsecret' => $this->_appSecret,
+//            'encodingAesKey' => $this->_encodingAesKey,
+//        ];
+//        $wechat = new WechatApp();
 //        $wechat = new Wechat();
 //        $echostr = $this->_request('echostr');
 //        if($wechat->checkSignature()){
@@ -155,7 +155,7 @@ class UserController extends BaseController
 //        $type = $wechat->getRev()->getRevType();
 //        switch($type) {
 //            case WechatApp::MSGTYPE_TEXT:
-//                $wechat->text("hello, I'm 哈哈哈")->reply();
+//                $wechat->text("hello, I'm 宝宝黄")->reply();
 //                exit;
 //                break;
 //            case WechatApp::MSGTYPE_EVENT:
@@ -166,8 +166,9 @@ class UserController extends BaseController
 //                $wechat->text("help info")->reply();
 //        }
 
-//        $userauth = new WechatAuth();
-//        var_dump($userauth);
+        $userauth = new WechatAuth();
+        echo"<pre>";print_r($userauth->WeOuth());
+//        var_dump(12212);
 
 
 

@@ -16,12 +16,12 @@ class WechatAuth
     {
         //获取微信配置
         $this->options = yii::$app->params['wechatConfig'];
-        $this->WeOuth();
-        session_start();
+//        $this->WeOuth();
     }
 
     public function WeOuth()
     {
+        session_start();
         $scope = 'snsapi_base';
         $code = isset($_GET['code']) ? $_GET['code'] : '';
         $token_time = isset($_SESSION['token_time']) ? $_SESSION['token_time'] : 0;
@@ -32,11 +32,7 @@ class WechatAuth
             $this->open_id = $_SESSION['open_id'];
             return $this->open_id;
         } else {
-//            $options = array(
-//                'token'=>$this->options["token"], //填写你设定的key
-//                'appid'=>$this->options["appid"], //填写高级调用功能的app id
-//                'appsecret'=>$this->options["appsecret"] //填写高级调用功能的密钥
-//            );
+
             $we_obj = new WechatApp();
             if ($code) {
                 $json = $we_obj->getOauthAccessToken();
