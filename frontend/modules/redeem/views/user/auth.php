@@ -26,6 +26,18 @@
         .webuploader-element-invisible{
             display: none;
         }
+        select{
+            width: 100%;
+            padding: 6px;
+            padding-left: 100px;
+            box-sizing: border-box;
+            border: 1px solid #d2d2d2;
+            border-radius: 6px;
+            outline: none;
+            background: #fff
+        }
+
+
     </style>
 </head>
 <body>
@@ -48,10 +60,19 @@
             <input type="text" name="email" placeholder="请输入您的常用邮箱"/>
         </div>
         <div class="form-group">
-            <div class="box">
+            <label><span>*</span>用&nbsp;户&nbsp;类&nbsp;型&nbsp;</label>
+            <select name="user_type">
+                <?php foreach($type_list as $key => $val): ?>
+                    <option value="<?php echo $key ?>"><?php echo $val ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <div class="box type-img-content">
                 <div class="type">
-                    <div class="left">用户类型</div>
-                    <div class="right"><a href="">提交</a></div>
+                    <div class="left">类型图片</div>
+<!--                    <div class="right"><a href="">提交</a></div>-->
                 </div>
                 <div class="pic usertypepic">
                     <div class="img upload_img">
@@ -60,20 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="box">
-                <div class="type">
-                    <div class="left">附属类型</div>
-                    <div class="right"><a href="">提交</a></div>
-                </div>
-                <div class="pic">
-                    <div class="img upload_img">
-                        <img src="/images/pic04.png">
-                    </div>
 
-                </div>
-            </div>
-        </div>
         <div class="pb"></div>
         <div class="button">
             <a href="javaScript:void(0);" id="submit" class="btn">确认</a>
@@ -190,7 +198,7 @@
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-                window.location.href = '/redeem/home/index';
+//                window.location.href = '/redeem/home/index';
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=name]").closest('div').after(error);
@@ -202,6 +210,10 @@
             }else if(code == -20003){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=email]").closest('div').after(error);
+                error.fadeOut(1500);
+            }else if(code == -20007){
+                var error = $('<p class="msg-error">'+ msg +'</p>');
+                $(".type-img-content").after(error);
                 error.fadeOut(1500);
             }
         });
