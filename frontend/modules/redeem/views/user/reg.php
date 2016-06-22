@@ -69,7 +69,7 @@
             var msg = json.msg;
 //            alert(code);
             if(code > 0){
-                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+                window.location.href = '/redeem/home/index';
             }else if(code == -20001 || code == -20002 ){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=mobile]").closest('div').after(error);

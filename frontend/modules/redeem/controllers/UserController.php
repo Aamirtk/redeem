@@ -97,7 +97,7 @@ class UserController extends BaseController
         if(!$this->isAjax()){
             return $this->render('auth', ['uid' => $uid]);
         }
-
+        lg($this->_request());
         //保存
         $name = trim($this->_request('name'));
         $email = trim($this->_request('email'));

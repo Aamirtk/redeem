@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\common\controllers;
+namespace frontend\modules\common\controllers;
 
 use Yii;
 use common\lib\Upload;

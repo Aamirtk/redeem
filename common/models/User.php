@@ -19,6 +19,7 @@ use common\models\Cart;
  * @property string $email
  * @property integer $points
  * @property integer $user_type
+ * @property integer $user_type_imgs
  * @property integer $name_card
  * @property string $wechat_openid
  * @property integer $user_status
@@ -56,6 +57,7 @@ class User extends \yii\db\ActiveRecord
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
+            [['user_type_imgs'], 'string', 'max' => 600],
             [['wechat_openid'], 'string', 'max' => 50],
             [['mobile'], 'unique', 'message' => '手机号码已经注册过了'],
             [['wechat_openid'], 'unique', 'message' => '微信号已经注册过了'],
@@ -78,6 +80,7 @@ class User extends \yii\db\ActiveRecord
             'name_card' => '名片',
             'points' => '积分',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
+            'user_type_imgs' => '用户类型图片',
             'wechat_openid' => '微信Open Id',
             'user_status' => '状态（1-启用；2-禁用）',
             'update_at' => '更新时间',

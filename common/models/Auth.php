@@ -20,6 +20,7 @@ use common\models\Points;
  * @property string $email
  * @property string $name_card
  * @property integer $user_type
+ * @property integer $user_type_imgs
  * @property string $wechat_openid
  * @property integer $auth_status
  * @property string $reason
@@ -66,6 +67,7 @@ class Auth extends \yii\db\ActiveRecord
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 40],
+            [['user_type_imgs'], 'string', 'max' => 600],
             [['wechat_openid'], 'string', 'max' => 50],
             [['reason'], 'string'],
             [['create_at', 'update_at'], 'default', 'value' => time()]
@@ -87,6 +89,7 @@ class Auth extends \yii\db\ActiveRecord
             'email' => '邮箱',
             'name_card' => '名片',
             'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
+            'user_type_imgs' => '用户类型图片',
             'auth_status' => '认证状态（1-待审核；2-审核通过；3-审核不通过）',
             'reason' => '审核不通过的原因',
             'create_at' => '创建时间',
