@@ -366,11 +366,11 @@ class User extends \yii\db\ActiveRecord
         }
 
         //验证微信公众号
-        if(empty($param['wechat_openid'])){
-            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
-        }
+//        if(empty($param['wechat_openid'])){
+//            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+//        }
 
-        $wechat_openid = $param['wechat_openid'];
+        $wechat_openid = md5(time());
 
         $u_mdl = new self;
         $a_mdl = new Auth();
