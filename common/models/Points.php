@@ -116,16 +116,13 @@ class Points extends \yii\db\ActiveRecord
      * @return array|boolean
      **/
     public function _get_info($where = []) {
-        $obj = self::find();
-
-        if (isset($where['sql']) || isset($where['params'])) {
-            $obj->where($where['sql'], $where['params']);
-        } else if (is_array($where)) {
-            $obj->where($where);
+        if (empty($where)) {
+            return false;
         }
 
+        $obj = self::findOne($where);
         if (!empty($obj)) {
-            return $obj->asArray(true)->one();
+            return $obj->toArray();
         }
         return false;
     }

@@ -10,9 +10,9 @@ use Yii;
 class Upload
 {
     /**
-     * 上传图片，默认路径为/backend/web/upload/
-     * @para string $temp 相对于/backend/web/upload/的子目录
-     * @return string 返回相对于/backend/web/的图片路径
+     * 上传图片，默认路径为/frontend/web/upload/
+     * @para string $temp 相对于/frontend/web/upload/的子目录
+     * @return string 返回相对于/frontend/web/的图片路径
      *
      */
     function upload($path, $objtype = 'user')
