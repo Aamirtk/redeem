@@ -33,9 +33,7 @@ class UserController extends BaseController
      */
     public function actionReg()
     {
-        $session = Yii::$app->session;
-        $data = $session->get('avatar');
-        var_dump($data);exit;
+
         //加载
         if(!$this->isAjax()){
             return $this->render('reg');
@@ -127,32 +125,24 @@ class UserController extends BaseController
         $options = yiiParams('wechatConfig');
         $auth = new WechatAuth($options);
 
-//        $open_id = getValue($auth, 'wxuser.open_id', '');
-//        $open_id = getValue($auth->wxuser, 'open_id', '');
         $open_id = $auth->wxuser['open_id'];
         $nickname = $auth->wxuser['nickname'];
-//        $nickname = getValue($auth->wxuser, 'nickname');
-        $avatar = getValue($auth->wxuser, 'avatar');
-//        unset($auth);
+        $avatar = $auth->wxuser['avatar'];
+        unset($auth);
 
         $user = (new User())->_get_info(['wechat_openid' => $open_id]);
 
         //从session中校验用户登录信息
-//        session_unset();
+        session_destroy();
         $session = Yii::$app->session;
-        $open_id = 4355;
-        $session->set('wechat_openid', $open_id);
-        $session->set('nick', $nickname);
-        $session->set('avatar', $avatar);
-        $user = false;
         //有记录，表示已经注册，跳转到首页
         if($user){
             $session->set('uid', $user['id']);
             return $this->redirect('/redeem/home/index');
         }else{
-//            $session->set('wechat_openid', $open_id);
-//            $session->set('nick', $nickname);
-//            $session->set('avatar', $nickname);
+            $session->set('wechat_openid', $open_id);
+            $session->set('nick', $nickname);
+            $session->set('avatar', $avatar);
             return $this->redirect('/redeem/user/reg');
         }
 
