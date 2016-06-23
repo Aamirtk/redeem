@@ -68,20 +68,32 @@ class UserController extends BaseController
     {
 
         //加载
-        $uid = intval($this->_request('uid'));
+        $uid = $this->uid;
         if(!$this->isAjax()){
-            return $this->render('auth', ['uid' => $uid]);
+            $_data = [
+                'uid' => $uid,
+                'type_list' => User::_get_user_type_list(),
+            ];
+            return $this->render('auth', $_data);
         }
-
         //保存
+        $auth = (new Auth())->_get_info(['uid' => $uid]);
+        if(!$auth){
+            $this->_json(-20001, '认证信息存在，请先进行手机认证');
+        }
         $name = trim($this->_request('name'));
         $email = trim($this->_request('email'));
         $mobile = trim($this->_request('mobile'));
+        $user_type = intval($this->_request('user_type'));
+        $user_type_imgs = $this->_request('usetypeimg');
         $param = [
+            'auth_id' => $auth['auth_id'],
             'uid' => $uid,
             'name' => $name,
             'email' => $email,
             'mobile' => $mobile,
+            'user_type' => $user_type,
+            'user_type_imgs' => $user_type_imgs,
         ];
         $res = (new Auth())->_add_auth($param);
         if($res['code'] < 0 ){

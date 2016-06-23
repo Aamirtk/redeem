@@ -17,6 +17,11 @@ return [
         'redeem' => [
             'class' => 'frontend\modules\redeem\Module',
         ],
+        //积分兑换
+        'common' => [
+            'class' => 'frontend\modules\common\Module',
+        ],
+
     ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),

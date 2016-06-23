@@ -17,9 +17,7 @@ class MyController extends BaseController
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     public function init(){
-        $this->_uncheck = [
-            'index',
-        ];
+        $this->_uncheck = [];
     }
     /**
      * 个人中心

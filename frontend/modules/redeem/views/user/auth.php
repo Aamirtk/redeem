@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/renzheng.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
     <script src="/js/tools.js"></script>
+
     <style type="text/css">
         .msg-error{
             color: darkorange;
@@ -21,6 +23,21 @@
             text-align: center;
             margin: 5px auto 10px auto;
         }
+        .webuploader-element-invisible{
+            display: none;
+        }
+        select{
+            width: 100%;
+            padding: 6px;
+            padding-left: 100px;
+            box-sizing: border-box;
+            border: 1px solid #d2d2d2;
+            border-radius: 6px;
+            outline: none;
+            background: #fff
+        }
+
+
     </style>
 </head>
 <body>
@@ -43,43 +60,28 @@
             <input type="text" name="email" placeholder="请输入您的常用邮箱"/>
         </div>
         <div class="form-group">
-            <div class="box">
-                <div class="type">
-                    <div class="left">用户类型</div>
-                    <div class="right"><a href="">提交</a></div>
-                </div>
-                <div class="pic">
-                    <div class="img">
-                        <img src="/images/pic04.png">
-                    </div>
-                    <div class="img">
-                        <img src="/images/pic04.png">
-                    </div>
-                    <div class="img">
-                        <img src="/images/pic04.png">
-                    </div>
-                </div>
-            </div>
+            <label><span>*</span>用&nbsp;户&nbsp;类&nbsp;型&nbsp;</label>
+            <select name="user_type">
+                <?php foreach($type_list as $key => $val): ?>
+                    <option value="<?php echo $key ?>"><?php echo $val ?></option>
+                <?php endforeach ?>
+            </select>
         </div>
+
         <div class="form-group">
-            <div class="box">
+            <div class="box type-img-content">
                 <div class="type">
-                    <div class="left">附属类型</div>
-                    <div class="right"><a href="">提交</a></div>
+                    <div class="left">类型图片</div>
+<!--                    <div class="right"><a href="">提交</a></div>-->
                 </div>
-                <div class="pic">
-                    <div class="img">
-                        <img src="/images/pic04.png">
-                    </div>
-                    <div class="img">
-                        <img src="/images/pic04.png">
-                    </div>
-                    <div class="img">
+                <div class="pic usertypepic">
+                    <div class="img upload_img">
                         <img src="/images/pic04.png">
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="pb"></div>
         <div class="button">
             <a href="javaScript:void(0);" id="submit" class="btn">确认</a>
@@ -88,13 +90,115 @@
 </div>
 </body>
 <script>
+    //上传
+    var _file_upload_notice = function (handler) {
+        switch (handler) {
+            case 'Q_TYPE_DENIED':
+                alert('文件类型不正确！');
+                break;
+            case 'Q_EXCEED_SIZE_LIMIT':
+                alert('上传文件总大小超过限制！');
+                break;
+            case 'Q_EXCEED_NUM_LIMIT':
+                alert('上传文件总数量超过限制！');
+                break;
+        }
+    };
+
+    $(function () {
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+            //文件名称
+            fileVal: 'attachment',
+            // swf文件路径
+            swf: '/plugins/webuploader/Uploader.swf',
+            // 文件接收服务端。
+            server: "<?php echo yiiParams('uploader_url') ?>",
+//            server: "/common/file/upload",
+            // 选择文件的按钮。可选。
+            pick: '.upload_img',
+            fileNumLimit: 3,
+            fileSizeLimit: 5 * 1024 * 1024,
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            },
+            formData: {
+                objtype: 'usertype'
+            }
+        });
+
+        // 当有文件添加进来之前
+        uploader.on('beforeFileQueued', function (handler) {
+//            uploader.reset();
+        });
+
+        // 当有文件添加进来的时候
+        uploader.on( 'fileQueued', function( file ) {
+
+        });
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on('uploadSuccess', function (file, response) {
+            if(response.code > 0){
+                var data = response.data;
+                var imgsrc = '<?php echo yiiParams('frontend') ?>' + data.filePath;
+                $("#name_card_img").attr('src', data.filePath);
+                $("#name_card_input").val(data.filePath);
+                var img_html = '<div class="img ">'+
+                                '    <img src="'+ imgsrc +'">'+
+                                '    <input type="hidden" name="usetypeimg" value="'+ imgsrc +'">'+
+                                '</div>';
+                $(".usertypepic").prepend(img_html);
+                if($("input[name=usetypeimg]").length == 3){
+                    $(".upload_img").remove();
+                }
+            }else{
+                BUI.Message.Alert('上传失败！');
+            }
+        });
+
+        // 文件上传完后都触发事件
+        uploader.on('uploadComplete', function (file, response) {
+            uploader.addButton({
+                id: '.upload_img'
+            });
+//            uploader.reset();
+        });
+
+        //文件出错
+        uploader.on('error', function (handler) {
+            _file_upload_notice(handler);
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader.on('uploadError', function (file) {
+            alert('上传失败！');
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader.on('uploadComplete', function (file) {
+            $('#' + file.id).find('.progress').remove();
+        });
+    });
+
+    //提交
     $("#submit").on('click', function(){
         var param = $._get_form_json('#auth');
         $._ajax('/redeem/user/auth', param, 'POST', 'JSON', function(json){
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+//                window.location.href = '/redeem/home/index';
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=name]").closest('div').after(error);
@@ -106,6 +210,10 @@
             }else if(code == -20003){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=email]").closest('div').after(error);
+                error.fadeOut(1500);
+            }else if(code == -20007){
+                var error = $('<p class="msg-error">'+ msg +'</p>');
+                $(".type-img-content").after(error);
                 error.fadeOut(1500);
             }
         });

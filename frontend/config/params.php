@@ -11,6 +11,10 @@ return [
         'appsecret' => '6a6d79adca5a20309e05350da253bdae',
         'encodingaeskey' => 'je3CZxBIjjPhTpeAUubOXCG6aVqMnygAdwmX6NCyGa0',
     ],
+    //前端上传图片方法
+    'uploader_url' => '/common/file/upload',
+    //前端上传图片路径
+    'img_save_dir' => '/upload',
 
 
 ];

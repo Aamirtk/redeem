@@ -20,6 +20,7 @@ use common\models\Session;
  * @property string $email
  * @property integer $points
  * @property integer $user_type
+ * @property integer $user_type_imgs
  * @property integer $name_card
  * @property string $wechat_openid
  * @property integer $user_status
@@ -33,8 +34,12 @@ class User extends \yii\db\ActiveRecord
      * 用户类型
      */
     const TYPE_COMMON = 1;//普通用户
-    const TYPE_SELLER = 2;//销售
-    const TYPE_DESIGNER = 3;//家装设计师
+    const TYPE_SELLER = 2;//销售/门店导购
+    const TYPE_DESIGNER = 3;//设计师
+    const TYPE_TAILER= 4;//零售经销商
+    const TYPE_PROJECT = 5;//项目经销商
+    const TYPE_ANZH = 6;//安装商/安装人员
+    const TYPE_EMPLOYEE = 7;//尚飞员工
 
     const NO_DELETE = 1;//启用
     const IS_DELETE = 2;//禁用
@@ -57,6 +62,7 @@ class User extends \yii\db\ActiveRecord
             [['nick', 'name'], 'string', 'max' => 30],
             [['avatar', 'name_card'], 'string', 'max' => 250],
             [['email'], 'string', 'max' => 40],
+            [['user_type_imgs'], 'string', 'max' => 600],
             [['wechat_openid'], 'string', 'max' => 50],
             [['mobile'], 'unique', 'message' => '手机号码已经注册过了'],
             [['wechat_openid'], 'unique', 'message' => '微信号已经注册过了'],
@@ -78,7 +84,8 @@ class User extends \yii\db\ActiveRecord
             'email' => '用户邮箱',
             'name_card' => '名片',
             'points' => '积分',
-            'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
+            'user_type' => '用户类型（1-普通用户；2-销售/门店导购；3-设计师；4-零售经销商；5-项目经销商；6-安装商/安装人员；7尚飞员工）',
+            'user_type_imgs' => '用户类型图片',
             'wechat_openid' => '微信Open Id',
             'user_status' => '状态（1-启用；2-禁用）',
             'update_at' => '更新时间',
@@ -273,13 +280,25 @@ class User extends \yii\db\ActiveRecord
                 $_name = '普通用户';
                 break;
             case self::TYPE_SELLER:
-                $_name = '销售';
+                $_name = '销售/门店导购';
                 break;
             case self::TYPE_DESIGNER:
-                $_name = '家装设计师';
+                $_name = '设计师';
+                break;
+            case self::TYPE_TAILER:
+                $_name = '零售经销商';
+                break;
+            case self::TYPE_PROJECT:
+                $_name = '项目经销商';
+                break;
+            case self::TYPE_ANZH:
+                $_name = '安装商/安装人员';
+                break;
+            case self::TYPE_EMPLOYEE:
+                $_name = '安装商/尚飞员工';
                 break;
             default:
-                $_name = '销售';
+                $_name = '普通用户';
                 break;
         }
         return $_name;
@@ -291,9 +310,13 @@ class User extends \yii\db\ActiveRecord
      */
     public static function _get_user_type_list(){
         return [
-            self::TYPE_COMMON => '普通用户',
-            self::TYPE_SELLER => '销售',
-            self::TYPE_DESIGNER => '家装设计师',
+            self::TYPE_COMMON =>    '普通用户',
+            self::TYPE_SELLER =>    '销售',
+            self::TYPE_DESIGNER =>  '家装设计师',
+            self::TYPE_TAILER =>    '零售经销商',
+            self::TYPE_PROJECT =>   '项目经销商',
+            self::TYPE_ANZH =>      '安装商/安装人员',
+            self::TYPE_EMPLOYEE =>  '尚飞员工',
         ];
     }
 
@@ -379,6 +402,7 @@ class User extends \yii\db\ActiveRecord
         $nick = $auth['nick'];
         $avatar = $auth['avatar'];
 
+
         $u_mdl = new self;
         $a_mdl = new Auth();
 
@@ -428,8 +452,6 @@ class User extends \yii\db\ActiveRecord
             $res_a = $a_mdl->_save([
                 'uid' => $uid,
                 'mobile' => $mobile,
-                'nick' => $nick,
-                'avatar' => $avatar,
                 'wechat_openid' => $wechat_openid
             ]);
             if(!$res_a){

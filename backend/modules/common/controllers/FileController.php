@@ -16,7 +16,7 @@ class FileController extends BaseController
      */
     public function limitActions()
     {
-        return [ 'upload','delete'];
+        return [];
     }
 
     /**
