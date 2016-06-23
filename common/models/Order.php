@@ -160,7 +160,7 @@ class Order extends \yii\db\ActiveRecord
             $_obj->offset($offset)->limit($limit);
         }
 
-        return $_obj->joinWith('address')->asArray(true)->all();
+        return $_obj->joinWith('address')->joinWith('goods')->asArray(true)->all();
     }
 
     /**

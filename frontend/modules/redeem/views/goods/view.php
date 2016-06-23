@@ -52,7 +52,7 @@
 <body>
 <div class="body-All">
     <header>
-        <div class="left"><a href="index.html"><img src="/images/home.png"></a></div>
+        <div class="left"><a href="/redeem/home/index"><img src="/images/home.png"></a></div>
         <div class="right">
             <a href="/redeem/my/index"><img src="/images/icon07.png"></a>
             <a href="/redeem/cart/goods-list"><img src="/images/icon06.png"></a>

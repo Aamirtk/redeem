@@ -44,7 +44,7 @@
             var cg_id = parseInt($(thi).attr('c_g_id'));
             var points = parseInt($(thi).attr('points'));
             if(num_dec == 0){
-                if(confirm('你确定要删除')){
+                if(confirm('你确定要删除该商品？')){
                     var param = {num: num_dec, cg_id: cg_id};
                     $._ajax('/redeem/cart/ajax-change-goods-num', param, 'POST', 'JSON', function(json){
                         $('div[c_g_id='+ cg_id +']').remove();

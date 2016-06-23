@@ -108,7 +108,7 @@
                         <input type="hidden" name="receive_time" value="1">
                     </div>
                 </div>
-                <div class="mt checkbox">
+                <div class="mt checkbox checked">
                     <input type="checkbox" name="is_default" value=""/>设为默认地址
                 </div>
             </div>

@@ -109,6 +109,8 @@ class MyController extends BaseController
         foreach($_order_list as $key => $val){
             $_order_list[$key]['time'] = date('Y/m/d', $val['create_at']);
             $_order_list[$key]['status_name'] = getValue($_status_list, [$val['order_status']], '');
+            $_order_list[$key]['link'] = in_array($val['order_status'], [Order::STATUS_PAY, Order::STATUS_SEND])
+                ? 'javaScript:void(0)' : '/redeem/logestic/detail?oid=' . $val['oid'];
         }
         $_data = [
             'order_list' => $_order_list,

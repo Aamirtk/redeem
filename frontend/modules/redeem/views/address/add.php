@@ -148,7 +148,7 @@
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-                history.back();
+                window.location.href = '/redeem/my/address';
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=receiver_name]").closest('div').after(error);

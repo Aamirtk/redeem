@@ -24,7 +24,7 @@ class AddressController extends BaseController
             return $this->render('add', ['uid' => $this->uid]);
         }
         //保存
-        $param = $this->_request();
+        $param = $this->_post();
         $param['uid'] = $this->uid;
         $res = (new Address())->_add_address($param);
         if($res['code'] < 0 ){
@@ -79,10 +79,11 @@ class AddressController extends BaseController
             return $this->render('order', $_data);
         }
         //保存
-        $param = $this->_request();
+        $param = Yii::$app->request->post();
         $param['uid'] = $this->uid;
         $oid = $param['oid'];
         unset($param['oid']);
+        lg($param);
         $res = (new Address())->_add_address($param);
         if($res['code'] < 0 ){
             $this->_json($res['code'], $res['msg']);

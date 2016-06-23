@@ -27,7 +27,76 @@ class UserController extends BaseController
         ];
     }
 
+    /**
+     * 用户列表
+     * @return type
+     */
+    public function actionWechat()
+    {
 
+        $options = yiiParams('wechatConfig');
+        $auth = new WechatAuth($options);
+
+        $open_id = $auth->wxuser['open_id'];
+        $nickname = $auth->wxuser['nickname'];
+        $avatar = $auth->wxuser['avatar'];
+        session_destroy();
+
+        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+
+        $sess = new Session();
+        $key = md5(microtime() + rand(0, 10000));
+        $res = $sess->_save([
+            'key' => $key,
+            'wechat_openid' => $open_id,
+            'nick' => $nickname,
+            'avatar' => $avatar,
+        ]);
+
+        //有记录，表示已经注册，跳转到首页
+        if($res){
+            $user = false;//留待开发..
+            if($user){
+                $this->redirect('/redeem/home/index?uid=' . $user['uid']);
+            }else{
+                $_url = "/redeem/user/reg?key=" . $key;
+                $this->redirect($_url);
+            }
+        }
+    }
+
+    /**
+     * 用户注册
+     * @return type
+     */
+    public function actionReg()
+    {
+
+        //加载
+        if(!$this->isAjax()){
+            $key = $this->_request('key', '');
+            $_data = [
+                'key' => $key
+            ];
+            return $this->render('reg', $_data);
+        }
+
+        //保存
+        $mobile = trim($this->_request('mobile'));
+        $verifycode = intval($this->_request('verifycode'));
+        $key = trim($this->_request('key'));
+
+        $param = [
+            'mobile' => $mobile,
+            'verifycode' => $verifycode,
+            'key' => $key,
+        ];
+        $res = (new User())->_add_user($param);
+        if($res['code'] < 0 ){
+            $this->_json($res['code'], $res['msg']);
+        }
+        $this->_json($res['code'], $res['msg'], $res['data']);
+    }
 
     /**
      * 退出登录
@@ -96,78 +165,6 @@ class UserController extends BaseController
             'user_type_imgs' => $user_type_imgs,
         ];
         $res = (new Auth())->_add_auth($param);
-        if($res['code'] < 0 ){
-            $this->_json($res['code'], $res['msg']);
-        }
-        $this->_json($res['code'], $res['msg'], $res['data']);
-    }
-
-    /**
-     * 用户列表
-     * @return type
-     */
-    public function actionWechat()
-    {
-
-        $options = yiiParams('wechatConfig');
-        $auth = new WechatAuth($options);
-
-        $open_id = $auth->wxuser['open_id'];
-        $nickname = $auth->wxuser['nickname'];
-        $avatar = $auth->wxuser['avatar'];
-        session_destroy();
-
-        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
-
-        $sess = new Session();
-        $key = md5(microtime() + rand(0, 10000));
-        $res = $sess->_save([
-            'key' => $key,
-            'wechat_openid' => $open_id,
-            'nick' => $nickname,
-            'avatar' => $avatar,
-        ]);
-
-        //有记录，表示已经注册，跳转到首页
-        if($res){
-            $user = false;//留待开发..
-            if($user){
-            $this->redirect('/redeem/home/index?uid=' . $user['uid']);
-            }else{
-                $_url = "/redeem/user/reg?key=" . $key;
-            $this->redirect($_url);
-            }
-        }
-
-    }
-
-    /**
-     * 用户注册
-     * @return type
-     */
-    public function actionReg()
-    {
-
-        //加载
-        if(!$this->isAjax()){
-            $key = $this->_request('key', '');
-            $_data = [
-                'key' => $key
-            ];
-            return $this->render('reg', $_data);
-        }
-
-        //保存
-        $mobile = trim($this->_request('mobile'));
-        $verifycode = intval($this->_request('verifycode'));
-        $key = trim($this->_request('key'));
-
-        $param = [
-            'mobile' => $mobile,
-            'verifycode' => $verifycode,
-            'key' => $key,
-        ];
-        $res = (new User())->_add_user($param);
         if($res['code'] < 0 ){
             $this->_json($res['code'], $res['msg']);
         }

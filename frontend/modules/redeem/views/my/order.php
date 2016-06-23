@@ -30,7 +30,7 @@ use common\models\Order;
     <header>
         <div class="back"><a><img src="/images/back.png"></a></div>
         我的订单
-        <div class="home"><a href="index.html"><img src="/images/home.png"></a></div>
+        <div class="home"><a href="/redeem/home/index"><img src="/images/home.png"></a></div>
     </header>
     <div class="menu">
         <span class="active" data-order_status="all" target="#quanbu">全部</span>
@@ -48,7 +48,7 @@ use common\models\Order;
                     </div>
                     <div class="bottom">
                         <div class="pic">
-                            <img src="/images/pic.png">
+                            <img src="<?php echo getValue($order, 'goods.thumb', '') ?>">
                         </div>
                         <div class="state"><?php echo getValue($status_list, [$order['order_status']], '') ?></div>
                         <div class="integral"><span><?php echo $order['points_cost'] ?></span>积分</div>
@@ -72,7 +72,7 @@ use common\models\Order;
                 var html = '';
                 $.each(data, function(i, order){
                     html +=
-                    '<a href="物流配送.html"> '+
+                    '<a href="'+ order.link +'"> '+
                     '    <li>'+
                     '        <div class="top">'+
                     '            <div class="number">订单编号：'+ order.order_id +'</div>'+
@@ -80,7 +80,7 @@ use common\models\Order;
                     '        </div>'+
                     '        <div class="bottom">'+
                     '            <div class="pic">'+
-                    '                <img src="/images/pic.png">'+
+                    '                <img src="'+ order.goods.thumb +'">'+
                     '            </div>'+
                     '            <div class="state">'+ order.status_name +'</div>'+
                     '            <div class="integral"><span>'+ order.points_cost +'</span>积分</div>'+
