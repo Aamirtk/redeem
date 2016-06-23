@@ -409,7 +409,6 @@ class User extends \yii\db\ActiveRecord
         //验证是否已经手机认证
         $user = $u_mdl->_get_info(['mobile' => $mobile]);
         if($user){
-            $session->set('user_id', $user['uid']);
             $res = (new Session())->_delete(['key' => $param['key']]);
             return ['code' => 20001, 'msg' => '已经手机认证过了，直接登录', 'data' => ['uid' => $user['uid']]];
         }
@@ -471,7 +470,6 @@ class User extends \yii\db\ActiveRecord
             //执行
             $transaction->commit();
 
-            $session->set('user_id', $uid);
             return ['code' => 20000, 'msg' => '保存成功！', 'data' => ['uid' => $uid]];
 
         } catch (Exception $e) {

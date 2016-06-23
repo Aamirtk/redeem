@@ -68,9 +68,8 @@
         $._ajax('/redeem/user/reg', param, 'POST', 'JSON', function(json){
             var code = json.code;
             var msg = json.msg;
-//            alert(msg);
             if(code > 0){
-                window.location.href = '/redeem/home/index';
+                window.location.href = json.data.redirect;
             }else if(code == -20001 || code == -20002 ){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=mobile]").closest('div').after(error);

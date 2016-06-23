@@ -35,11 +35,16 @@ class UserController extends BaseController
     public function actionReg()
     {
         $session = Yii::$app->session;
+        $redirect = $this->_request('redirect', '/redeem/user/auth');
+        if(!empty($redirect)){
+            $session->set('REDIRECT_URL', $redirect);
+        }
+
         //加载
         if(!$this->isAjax()){
             $key = $this->_request('key', '');
             $_data = [
-                'key' => $key
+                'key' => $key,
             ];
             return $this->render('reg', $_data);
         }
@@ -59,14 +64,19 @@ class UserController extends BaseController
             $this->_json($res['code'], $res['msg']);
         }
 
-        //判断是否有跳转
-        $redirct = $this->_request('redirect');
-        if(!empty($redirct)){
-            return $this->redirect($redirct);
-        }
+        //设置登录session
+        $session->set('user_id', $res['data']['uid']);
 
+        //判断是否有跳转
+        $redirect = $session->get('REDIRECT_URL');
+        if(!empty($redirect)){
+            $session->remove('REDIRECT_URL');
+        }
+        $_data = [
+            'redirect' => !empty($redirect) ? $redirect : '/redeem/home/index'
+        ];
         //成功返回
-        $this->_json($res['code'], $res['msg'], $res['data']);
+        $this->_json(20000, '成功', $_data);
     }
 
     /**
@@ -84,7 +94,8 @@ class UserController extends BaseController
         $avatar = $auth->wxuser['avatar'];
         session_destroy();
 
-        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+//        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+        $user = false;//留待开发..
 
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
@@ -97,12 +108,12 @@ class UserController extends BaseController
 
         //有记录，表示已经注册，跳转到首页
         if($res){
-            $user = false;//留待开发..
+
             if($user){
                 $this->redirect('/redeem/home/index?uid=' . $user['uid']);
             }else{
                 $_url = "/redeem/user/reg?key=" . $key;
-                $this->redirect($_url);
+                return $this->redirect($_url);
             }
         }
     }
@@ -117,6 +128,7 @@ class UserController extends BaseController
         $sms = new Sms();
         $randnum = $sms->randnum();
         $res = $sms->send($mobile, $randnum);
+
         if($res != 0){
             $this->_json(-20001, '验证码发送失败，请重新发送');
         }
@@ -184,7 +196,8 @@ class UserController extends BaseController
         $avatar = $auth->wxuser['avatar'];
         session_destroy();
 
-        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+//        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+        $user = false;//留待开发..
 
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
@@ -197,7 +210,6 @@ class UserController extends BaseController
 
         //有记录，表示已经认证，跳转到首页
         if($res){
-            $user = false;//留待开发..
             if($user){
                 $this->redirect('/redeem/home/index?uid=' . $user['uid']);
             }else{

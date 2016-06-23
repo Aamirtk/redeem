@@ -163,7 +163,7 @@
                     $(".upload_img").remove();
                 }
             }else{
-                BUI.Message.Alert('上传失败！');
+                alert('上传失败！');;
             }
         });
 
