@@ -440,13 +440,6 @@ class Auth extends \yii\db\ActiveRecord
         }
         $user_type_imgs = $param['user_type_imgs'];
 
-
-        //验证微信公众号
-//        if(empty($param['wechat_openid'])){
-//            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
-//        }
-        $wechat_openid = md5(time());
-
         $a_mdl = new self();
 
         //开启事务
@@ -461,11 +454,17 @@ class Auth extends \yii\db\ActiveRecord
                 'email' => $email,
                 'user_type' => $user_type,
                 'user_type_imgs' => json_encode($user_type_imgs),
-                'wechat_openid' => $wechat_openid
             ]);
             if(!$res_a){
                 $transaction->rollBack();
                 throw new Exception('认证信息保存失败');
+            }
+
+            //添加积分更新记录
+            $ret = Points::_add_points($uid, Points::POINTS_IDAUTH);
+            if($ret['code'] < 0){
+                $transaction->rollBack();
+                throw new Exception($ret['msg']);
             }
 
             //执行

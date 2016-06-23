@@ -196,9 +196,9 @@
         var param = $._get_form_json('#auth');
         $._ajax('/redeem/user/auth', param, 'POST', 'JSON', function(json){
             var code = json.code;
-            var msg = json.msg
+            var msg = json.msg;
             if(code > 0){
-//                window.location.href = '/redeem/home/index';
+                window.location.href = '/redeem/home/index';
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=name]").closest('div').after(error);

@@ -29,7 +29,7 @@
     </header>
     <div class="header-box">
         <div class="head_portrait">
-            <img src="/images/head_portrait.png">
+            <img src="<?php echo $user['avatar'] ?>">
         </div>
         <div class="basic">
             <div class="name"><?php echo $user['name'] ?></div>

@@ -157,9 +157,9 @@ class UserController extends BaseController
         }
         //保存
         $auth = (new Auth())->_get_info(['uid' => $uid]);
-        if(!$auth){
-            $this->_json(-20001, '认证信息存在，请先进行手机认证');
-        }
+//        if(!$auth){
+//            $this->_json(-20001, '认证信息不存在，请先进行手机认证');
+//        }
         $name = trim($this->_request('name'));
         $email = trim($this->_request('email'));
         $mobile = trim($this->_request('mobile'));
