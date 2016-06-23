@@ -106,7 +106,6 @@ class UserController extends BaseController
                 'name',
                 'mobile',
                 'avatar',
-                'name_card',
                 'email',
                 'points',
                 'wechat' => 'wechat_openid',
@@ -119,6 +118,10 @@ class UserController extends BaseController
                 'status' => 'user_status',
                 'inputer' => function ($m) {
                     return '录入人';
+                },
+                'name_card' => function ($m) {
+                    $imgs_list = json_decode($m->user_type_imgs);
+                    return $imgs_list;
                 },
                 'checker' => function ($m) {
                     return '审核人';
