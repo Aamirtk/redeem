@@ -58,12 +58,14 @@ class UserController extends BaseController
         if($res['code'] < 0 ){
             $this->_json($res['code'], $res['msg']);
         }
+
         //判断是否有跳转
-        $redirct = $session->get('REDIRECT_URL');
+        $redirct = $this->_request('redirect');
         if(!empty($redirct)){
-            $session->remove('REDIRECT_URL');
             return $this->redirect($redirct);
         }
+
+        //成功返回
         $this->_json($res['code'], $res['msg'], $res['data']);
     }
 
@@ -199,8 +201,7 @@ class UserController extends BaseController
             if($user){
                 $this->redirect('/redeem/home/index?uid=' . $user['uid']);
             }else{
-                Yii::$app->session->set('REDIRECT_URL', '/redeem/user/auth');
-                $_url = "/redeem/user/reg?key=" . $key;
+                $_url = "/redeem/user/reg?key=" . $key . '&redirect=/redeem/user/auth';
                 $this->redirect($_url);
             }
         }
