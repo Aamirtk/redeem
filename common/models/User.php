@@ -452,7 +452,9 @@ class User extends \yii\db\ActiveRecord
             $res_a = $a_mdl->_save([
                 'uid' => $uid,
                 'mobile' => $mobile,
-                'wechat_openid' => $wechat_openid
+                'wechat_openid' => $wechat_openid,
+                'nick' => $nick,
+                'avatar' => $avatar,
             ]);
             if(!$res_a){
                 $transaction->rollBack();
