@@ -24,7 +24,47 @@ class UserController extends BaseController
             'reg',
             'send-sms',
             'wechat',
+            'wechat-auth',
         ];
+    }
+
+    /**
+     * 用户注册
+     * @return type
+     */
+    public function actionReg()
+    {
+        $session = Yii::$app->session;
+        //加载
+        if(!$this->isAjax()){
+            $key = $this->_request('key', '');
+            $_data = [
+                'key' => $key
+            ];
+            return $this->render('reg', $_data);
+        }
+
+        //保存
+        $mobile = trim($this->_request('mobile'));
+        $verifycode = intval($this->_request('verifycode'));
+        $key = trim($this->_request('key'));
+
+        $param = [
+            'mobile' => $mobile,
+            'verifycode' => $verifycode,
+            'key' => $key,
+        ];
+        $res = (new User())->_add_user($param);
+        if($res['code'] < 0 ){
+            $this->_json($res['code'], $res['msg']);
+        }
+        //判断是否有跳转
+        $redirct = $session->get('REDIRECT_URL');
+        if(!empty($redirct)){
+            $session->remove('REDIRECT_URL');
+            return $this->redirect($redirct);
+        }
+        $this->_json($res['code'], $res['msg'], $res['data']);
     }
 
     /**
@@ -63,50 +103,6 @@ class UserController extends BaseController
                 $this->redirect($_url);
             }
         }
-    }
-
-    /**
-     * 用户注册
-     * @return type
-     */
-    public function actionReg()
-    {
-
-        //加载
-        if(!$this->isAjax()){
-            $key = $this->_request('key', '');
-            $_data = [
-                'key' => $key
-            ];
-            return $this->render('reg', $_data);
-        }
-
-        //保存
-        $mobile = trim($this->_request('mobile'));
-        $verifycode = intval($this->_request('verifycode'));
-        $key = trim($this->_request('key'));
-
-        $param = [
-            'mobile' => $mobile,
-            'verifycode' => $verifycode,
-            'key' => $key,
-        ];
-        $res = (new User())->_add_user($param);
-        if($res['code'] < 0 ){
-            $this->_json($res['code'], $res['msg']);
-        }
-        $this->_json($res['code'], $res['msg'], $res['data']);
-    }
-
-    /**
-     * 退出登录
-     * @return type
-     */
-    public function actionLogout()
-    {
-        $session = Yii::$app->session;
-        $session->remove('user_id');
-        $this->redirect('/redeem/user/reg');
     }
 
     /**
@@ -171,5 +167,54 @@ class UserController extends BaseController
         $this->_json($res['code'], $res['msg'], $res['data']);
     }
 
+    /**
+     * 用户列表
+     * @return type
+     */
+    public function actionWechatAuth()
+    {
+
+        $options = yiiParams('wechatConfig');
+        $auth = new WechatAuth($options);
+
+        $open_id = $auth->wxuser['open_id'];
+        $nickname = $auth->wxuser['nickname'];
+        $avatar = $auth->wxuser['avatar'];
+        session_destroy();
+
+        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+
+        $sess = new Session();
+        $key = md5(microtime() + rand(0, 10000));
+        $res = $sess->_save([
+            'key' => $key,
+            'wechat_openid' => $open_id,
+            'nick' => $nickname,
+            'avatar' => $avatar,
+        ]);
+
+        //有记录，表示已经认证，跳转到首页
+        if($res){
+            $user = false;//留待开发..
+            if($user){
+                $this->redirect('/redeem/home/index?uid=' . $user['uid']);
+            }else{
+                Yii::$app->session->set('REDIRECT_URL', '/redeem/user/auth');
+                $_url = "/redeem/user/reg?key=" . $key;
+                $this->redirect($_url);
+            }
+        }
+    }
+
+    /**
+     * 退出登录
+     * @return type
+     */
+    public function actionLogout()
+    {
+        $session = Yii::$app->session;
+        $session->remove('user_id');
+        $this->redirect('/redeem/user/reg');
+    }
 
 }
