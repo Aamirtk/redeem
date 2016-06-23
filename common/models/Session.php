@@ -9,6 +9,7 @@ use yii\db\Exception;
  * This is the model class for table "{{%session}}".
  *
  * @property integer $id
+ * @property string $key
  * @property string $wechat_openid
  * @property string $nick
  * @property string $avatar
@@ -29,9 +30,11 @@ class Session extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['wechat_openid'], 'string', 'max' => 50],
-            [['nick'], 'string', 'max' => 30],
-            [['avatar'], 'string', 'max' => 200]
+            [['wechat_openid', 'key'], 'string', 'max' => 60],
+            [['nick'], 'string', 'max' => 50],
+            [['avatar'], 'string', 'max' => 300],
+            [['create_at'], 'integer'],
+            [['create_at'], 'default', 'value' => time()],
         ];
     }
 
@@ -42,6 +45,7 @@ class Session extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'key' => 'Key',
             'wechat_openid' => '公众号ID',
             'nick' => '昵称',
             'avatar' => '头像',

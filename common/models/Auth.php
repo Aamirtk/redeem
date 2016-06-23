@@ -64,7 +64,7 @@ class Auth extends \yii\db\ActiveRecord
             [['uid', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
             [['mobile'], 'string', 'max' => 11],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar', 'name_card'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 250],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
             [['reason'], 'string'],

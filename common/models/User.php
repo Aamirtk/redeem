@@ -7,6 +7,7 @@ use yii\base\Exception;
 use common\models\Auth;
 use common\models\Points;
 use common\models\Cart;
+use common\models\Session;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -54,7 +55,7 @@ class User extends \yii\db\ActiveRecord
         return [
             [['points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar', 'name_card'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 250],
             [['email'], 'string', 'max' => 40],
             [['wechat_openid'], 'string', 'max' => 50],
             [['mobile'], 'unique', 'message' => '手机号码已经注册过了'],
@@ -333,6 +334,7 @@ class User extends \yii\db\ActiveRecord
      * @return array|boolean
      */
     public static function _add_user($param){
+
         //开启session
         $session = Yii::$app->session;
         if(!$session->isActive){
@@ -366,20 +368,16 @@ class User extends \yii\db\ActiveRecord
         }
 
         //验证微信公众号
-        $wechat_openid = $session->get('wechat_openid');
-        if(empty($wechat_openid)){
-            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        if(empty($param['key'])){
+            return ['code' => -20004, 'msg' => '微信公众号没有获取到'];
         }
-        //验证昵称和头像
-        $nick = $session->get('nick');
-        if(empty($nick)){
-//            return ['code' => -20007, 'msg' => '微信昵称不能为空'];
+        $auth = (new Session())->_get_info(['key' => $param['key']]);
+        if(!$auth){
+            return ['code' => -20004, 'msg' => '微信公众号为空'];
         }
-        //验证昵称和头像
-        $avatar = $session->get('avatar');
-        if(empty($avatar)){
-//            return ['code' => -20008, 'msg' => '微信头像不能为空'];
-        }
+        $wechat_openid = $auth['wechat_openid'];
+        $nick = $auth['nick'];
+        $avatar = $auth['avatar'];
 
         $u_mdl = new self;
         $a_mdl = new Auth();
@@ -388,6 +386,7 @@ class User extends \yii\db\ActiveRecord
         $user = $u_mdl->_get_info(['mobile' => $mobile]);
         if($user){
             $session->set('user_id', $user['uid']);
+            $res = (new Session())->_delete(['key' => $param['key']]);
             return ['code' => 20001, 'msg' => '已经手机认证过了，直接登录', 'data' => ['uid' => $user['uid']]];
         }
 
@@ -398,6 +397,8 @@ class User extends \yii\db\ActiveRecord
             //用户表插入记录
             $u_mdl->mobile = $mobile;
             $u_mdl->wechat_openid = $wechat_openid;
+            $u_mdl->nick = $nick;
+            $u_mdl->avatar = $avatar;
             if(!$u_mdl->validate()){
                 $error = $u_mdl->errors;
                 $msg = current($error)[0];//获取错误信息
@@ -434,6 +435,13 @@ class User extends \yii\db\ActiveRecord
             if(!$res_a){
                 $transaction->rollBack();
                 throw new Exception('认证信息保存失败');
+            }
+
+            //删除session表
+            $res_s = (new Session())->_delete(['key' => $param['key']]);
+            if($res_s === false){
+                $transaction->rollBack();
+                throw new Exception('session删除失败');
             }
 
             //执行
