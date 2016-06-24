@@ -60,7 +60,7 @@
             <input type="text" name="email" placeholder="请输入您的常用邮箱"/>
         </div>
         <div class="form-group">
-            <label><span>*</span>用&nbsp;户&nbsp;类&nbsp;型&nbsp;</label>
+            <label><span>*</span>用户类型</label>
             <select name="user_type">
                 <?php foreach($type_list as $key => $val): ?>
                     <option value="<?php echo $key ?>"><?php echo $val ?></option>
@@ -71,8 +71,7 @@
         <div class="form-group">
             <div class="box type-img-content">
                 <div class="type">
-                    <div class="left">类型图片</div>
-<!--                    <div class="right"><a href="">提交</a></div>-->
+                    <div class="left">上传用户类型凭证（如名片，职称认证书等）</div>
                 </div>
                 <div class="pic usertypepic">
                     <div class="img upload_img">
