@@ -76,6 +76,7 @@ class HomeController extends BaseController
         $r_mdl = new PointsRecord();
         $sign = $r_mdl::find()
             ->where(['uid' => $this->uid])
+            ->andWhere(['point_id' => Points::POINTS_SIGNIN])
             ->andWhere(['>', 'create_at', strtotime('today')])
             ->andWhere(['<', 'create_at', strtotime('today + 1 day')])
             ->asArray()
