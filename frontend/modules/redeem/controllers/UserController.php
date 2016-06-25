@@ -36,7 +36,7 @@ class UserController extends BaseController
     public function actionReg()
     {
         $session = Yii::$app->session;
-        $redirect = $this->_request('redirect', '/redeem/user/auth');
+        $redirect = $this->_request('redirect', '');
         if(!empty($redirect)){
             $session->set('REDIRECT_URL', $redirect);
         }
