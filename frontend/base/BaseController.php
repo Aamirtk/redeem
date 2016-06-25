@@ -12,6 +12,7 @@ class BaseController extends Controller
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     public $open_id = '';//微信公众号
+    public $avatar = '';//微信公众号
     public $uid = '';//微信公众号
     public $user = '';//用户信息
     public $signPackage = '';//微信jssdk实例
@@ -41,6 +42,7 @@ class BaseController extends Controller
         }
         $this->user = (new User())->_get_info(['uid' => $this->uid]);
         $this->open_id = $this->user['wechat_openid'];
+        $this->avatar = $this->user['avatar'];
         if(empty($this->user)){
             $this->redirect('/redeem/user/reg');
             return false;

@@ -14,4 +14,5 @@ return [
     //图片访问域名
     'img_host' => 'http://www.redeem_back.com',
 
+
 ];
