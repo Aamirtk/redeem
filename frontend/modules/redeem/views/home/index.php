@@ -27,6 +27,8 @@
             signature: '<?php echo $this->context->signPackage["signature"];?>',
             jsApiList: [
                 // 所有要调用的 API 都要加到这个列表中
+                "menuItem:share:appMessage",
+                "menuItem:share:timeline",
             ]
         });
         wx.ready(function () {

@@ -40,7 +40,7 @@ return [
             'enableAutoLogin' => true,
         ],
         'jssdk' => [
-            'identityClass' => 'frontend\components\Wechat\Jssdk',
+            'class' => 'frontend\components\Wechat\Jssdk',
         ],
         'userData' => [
             'class' => 'app\modules\user\models\UserData',

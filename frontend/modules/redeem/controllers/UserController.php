@@ -26,6 +26,7 @@ class UserController extends BaseController
             'wechat',
             'wechat-auth',
         ];
+
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace frontend\components;
+namespace frontend\components\Wechat;
 
 use yii;
 use yii\base\Component;
@@ -8,6 +8,8 @@ class Jssdk extends Component
 {
     private $appId;
     private $appSecret;
+    private $jsapi_ticket;
+    private $access_token;
 
 //    public function __construct($appId, $appSecret) {
 //        $this->appId = $appId;
@@ -19,6 +21,10 @@ class Jssdk extends Component
         parent::init();
         $this->appId = yiiParams('wechatConfig')['appid'];
         $this->appSecret = yiiParams('wechatConfig')['appsecret'];
+        $this->access_token = [
+            'access_token' => yiiParams('wechatConfig')['token'],
+            'expire_time' => 0,
+        ];
     }
 
     public function getSignPackage() {
@@ -58,7 +64,7 @@ class Jssdk extends Component
 
     private function getJsApiTicket() {
         // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
-        $data = json_decode($this->get_php_file("jsapi_ticket.php"));
+        $data = json_decode($this->get_php_file(dirname(__FILE__) . "/jsapi_ticket.php"));
         if ($data->expire_time < time()) {
             $accessToken = $this->getAccessToken();
             // 如果是企业号用以下 URL 获取 ticket
@@ -69,7 +75,7 @@ class Jssdk extends Component
             if ($ticket) {
                 $data->expire_time = time() + 7000;
                 $data->jsapi_ticket = $ticket;
-                $this->set_php_file("jsapi_ticket.php", json_encode($data));
+                $this->set_php_file(dirname(__FILE__) . "/jsapi_ticket.php", json_encode($data));
             }
         } else {
             $ticket = $data->jsapi_ticket;
@@ -80,7 +86,7 @@ class Jssdk extends Component
 
     private function getAccessToken() {
         // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-        $data = json_decode($this->get_php_file("access_token.php"));
+        $data = json_decode($this->get_php_file(dirname(__FILE__) . "/access_token.php"));
         if ($data->expire_time < time()) {
             // 如果是企业号用以下URL获取access_token
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
@@ -90,7 +96,7 @@ class Jssdk extends Component
             if ($access_token) {
                 $data->expire_time = time() + 7000;
                 $data->access_token = $access_token;
-                $this->set_php_file("access_token.php", json_encode($data));
+                $this->set_php_file(dirname(__FILE__) . "/access_token.php", json_encode($data));
             }
         } else {
             $access_token = $data->access_token;
@@ -105,7 +111,7 @@ class Jssdk extends Component
         // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
         // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_URL, $url);
 
         $res = curl_exec($curl);
