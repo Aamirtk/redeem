@@ -311,8 +311,8 @@ class User extends \yii\db\ActiveRecord
     public static function _get_user_type_list(){
         return [
             self::TYPE_COMMON =>    '普通用户',
-            self::TYPE_SELLER =>    '销售',
-            self::TYPE_DESIGNER =>  '家装设计师',
+            self::TYPE_SELLER =>    '销售/门店导购',
+            self::TYPE_DESIGNER =>  '设计师',
             self::TYPE_TAILER =>    '零售经销商',
             self::TYPE_PROJECT =>   '项目经销商',
             self::TYPE_ANZH =>      '安装商/安装人员',
