@@ -14,6 +14,7 @@ class BaseController extends Controller
     public $open_id = '';//微信公众号
     public $uid = '';//微信公众号
     public $user = '';//用户信息
+    public $signPackage = '';//微信jssdk实例
     public $_uncheck = []; //不用校验登录的方法,可子类复写
 
     /**
@@ -39,10 +40,13 @@ class BaseController extends Controller
             return false;
         }
         $this->user = (new User())->_get_info(['uid' => $this->uid]);
+        $this->open_id = $this->user['wechat_openid'];
         if(empty($this->user)){
             $this->redirect('/redeem/user/reg');
             return false;
         }
+        //引入jssdk实例
+        $this->signPackage = Yii::$app->jssdk->GetSignPackage();
         return true;
     }
 

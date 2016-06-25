@@ -15,8 +15,25 @@
     <link rel="stylesheet" type="text/css" href="/css/index.css">
     <script src="/js/jquery-1.11.3.min.js"></script>
     <script src="/js/swiper-3.3.1.jquery.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="/js/tools.js"></script>
     <script type="text/javascript">
+        //微信分享
+        wx.config({
+            debug: true,
+            appId: '<?php echo $this->context->signPackage["appId"];?>',
+            timestamp: <?php echo $this->context->signPackage["timestamp"];?>,
+            nonceStr: '<?php echo $this->context->signPackage["nonceStr"];?>',
+            signature: '<?php echo $this->context->signPackage["signature"];?>',
+            jsApiList: [
+                // 所有要调用的 API 都要加到这个列表中
+            ]
+        });
+        wx.ready(function () {
+            // 在这里调用 API
+            alert('调用微信！');
+        });
+
         $(function(){
             var mySwiper = new Swiper('.banner', {
                 autoplay: 5000,
