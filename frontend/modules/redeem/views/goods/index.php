@@ -39,8 +39,8 @@
         <div class="left"><a><img src="images/search.png"></a></div>
         <img src="images/logo.png" class="logo">
         <div class="right">
-            <a href="个人中心.html"><img src="images/icon07.png"></a>
-            <a href="购物车.html"><img src="images/icon06.png"></a>
+            <a href="/redeem/my/home"><img src="images/icon07.png"></a>
+            <a href="/redeem/cart/goods-list"><img src="images/icon06.png"></a>
         </div>
     </header>
     <div class="search-box">
@@ -100,4 +100,52 @@
     </ul>
 </div>
 </body>
+<!--微信分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: '<?php echo $this->context->signPackage["appId"];?>',
+        timestamp: <?php echo $this->context->signPackage["timestamp"];?>,
+        nonceStr: '<?php echo $this->context->signPackage["nonceStr"];?>',
+        signature: '<?php echo $this->context->signPackage["signature"];?>',
+        jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+        ]
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        //发送给朋友
+        wx.onMenuShareAppMessage({
+            title: '', // 分享标题
+            desc: '会员积分，超值兑换', // 分享描述
+            link: '', // 分享链接
+            imgUrl: '<?php echo yiiParams('share_img') ?>', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $._ajax('/redeem/home/share', {}, 'POST', 'JSON', function(json){});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '', // 分享标题
+            link: '', // 分享链接
+            imgUrl: '<?php echo yiiParams('share_img') ?>', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $._ajax('/redeem/home/share', {}, 'POST', 'JSON', function(json){});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+</script>
 </html>

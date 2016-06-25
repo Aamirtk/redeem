@@ -248,7 +248,7 @@ use yii\helpers\Html;
                         '<p>'+ file.name +'</p>'+
                         '</div>'+
                         '</div>';
-                    $('#thumbpic-content').append(div);
+                    $('#thumbpic-content').html(div);
                     uploaderlist.addButton({
                         id: '#thumblistpic'
                     });

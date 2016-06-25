@@ -1,3 +1,8 @@
+<style>
+    .save-info{
+        text-align: center;
+    }
+</style>
 <form class="form-horizontal bui-form bui-form-field-container" id="user_info_form" aria-disabled="false"
       onsubmit="return false;" aria-pressed="false">
     <input name="uid" v-role="proj-id" type="hidden" class="bui-form-field" aria-disabled="false"

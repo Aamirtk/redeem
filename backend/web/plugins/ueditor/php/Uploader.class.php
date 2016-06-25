@@ -1,4 +1,5 @@
 <?php
+use Yii;
 
 /**
  * Created by JetBrains PhpStorm.
@@ -359,9 +360,11 @@ class Uploader
      */
     public function getFileInfo()
     {
+
         return array(
             "state" => $this->stateInfo,
-            "url" => $this->fullName,
+            "url" => 'http://' . $_SERVER['SERVER_NAME'] . $this->fullName,
+//            "url" => $this->fullName,
             "title" => $this->fileName,
             "original" => $this->oriName,
             "type" => $this->fileType,

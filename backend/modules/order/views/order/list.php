@@ -34,20 +34,19 @@ use common\models\Order;
             <form id="authsearch" class="form-horizontal">
 
                 <div class="row">
-                    <div class="control-group span12">
+                    <div class="control-group span8">
                         <label class="control-label">商品名称：</label>
                         <div class="controls">
                             <input type="text" class="control-text" name="goods_name">
                         </div>
                     </div>
-                    <div class="control-group span12">
+                    <div class="control-group span8">
                         <label class="control-label">商品编号：</label>
                         <div class="controls">
                             <input type="text" class="control-text" name="goods_id">
                         </div>
                     </div>
-
-                    <div class="control-group span10">
+                    <div class="control-group span8">
                         <label class="control-label">订单状态：</label>
                         <div class="controls" >
                             <select name="order_status" id="checkstatus">
@@ -58,22 +57,8 @@ use common\models\Order;
                             </select>
                         </div>
                     </div>
+                </div>
 
-                </div>
-                <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">买家姓名：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="buyer_name">
-                        </div>
-                    </div>
-                    <div class="control-group span12">
-                        <label class="control-label">买家手机：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="buyer_phone">
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="control-group span18">
                         <label class="control-label">时间范围：</label>
@@ -135,21 +120,30 @@ use common\models\Order;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '订单编号', dataIndex: 'oid', width: 80, elCls : 'center'},
+                    {title: '序号', dataIndex: 'oid', width: 80, elCls : 'center'},
+                    {title: '订单编号', dataIndex: 'order_id', width: 160, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
-                    {title: '买家姓名', dataIndex: 'buyer_name', width: 90, elCls : 'center',},
-                    {title: '买家手机', dataIndex: 'buyer_phone', width: 120, elCls : 'center',},
+                    {title: '买家姓名', dataIndex: 'buyer_name', width: 80, elCls : 'center'},
+                    {title: '买家手机', dataIndex: 'buyer_phone', width: 110, elCls : 'center'},
                     {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '物流编号', dataIndex: '', width: 140, elCls : 'center'},
-                    {title: '收货地址', dataIndex: 'address', width: 160},
+                    {
+                        title: '物流编号',
+                        width: 140,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<a class='' href='javaScript:void(0)' onclick='checkLogDetail(" + obj.oid + ")'>" + obj.express_num + "</a>";
+                        }
+                    },
+                    {title: '收货地址', dataIndex: 'address', width: 180},
                     {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
+
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
                             return "<a class='button button-primary' onclick='updateOrder(" + obj.oid + ")'>编辑</a>" +
-                            "<a class='button button-info' onclick=''>物流</a>" +
+                            "<a class='button button-info' onclick='checkLogestic("+ obj.oid +")'>物流</a>" +
                             " <a class='button button-danger' onclick='del(" + obj.oid + ")'>删除</a>";
                         }
                     }
@@ -266,6 +260,7 @@ function updateOrder(oid) {
     dialog.get('loader').load({oid: oid});
 }
 
+
 /**
  *删除
  */
@@ -285,6 +280,63 @@ function del(oid) {
         });
     }, 'question');
 }
+
+
+/**
+ * 查看用户物流
+ */
+function checkLogestic(oid) {
+    var width = 400;
+    var height = 250;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '请填写物流信息',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/order/order/logistic",
+            autoLoad: true, //不自动加载
+            params: {oid: oid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        buttons: buttons,
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({oid: oid});
+}
+
+/**
+ * 查看用户物流
+ */
+function checkLogDetail(oid) {
+    var width = 600;
+    var height = 400;
+    var Overlay = BUI.Overlay;
+    var buttons = [];
+    dialog = new Overlay.Dialog({
+        title: '物流详情',
+        width: width,
+        height: height,
+        closeAction: 'destroy',
+        loader: {
+            url: "/order/order/logestic-detail",
+            autoLoad: true, //不自动加载
+            params: {oid: oid},//附加的参数
+            lazyLoad: false, //不延迟加载
+        },
+        success:function () {
+            this.close();
+        },
+        mask: false
+    });
+    dialog.show();
+    dialog.get('loader').load({oid: oid});
+}
+
+
 
 </script>
 

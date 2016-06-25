@@ -5,35 +5,13 @@ namespace frontend\modules\redeem\controllers;
 use Yii;
 use app\base\BaseController;
 use common\models\Address;
-use common\models\User;
-use common\models\Auth;
-use common\models\City;
+use common\models\Order;
 
 class AddressController extends BaseController
 {
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-    private $uid;
-    private $user;
-
-    public function init(){
-        $uid = $this->_request('uid');
-        $u_mdl = new User();
-
-        //判断用户是否手机认证
-        if(empty($uid)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $user = $u_mdl->_get_info(['uid' => $uid]);
-        if(empty($user)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $this->uid = $uid;
-        $this->user = $user;
-    }
 
     /**
      * 添加地址
@@ -46,7 +24,8 @@ class AddressController extends BaseController
             return $this->render('add', ['uid' => $this->uid]);
         }
         //保存
-        $param = $this->_request();
+        $param = $this->_post();
+        $param['uid'] = $this->uid;
         $res = (new Address())->_add_address($param);
         if($res['code'] < 0 ){
             $this->_json($res['code'], $res['msg']);
@@ -76,6 +55,7 @@ class AddressController extends BaseController
         }
         //保存
         $param = $this->_request();
+        $param['uid'] = $this->uid;
         $res = (new Address())->_add_address($param);
         if($res['code'] < 0 ){
             $this->_json($res['code'], $res['msg']);
@@ -83,18 +63,49 @@ class AddressController extends BaseController
         $this->_json($res['code'], $res['msg'], $res['data']);
     }
 
-
-
     /**
-     * 异步获取城市列表
+     * 添加地址
      * @return type
      */
-    public function actionAjaxGetCities()
+    public function actionChangeOrderAddress()
     {
-        $city = intval($this->_request('cid'), 0);
-        $_data = City::_get_cities($city);
-        $this->_json(20000, '获取成功', $_data);
+        //加载
+        if(!$this->isAjax()){
+            $oid = $this->_request('oid');
+            $_data = [
+                'uid' => $this->uid,
+                'oid' => $oid,
+            ];
+            return $this->render('order', $_data);
+        }
+        //保存
+        $param = Yii::$app->request->post();
+        $param['uid'] = $this->uid;
+        $oid = $param['oid'];
+        unset($param['oid']);
+        lg($param);
+        $res = (new Address())->_add_address($param);
+        if($res['code'] < 0 ){
+            $this->_json($res['code'], $res['msg']);
+        }
+        //修改订单地址
+        $r_mdl = new Order();
+        if(empty($oid)){
+            $this->_json(-20001, '订单id不能为空');
+        }
+        $odr = $r_mdl->_get_info(['oid' => $oid, 'order_status' => Order::STATUS_PAY]);
+        if(!$odr){
+            $this->_json(-20001, '订单不存在，或者不能修改订单地址');
+        }
+        $add_id = $res['data']['add_id'];
+        $ret = $r_mdl->_save([
+            'oid' => $oid,
+            'add_id' => $add_id,
+        ]);
+        if(!$ret){
+            $this->_json(-20002, '订单地址修改失败');
+        }
+        $this->_json(20000, '订单地址修改成功');
     }
-
 
 }

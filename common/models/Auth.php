@@ -20,6 +20,7 @@ use common\models\Points;
  * @property string $email
  * @property string $name_card
  * @property integer $user_type
+ * @property integer $user_type_imgs
  * @property string $wechat_openid
  * @property integer $auth_status
  * @property string $reason
@@ -64,8 +65,9 @@ class Auth extends \yii\db\ActiveRecord
             [['uid', 'user_type', 'auth_status', 'create_at', 'update_at'], 'integer'],
             [['mobile'], 'string', 'max' => 11],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar', 'name_card'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 250],
             [['email'], 'string', 'max' => 40],
+            [['user_type_imgs'], 'string', 'max' => 600],
             [['wechat_openid'], 'string', 'max' => 50],
             [['reason'], 'string'],
             [['create_at', 'update_at'], 'default', 'value' => time()]
@@ -86,7 +88,8 @@ class Auth extends \yii\db\ActiveRecord
             'mobile' => '手机号码',
             'email' => '邮箱',
             'name_card' => '名片',
-            'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
+            'user_type' => '用户类型（1-普通用户；2-销售/门店导购；3-设计师；4-零售经销商；5-项目经销商；6-安装商/安装人员；7尚飞员工）',
+            'user_type_imgs' => '用户类型图片',
             'auth_status' => '认证状态（1-待审核；2-审核通过；3-审核不通过）',
             'reason' => '审核不通过的原因',
             'create_at' => '创建时间',
@@ -427,11 +430,15 @@ class Auth extends \yii\db\ActiveRecord
             return ['code' => -20005, 'msg' => '用户信息或者认证信息不存在'];
         }
 
-        //验证微信公众号
-        if(empty($param['wechat_openid'])){
-            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        //验证用户类型图片
+        if(empty($param['user_type'])){
+            return ['code' => -20006, 'msg' => '请选择用户类型'];
         }
-        $wechat_openid = $param['wechat_openid'];
+        $user_type = $param['user_type'];
+        if(empty($param['user_type_imgs'])){
+            return ['code' => -20007, 'msg' => '请上传1-3张认证图片'];
+        }
+        $user_type_imgs = $param['user_type_imgs'];
 
         $a_mdl = new self();
 
@@ -445,11 +452,19 @@ class Auth extends \yii\db\ActiveRecord
                 'name' => $name,
                 'mobile' => $mobile,
                 'email' => $email,
-                'wechat_openid' => $wechat_openid
+                'user_type' => $user_type,
+                'user_type_imgs' => json_encode($user_type_imgs),
             ]);
             if(!$res_a){
                 $transaction->rollBack();
                 throw new Exception('认证信息保存失败');
+            }
+
+            //添加积分更新记录
+            $ret = Points::_add_points($uid, Points::POINTS_IDAUTH);
+            if($ret['code'] < 0){
+                $transaction->rollBack();
+                throw new Exception($ret['msg']);
             }
 
             //执行

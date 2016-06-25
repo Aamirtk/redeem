@@ -104,7 +104,6 @@ class AuthController extends BaseController
                 'name',
                 'mobile',
                 'avatar',
-                'name_card',
                 'email',
                 'auth_status',
                 'wechat' => 'wechat_openid',
@@ -114,7 +113,10 @@ class AuthController extends BaseController
                 'status_name' => function ($m) {
                     return Auth::_get_auth_status($m->auth_status);;
                 },
-
+                'name_card' => function ($m) {
+                    $imgs_list = json_decode($m->user_type_imgs);
+                    return $imgs_list;
+                },
                 'inputer' => function ($m) {
                     return '录入人';
                 },
@@ -126,6 +128,7 @@ class AuthController extends BaseController
                 },
             ],
         ]);
+
         $_data = [
             'userList' => $authList,
             'totalCount' => count($authList)

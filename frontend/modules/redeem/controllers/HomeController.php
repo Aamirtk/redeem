@@ -5,9 +5,10 @@ namespace frontend\modules\redeem\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\api\VsoApi;
 use common\models\User;
 use common\models\Goods;
+use common\models\Points;
+use common\models\PointsRecord;
 
 
 class HomeController extends BaseController
@@ -16,33 +17,86 @@ class HomeController extends BaseController
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
-
     /**
      * 用户列表
      * @return type
      */
     public function actionIndex()
     {
-        $uid = $this->_request('uid');
-        $u_mdl = new User();
         $g_mdl = new Goods();
 
-        //判断用户是否手机认证
-        if(empty($uid)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $user = $u_mdl->_get_info(['uid' => $uid]);
-        if(empty($user)){
-            $this->redirect('/redeem/user/reg');
-            exit();
-        }
-        $_goods_list = $g_mdl->_get_list(['>' , 'gid', 0], 'gid DESC', 1, 20);
+        $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC');
         $_data = [
-            'user' => $user,
+            'user' => $this->user,
             'goods_list' => $_goods_list,
         ];
+
         return $this->render('index', $_data);
+    }
+
+    /**
+     * 索索
+     * @return type
+     */
+    public function actionSearch()
+    {
+        $keywords = urldecode($this->_request('keywords'));
+        if(empty($keywords)) {
+            $this->_json(-20001, '关键词不能为空');
+        }
+
+        $g_mdl = new Goods();
+        if(!empty($keywords)){
+            $param = [
+                'sql' => "`goods_status` = :goods_status AND `name` like '%{$keywords}%'",
+                'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
+            ];
+        }else{
+            $param = [
+                'sql' => "`goods_status` = :goods_status",
+                'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
+            ];
+        }
+
+        $_goods_list = $g_mdl->_get_list($param,'gid DESC');
+
+        $_data = [
+            'goods' => $_goods_list,
+        ];
+        $this->_json(20000, '成功', $_data);
+    }
+
+    /**
+     * 签到赚积分
+     * @return type
+     */
+    public function actionSign()
+    {
+        $p_mdl = new Points();
+        $r_mdl = new PointsRecord();
+        $sign = $r_mdl::find()
+            ->where(['uid' => $this->uid])
+            ->andWhere(['point_id' => Points::POINTS_SIGNIN])
+            ->andWhere(['>', 'create_at', strtotime('today')])
+            ->andWhere(['<', 'create_at', strtotime('today + 1 day')])
+            ->asArray()
+            ->one();
+        if($sign){
+            $this->_json(-20001, '今天已经签到过了');
+        }
+        $ret = $p_mdl->_add_points($this->uid, Points::POINTS_SIGNIN);
+        $this->_json($ret['code'], $ret['msg']);
+    }
+
+    /**
+     * 分享赚积分
+     * @return type
+     */
+    public function actionShare()
+    {
+        $p_mdl = new Points();
+        $ret = $p_mdl->_add_points($this->uid, Points::POINTS_WECHAT);
+        $this->_json($ret['code'], $ret['msg']);
     }
 
     /**
@@ -62,9 +116,6 @@ class HomeController extends BaseController
     {
         return $this->render('about');
     }
-
-
-
 
 
 }

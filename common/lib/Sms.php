@@ -9,7 +9,7 @@ namespace common\lib;
  */
 class Sms
 {
-    private $account = 'guanli_admin';  //账号
+    private $account = 'guanli_a';  //账号
     private $pswd = 'snowman626@';  //密码
     private $url = 'http://222.73.117.156/msg/HttpBatchSendSM?'; //短信服务连接
     private $post_data = [];

@@ -2,12 +2,13 @@
 
 namespace backend\modules\order\controllers;
 
-use frontend\modules\personal\models\Goods;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
+use common\lib\Logistic;
+use common\models\User;
 use common\models\Order;
-use app\modules\team\models\Team;
+use common\models\Address;
 
 class OrderController extends BaseController
 {
@@ -38,9 +39,12 @@ class OrderController extends BaseController
             'info',
             'save',
             'update',
+            'logistic',
             'ajax-save',
             'ajax-delete',
             'ajax-change-status',
+            'ajax-save-logestic',
+            'logestic-detail',
         ];
     }
 
@@ -67,14 +71,17 @@ class OrderController extends BaseController
         $page = $this->_request('page', 0);
         $pageSize = $this->_request('pageSize', 10);
         $offset = $page * $pageSize;
+        $ad_tb = Address::tableName();
+        $or_tb = Order::tableName();
+        $ur_tb = User::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', 'update_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', $or_tb . '.update_at', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', 'update_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', $or_tb . '.update_at', strtotime($search['uptimeEnd'])]);
             }
             if (isset($search['goods_id'])) //商品编号
             {
@@ -86,24 +93,17 @@ class OrderController extends BaseController
             }
             if (isset($search['goods_name'])) //商品名称
             {
-                $query = $query->andWhere(['like', 'goods_name', $search['goods_name']]);
-            }
-            if (isset($search['buyer_name'])) //购买者名称
-            {
-                $query = $query->andWhere(['like', 'buyer_name', $search['buyer_name']]);
-            }
-            if (isset($search['buyer_phone'])) //购买者手机
-            {
-                $query = $query->andWhere(['buyer_phone' => $search['buyer_phone']]);
+                $query = $query->andWhere(['like', $or_tb . '.goods_name', $search['goods_name']]);
             }
         }
 
         //只能是上架，或者下架的产品
-        $query->andWhere(['is_deleted' => $mdl::NO_DELETE]);
+        $query->andWhere([$or_tb . '.is_deleted' => $mdl::NO_DELETE]);
         $_order_by = 'oid DESC';
         $query_count = clone($query);
         $orderArr = $query
-            ->with('address')
+            ->joinWith('address')
+            ->joinWith('user')
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
@@ -113,14 +113,22 @@ class OrderController extends BaseController
             'common\models\Order' => [
                 'oid',
                 'gid',
+                'order_id',
                 'goods_id',
                 'goods_name',
-                'buyer_phone',
-                'buyer_name',
                 'order_status',
+                'express_num',
+                'express_type',
                 'status_name' => function ($m) {
                     return Order::_get_order_status($m->order_status);
                 },
+                'buyer_name' => function ($m) {
+                    return getValue($m, 'user.name', '');
+                },
+                'buyer_phone' => function ($m) {
+                    return getValue($m, 'user.mobile', '');
+                },
+
                 'address' => function ($m) {
                     return _value($m['address']['detail']);
                 },
@@ -243,6 +251,109 @@ class OrderController extends BaseController
         }
         $this->_json(20000, '删除成功');
     }
+
+    /**
+     * 物流单号
+     * @return array
+     */
+    function actionLogistic()
+    {
+        $oid = intval($this->_request('oid'));
+
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+
+        $lgt = new Logistic();
+        $res = $lgt->express2();
+        $exp_array = ArrayHelper::map($res['result'], 'type', 'name');
+
+        $_data = [
+            'order' => $order,
+            'exp_array' => $exp_array,
+        ];
+        return $this->render('logestic', $_data);
+    }
+
+    /**
+     * 异步保存物流公司和物流单号
+     * @return array
+     */
+    function actionAjaxSaveLogestic()
+    {
+        $oid = intval($this->_request('oid'));
+        $express_type = trim($this->_request('express_type'));
+        $express_num = trim($this->_request('express_num'));
+
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+
+        $ret = $mdl->_save([
+            'oid' => $oid,
+            'order_status' => Order::STATUS_RECEIVE,
+            'express_type' => $express_type,
+            'express_num' => $express_num,
+        ]);
+        if(!$ret){
+            $this->_json(-20000, '保存失败');
+        }
+
+        $this->_json(20000, '保存成功');
+    }
+
+    /**
+     * 异步获取订单信息
+     * @return array
+     */
+    function actionLogesticDetail()
+    {
+        $oid = intval($this->_request('oid'));
+        $express_type = trim($this->_request('express_type'));
+        $express_num = trim($this->_request('express_num'));
+
+        $mdl = new Order();
+        //检验参数是否合法
+        if (empty($oid)) {
+            $this->_json(-20001, '订单序号oid不能为空');
+        }
+
+        //检验订单是否存在
+        $order = $mdl->_get_info(['oid' => $oid]);
+        if (!$order) {
+            $this->_json(-20002, '订单信息不存在');
+        }
+
+        $lgt = new Logistic();
+        $res = $lgt->express1($order['express_type'], $order['express_num']);
+
+        $_data = [
+            'log_list' => getValue($res, 'result.list', [])
+        ];
+        return $this->render('logestic-detail', $_data);
+    }
+
+
+
+
+
+
 
 
 }

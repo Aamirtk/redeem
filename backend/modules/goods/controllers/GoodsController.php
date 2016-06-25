@@ -57,8 +57,6 @@ class GoodsController extends BaseController
      */
     public function actionList()
     {
-        $city = new City();
-        $city->_get_tree();
 
         if ($this->isGet()) {
             return $this->render('list');

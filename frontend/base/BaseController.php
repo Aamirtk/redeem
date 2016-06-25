@@ -4,25 +4,49 @@ namespace app\base;
 
 use Yii;
 use yii\web\Controller;
-use yii\helpers\Json;
 use common\lib\Tools;
-use yii\filters\AccessControl;
-use app\modules\team\models\Role;
-use app\modules\team\models\Privilege;
+use common\models\User;
 
 class BaseController extends Controller
 {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     public $open_id = '';//微信公众号
-
+    public $uid = '';//微信公众号
+    public $user = '';//用户信息
+    public $signPackage = '';//微信jssdk实例
+    public $_uncheck = []; //不用校验登录的方法,可子类复写
 
     /**
-     * 初始化
+     * 获取登录信息
      */
-    public function init()
+    public function beforeAction()
     {
+        //不用校验的页面，自动跳过
+        $action_id = Yii::$app->controller->action->id;
+        if(in_array($action_id, $this->_uncheck)){
+            return true;
+        }
 
+        //从session中校验用户登录信息
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
+        $this->uid = $session->get('user_id');
+        if(empty($this->uid)){
+            $this->redirect('/redeem/user/reg');
+            return false;
+        }
+        $this->user = (new User())->_get_info(['uid' => $this->uid]);
+        $this->open_id = $this->user['wechat_openid'];
+        if(empty($this->user)){
+            $this->redirect('/redeem/user/reg');
+            return false;
+        }
+        //引入jssdk实例
+        $this->signPackage = Yii::$app->jssdk->GetSignPackage();
+        return true;
     }
 
     /**
@@ -32,6 +56,15 @@ class BaseController extends Controller
     public function _get_openid()
     {
         return md5(time() + rand(1, 1000));
+    }
+
+    /**
+     * 跳回登录页面
+     * @return string
+     */
+    public function _to_login()
+    {
+        return $this->redirect('/redeem/user/reg');
     }
 
     /**
@@ -154,6 +187,23 @@ class BaseController extends Controller
      */
     public function _request($key = '', $default = false) {
         $request = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
+        if(empty($key)){
+            return $request;
+        }
+        if(!isset($request[$key])){
+            return $default;
+        }
+        return $request[$key];
+    }
+
+    /**
+     * 获取Request-Post参数
+     * @param string $key
+     * @param bool|array|string $default 当请求的参数不存在时的默认值
+     * @return string
+     */
+    public function _post($key = '', $default = false) {
+        $request = Yii::$app->request->post();
         if(empty($key)){
             return $request;
         }

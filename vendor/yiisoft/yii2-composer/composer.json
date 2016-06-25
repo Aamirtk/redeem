@@ -28,5 +28,8 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
+    },
+    "require": {
+       "callmez/yii2-wechat-sdk": "dev-master"
     }
 }

@@ -56,7 +56,6 @@
     </header>
     <form id="address">
         <div class="box">
-            <input type="hidden" name="uid" value="<?php echo $uid ?>">
             <div class="form-group">
                 <label>收货人姓名</label>
                 <input type="text" name="receiver_name" placeholder="请输入收货人姓名" />
@@ -108,7 +107,7 @@
                         <input type="hidden" name="receive_time" value="1">
                     </div>
                 </div>
-                <div class="mt checkbox">
+                <div class="mt checkbox checked">
                     <input type="checkbox" name="is_default" value=""/>设为默认地址
                 </div>
             </div>
@@ -142,7 +141,6 @@
         $("input[name=receive_time]").val(dom.attr('receive_time'));
     });
 
-
     $("#submit").on('click', function(){
         var param = $._get_form_json('#address');
         param.is_default  = $(".checkbox").hasClass("checked") ? 2 : 1;
@@ -150,7 +148,7 @@
             var code = json.code;
             var msg = json.msg
             if(code > 0){
-//                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+                window.location.href = '/redeem/my/address';
             }else if(code == -20001){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=receiver_name]").closest('div').after(error);
@@ -171,5 +169,54 @@
         });
     });
 
+</script>
+
+<!--微信分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: '<?php echo $this->context->signPackage["appId"];?>',
+        timestamp: <?php echo $this->context->signPackage["timestamp"];?>,
+        nonceStr: '<?php echo $this->context->signPackage["nonceStr"];?>',
+        signature: '<?php echo $this->context->signPackage["signature"];?>',
+        jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+        ]
+    });
+    wx.ready(function () {
+        // 在这里调用 API
+        //发送给朋友
+        wx.onMenuShareAppMessage({
+            title: '', // 分享标题
+            desc: '会员积分，超值兑换', // 分享描述
+            link: '', // 分享链接
+            imgUrl: '<?php echo yiiParams('share_img') ?>', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $._ajax('/redeem/home/share', {}, 'POST', 'JSON', function(json){});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '', // 分享标题
+            link: '', // 分享链接
+            imgUrl: '<?php echo yiiParams('share_img') ?>', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $._ajax('/redeem/home/share', {}, 'POST', 'JSON', function(json){});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
 </script>
 </html>

@@ -26,6 +26,8 @@
             margin-top:-25px;
             position:absolute;
             right:20px;
+            width: 76px;
+            text-align: center;
         }
         .msg-error{
             color: darkorange;
@@ -41,7 +43,7 @@
         <div class="title">
             <span>用户认证</span>
         </div>
-        <input type="hidden" value="<?php echo $open_id ?>">
+        <input type="hidden" name="key" value="<?php echo $key ?>"/>
         <div class="form-group">
             <label>手机号码</label>
             <input type="text" name="mobile" placeholder="请输入您的手机号码"/>
@@ -65,9 +67,9 @@
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/reg', param, 'POST', 'JSON', function(json){
             var code = json.code;
-            var msg = json.msg
+            var msg = json.msg;
             if(code > 0){
-                window.location.href = '/redeem/home/index?uid=' + json.data.uid;
+                window.location.href = json.data.redirect;
             }else if(code == -20001 || code == -20002 ){
                 var error = $('<p class="msg-error">'+ msg +'</p>');
                 $("input[name=mobile]").closest('div').after(error);
@@ -85,7 +87,8 @@
         var param = $._get_form_json('#reg');
         $._ajax('/redeem/user/send-sms', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
-
+                $(document).data('countdown', 60);
+                settime();
             }else{
                 var error = $('<p class="msg-error">'+ json.msg +'</p>');
                 $("input[name=verifycode]").closest('div').after(error);
@@ -94,6 +97,22 @@
         });
     });
 
+    //自动获取
+    function settime() {
+        var dom = $('.send');
+        var count = parseInt($(document).data('countdown'));
+        if (count == 0) {
+            dom.text("发送验证码");
+        } else {
+            dom.text("重新发送(" + count + ")");
+            $(document).data('countdown', count-1)
+        }
+        setTimeout(function() {
+            settime()
+        },1000)
+    }
+
 </script>
+
 
 </html>

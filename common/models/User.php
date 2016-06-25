@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Exception;
 use common\models\Auth;
 use common\models\Points;
+use common\models\Cart;
+use common\models\Session;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -18,6 +20,7 @@ use common\models\Points;
  * @property string $email
  * @property integer $points
  * @property integer $user_type
+ * @property integer $user_type_imgs
  * @property integer $name_card
  * @property string $wechat_openid
  * @property integer $user_status
@@ -31,12 +34,15 @@ class User extends \yii\db\ActiveRecord
      * 用户类型
      */
     const TYPE_COMMON = 1;//普通用户
-    const TYPE_SELLER = 2;//销售
-    const TYPE_DESIGNER = 3;//家装设计师
+    const TYPE_SELLER = 2;//销售/门店导购
+    const TYPE_DESIGNER = 3;//设计师
+    const TYPE_TAILER= 4;//零售经销商
+    const TYPE_PROJECT = 5;//项目经销商
+    const TYPE_ANZH = 6;//安装商/安装人员
+    const TYPE_EMPLOYEE = 7;//尚飞员工
 
     const NO_DELETE = 1;//启用
     const IS_DELETE = 2;//禁用
-
 
     /**
      * @inheritdoc
@@ -54,8 +60,9 @@ class User extends \yii\db\ActiveRecord
         return [
             [['points', 'user_type', 'user_status', 'update_at', 'create_at'], 'integer'],
             [['nick', 'name'], 'string', 'max' => 30],
-            [['avatar', 'name_card'], 'string', 'max' => 100],
+            [['avatar', 'name_card'], 'string', 'max' => 250],
             [['email'], 'string', 'max' => 40],
+            [['user_type_imgs'], 'string', 'max' => 600],
             [['wechat_openid'], 'string', 'max' => 50],
             [['mobile'], 'unique', 'message' => '手机号码已经注册过了'],
             [['wechat_openid'], 'unique', 'message' => '微信号已经注册过了'],
@@ -77,7 +84,8 @@ class User extends \yii\db\ActiveRecord
             'email' => '用户邮箱',
             'name_card' => '名片',
             'points' => '积分',
-            'user_type' => '用户类型（1-普通用户；2-销售；3-家装设计师）',
+            'user_type' => '用户类型（1-普通用户；2-销售/门店导购；3-设计师；4-零售经销商；5-项目经销商；6-安装商/安装人员；7尚飞员工）',
+            'user_type_imgs' => '用户类型图片',
             'wechat_openid' => '微信Open Id',
             'user_status' => '状态（1-启用；2-禁用）',
             'update_at' => '更新时间',
@@ -94,6 +102,13 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * 关联购物车
+     **/
+    public function getCart() {
+        return $this->hasOne(Cart::className(), ['uid' => 'uid']);
+    }
+
+    /**
      * 获取信息
      * @param $where array
      * @return array|boolean
@@ -106,6 +121,23 @@ class User extends \yii\db\ActiveRecord
         $obj = self::findOne($where);
         if (!empty($obj)) {
             return $obj->toArray();
+        }
+        return false;
+    }
+
+    /**
+     * 获取信息-关联
+     * @param $where array
+     * @return array|boolean
+     **/
+    public function _get_info_all($where = []) {
+        if (empty($where)) {
+            return false;
+        }
+
+        $obj = self::find();
+        if (!empty($obj)) {
+            return $obj->where($where)->joinWith('cart')->asArray(true)->one();
         }
         return false;
     }
@@ -223,6 +255,21 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取用户购物车
+     * @return array|boolean
+     */
+    public static function _get_cart($uid){
+        if(empty($uid)){
+            return false;
+        }
+        $cart = Cart::findOne(['uid' => $uid]);
+        if($cart){
+            return $cart['cart_id'];
+        }
+        return $cart->_add(['cart_id' => $cart]);
+    }
+
+    /**
      * 用户类型
      * @param $type int
      * @return array|boolean
@@ -233,13 +280,25 @@ class User extends \yii\db\ActiveRecord
                 $_name = '普通用户';
                 break;
             case self::TYPE_SELLER:
-                $_name = '销售';
+                $_name = '销售/门店导购';
                 break;
             case self::TYPE_DESIGNER:
-                $_name = '家装设计师';
+                $_name = '设计师';
+                break;
+            case self::TYPE_TAILER:
+                $_name = '零售经销商';
+                break;
+            case self::TYPE_PROJECT:
+                $_name = '项目经销商';
+                break;
+            case self::TYPE_ANZH:
+                $_name = '安装商/安装人员';
+                break;
+            case self::TYPE_EMPLOYEE:
+                $_name = '安装商/尚飞员工';
                 break;
             default:
-                $_name = '销售';
+                $_name = '普通用户';
                 break;
         }
         return $_name;
@@ -251,9 +310,13 @@ class User extends \yii\db\ActiveRecord
      */
     public static function _get_user_type_list(){
         return [
-            self::TYPE_COMMON => '普通用户',
-            self::TYPE_SELLER => '销售',
-            self::TYPE_DESIGNER => '家装设计师',
+            self::TYPE_COMMON =>    '普通用户',
+            self::TYPE_SELLER =>    '销售/门店导购',
+            self::TYPE_DESIGNER =>  '设计师',
+            self::TYPE_TAILER =>    '零售经销商',
+            self::TYPE_PROJECT =>   '项目经销商',
+            self::TYPE_ANZH =>      '安装商/安装人员',
+            self::TYPE_EMPLOYEE =>  '尚飞员工',
         ];
     }
 
@@ -294,34 +357,51 @@ class User extends \yii\db\ActiveRecord
      * @return array|boolean
      */
     public static function _add_user($param){
-        session_start();
+
+        //开启session
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
+
         //验证手机号
         if(empty($param['mobile'])){
             return ['code' => -20001, 'msg' => '手机号不能为空'];
         }
         $pattern = '/^1[3|5|7|8][0-9]{9}$/';
-        if(!preg_match($pattern, $param['mobile'])){
+        if(!preg_match($pattern, trim($param['mobile']))){
             return ['code' => -20002, 'msg' => '手机号格式不正确'];
         }
-        $mobile = $param['mobile'];
+        $mobile = trim($param['mobile']);
 
         //验证验证码
-        if(!isset($_SESSION[md5($mobile)])){
+        $vf_mdl = new VerifyCode();
+        $res = $vf_mdl->_get_info(['mobile' => $mobile]);
+        if(!$res){
             return ['code' => -20003, 'msg' => '请获取验证码'];
         }
         if(empty($param['verifycode'])){
-            return ['code' => -20004, 'msg' => '验证码不能为空'];
+            return ['code' => -20003, 'msg' => '验证码不能为空'];
         }
-        if($_SESSION[md5($mobile)] != $param['verifycode']){
-            return ['code' => -20005, 'msg' => '验证码不正确'];
+        if($res['verify_code'] != intval($param['verifycode'])){
+            return ['code' => -20003, 'msg' => '验证码不正确'];
+        }
+        if($res['update_at'] < time() - $vf_mdl::EXPIRE_TIME ){
+            return ['code' => -20003, 'msg' => '验证码已经失效，请重新获取'];
         }
 
         //验证微信公众号
-        if(empty($param['wechat_openid'])){
-            return ['code' => -20006, 'msg' => '微信公众号不能为空'];
+        if(empty($param['key'])){
+            return ['code' => -20004, 'msg' => '微信公众号没有获取到'];
         }
+        $auth = (new Session())->_get_info(['key' => $param['key']]);
+        if(!$auth){
+            return ['code' => -20004, 'msg' => '微信公众号为空'];
+        }
+        $wechat_openid = $auth['wechat_openid'];
+        $nick = $auth['nick'];
+        $avatar = $auth['avatar'];
 
-        $wechat_openid = $param['wechat_openid'];
 
         $u_mdl = new self;
         $a_mdl = new Auth();
@@ -329,6 +409,7 @@ class User extends \yii\db\ActiveRecord
         //验证是否已经手机认证
         $user = $u_mdl->_get_info(['mobile' => $mobile]);
         if($user){
+            $res = (new Session())->_delete(['key' => $param['key']]);
             return ['code' => 20001, 'msg' => '已经手机认证过了，直接登录', 'data' => ['uid' => $user['uid']]];
         }
 
@@ -339,6 +420,8 @@ class User extends \yii\db\ActiveRecord
             //用户表插入记录
             $u_mdl->mobile = $mobile;
             $u_mdl->wechat_openid = $wechat_openid;
+            $u_mdl->nick = $nick;
+            $u_mdl->avatar = $avatar;
             if(!$u_mdl->validate()){
                 $error = $u_mdl->errors;
                 $msg = current($error)[0];//获取错误信息
@@ -349,6 +432,13 @@ class User extends \yii\db\ActiveRecord
                 throw new Exception('用户信息保存失败');
             }
             $uid = self::getDb()->getLastInsertID();
+
+            //添加用户购物车
+            $res = (new Cart())->_save(['uid' => $uid]);
+            if(!$res){
+                $transaction->rollBack();
+                throw new Exception('购物车添加失败');
+            }
 
             //添加积分更新记录
             $ret = Points::_add_points($uid, Points::POINTS_MOBILEAUTH);
@@ -361,11 +451,20 @@ class User extends \yii\db\ActiveRecord
             $res_a = $a_mdl->_save([
                 'uid' => $uid,
                 'mobile' => $mobile,
-                'wechat_openid' => $wechat_openid
+                'wechat_openid' => $wechat_openid,
+                'nick' => $nick,
+                'avatar' => $avatar,
             ]);
             if(!$res_a){
                 $transaction->rollBack();
                 throw new Exception('认证信息保存失败');
+            }
+
+            //删除session表
+            $res_s = (new Session())->_delete(['key' => $param['key']]);
+            if($res_s === false){
+                $transaction->rollBack();
+                throw new Exception('session删除失败');
             }
 
             //执行
