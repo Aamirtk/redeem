@@ -115,7 +115,7 @@ class AuthController extends BaseController
                 },
                 'name_card' => function ($m) {
                     $imgs_list = json_decode($m->user_type_imgs);
-                    return $imgs_list;
+                    return !empty($imgs_list) ? $imgs_list[0] : '';
                 },
                 'inputer' => function ($m) {
                     return '录入人';
