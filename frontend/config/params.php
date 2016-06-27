@@ -7,8 +7,8 @@ return [
    //微信配置
     'wechatConfig' => [
         'token' => 're123de456m',
-        'appid' => 'wx9462dd181a56c284',
-        'appsecret' => '6a6d79adca5a20309e05350da253bdae',
+        'appid' => 'wxd67d44974fa6111c',
+        'appsecret' => 'f4793ce52883b15c9da1a11054929bc4',
         'encodingaeskey' => 'je3CZxBIjjPhTpeAUubOXCG6aVqMnygAdwmX6NCyGa0',
     ],
     //前端上传图片方法

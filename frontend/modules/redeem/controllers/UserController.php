@@ -128,7 +128,8 @@ class UserController extends BaseController
         $mobile = trim($this->_request('mobile'));
         $sms = new Sms();
         $randnum = $sms->randnum();
-        $res = $sms->send($mobile, $randnum);
+        $msg = "{$randnum} (动态验证码),请在30分钟内填写";
+        $res = $sms->send($mobile, $msg);
 
         if($res != 0){
             $this->_json(-20001, '验证码发送失败，请重新发送');
