@@ -9,7 +9,7 @@ return [
         'token' => 're123de456m',
         'appid' => 'wxd67d44974fa6111c',
         'appsecret' => 'f4793ce52883b15c9da1a11054929bc4',
-        'encodingaeskey' => 'je3CZxBIjjPhTpeAUubOXCG6aVqMnygAdwmX6NCyGa0',
+        'encodingaeskey' => 'ETkqIazXfwe7SHSBUG0NIYvUPydXbOIzQYuf9qvvvfc',
     ],
     //前端上传图片方法
     'uploader_url' => '/common/file/upload',
