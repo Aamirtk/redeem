@@ -104,7 +104,7 @@ class MyController extends BaseController
         }else{
             $where = [];
         }
-        $_order_list = $mdl->_get_list($where);
+        $_order_list = $mdl->_get_list($where, 'oid DESC');
         $_status_list = $mdl::_get_status_list();
         foreach($_order_list as $key => $val){
             $_order_list[$key]['time'] = date('Y/m/d', $val['create_at']);
