@@ -115,7 +115,14 @@ class AuthController extends BaseController
                 },
                 'name_card' => function ($m) {
                     $imgs_list = json_decode($m->user_type_imgs);
-                    return !empty($imgs_list) ? $imgs_list[0] : '';
+                    if(!empty($imgs_list)){
+                        if(is_array($imgs_list)){
+                            return $imgs_list[0];
+                        }else{
+                            return $imgs_list;
+                        }
+                    }
+                    return '';
                 },
                 'inputer' => function ($m) {
                     return '录入人';
@@ -128,7 +135,6 @@ class AuthController extends BaseController
                 },
             ],
         ]);
-
         $_data = [
             'userList' => $authList,
             'totalCount' => count($authList)

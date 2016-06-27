@@ -121,7 +121,14 @@ class UserController extends BaseController
                 },
                 'name_card' => function ($m) {
                     $imgs_list = json_decode($m->user_type_imgs);
-                    return !empty($imgs_list) ? $imgs_list[0] : '';
+                    if(!empty($imgs_list)){
+                        if(is_array($imgs_list)){
+                            return $imgs_list[0];
+                        }else{
+                            return $imgs_list;
+                        }
+                    }
+                    return '';
                 },
                 'checker' => function ($m) {
                     return '审核人';
