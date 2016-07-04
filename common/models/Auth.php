@@ -331,6 +331,7 @@ class Auth extends \yii\db\ActiveRecord
                     'name' => $auth['name'],
                     'avatar' => $auth['avatar'],
                     'name_card' => $auth['name_card'],
+                    'user_type_imgs' => $auth['user_type_imgs'],
                     'mobile' => $auth['mobile'],
                     'email' => $auth['email'],
                     'user_type' => $auth['user_type'],
