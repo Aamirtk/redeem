@@ -25,8 +25,8 @@ class UserController extends BaseController
             'send-sms',
             'wechat',
             'wechat-auth',
+            'rect',
         ];
-
     }
 
     /**
@@ -81,7 +81,7 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户列表
+     * 微信入口
      * @return type
      */
     public function actionWechat()
@@ -95,8 +95,8 @@ class UserController extends BaseController
         $avatar = $auth->wxuser['avatar'];
         session_destroy();
 
-//        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
-        $user = false;//留待开发..
+        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+       // $user = false;//留待开发..
 
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
@@ -109,14 +109,29 @@ class UserController extends BaseController
 
         //有记录，表示已经注册，跳转到首页
         if($res){
-
             if($user){
-                $this->redirect('/redeem/home/index?uid=' . $user['uid']);
+                // var_dump($user);exit;
+                return $this->redirect('/redeem/user/rect?uid=' . $user['uid']);
             }else{
                 $_url = "/redeem/user/reg?key=" . $key;
                 return $this->redirect($_url);
             }
         }
+    }
+
+    /**
+     * 中转跳转页面
+     * @return type
+     */
+    public function actionRect()
+    {
+        $uid = $this->_request('uid');
+        if(empty($uid)){
+            return $this->redirect('/redeem/user/reg');
+        }
+        $session = Yii::$app->session;
+        $session->set('user_id', $uid);
+        return $this->redirect('/redeem/home/index');
     }
 
     /**
@@ -128,7 +143,8 @@ class UserController extends BaseController
         $mobile = trim($this->_request('mobile'));
         $sms = new Sms();
         $randnum = $sms->randnum();
-        $res = $sms->send($mobile, $randnum);
+        $msg = "{$randnum} (动态验证码),请在30分钟内填写";
+        $res = $sms->send($mobile, $msg);
 
         if($res != 0){
             $this->_json(-20001, '验证码发送失败，请重新发送');
@@ -183,7 +199,7 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户列表
+     * 微信认证入口
      * @return type
      */
     public function actionWechatAuth()
@@ -219,7 +235,7 @@ class UserController extends BaseController
             }
         }
     }
-
+    
     /**
      * 退出登录
      * @return type
