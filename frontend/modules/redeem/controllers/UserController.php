@@ -96,8 +96,13 @@ class UserController extends BaseController
         session_destroy();
 
         $user = (new User())->_get_info(['wechat_openid' => $open_id]);
-       // $user = false;//留待开发..
 
+        //有记录，表示已经注册，跳转到首页
+        if($user){
+            return $this->redirect('/redeem/user/rect?uid=' . $user['uid']);
+        }
+
+        //无记录，跳转到登录页
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
         $res = $sess->_save([
@@ -106,16 +111,9 @@ class UserController extends BaseController
             'nick' => $nickname,
             'avatar' => $avatar,
         ]);
-
-        //有记录，表示已经注册，跳转到首页
         if($res){
-            if($user){
-                // var_dump($user);exit;
-                return $this->redirect('/redeem/user/rect?uid=' . $user['uid']);
-            }else{
-                $_url = "/redeem/user/reg?key=" . $key;
-                return $this->redirect($_url);
-            }
+            $_url = "/redeem/user/reg?key=" . $key;
+            return $this->redirect($_url);
         }
     }
 
