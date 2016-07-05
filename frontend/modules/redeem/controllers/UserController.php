@@ -95,8 +95,8 @@ class UserController extends BaseController
         $avatar = $auth->wxuser['avatar'];
         session_destroy();
 
-//        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
-        $user = false;//留待开发..
+        $user = (new User())->_get_info(['wechat_openid' => $open_id]);
+//        $user = false;//留待开发..
 
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
@@ -109,7 +109,8 @@ class UserController extends BaseController
 
         //有记录，表示已经注册，跳转到首页
         if($res){
-
+            $session = Yii::$app->session;
+            $session->set('user_id', $user['uid']);
             if($user){
                 $this->redirect('/redeem/home/index?uid=' . $user['uid']);
             }else{

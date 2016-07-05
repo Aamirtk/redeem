@@ -34,7 +34,6 @@ class BaseController extends Controller
             $session->open();
         }
         $this->uid = $session->get('user_id');
-        $this->uid = 82;
         if(empty($this->uid)){
             $this->redirect('/redeem/user/reg');
             return false;
