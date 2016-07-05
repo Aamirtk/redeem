@@ -114,7 +114,7 @@ class HomeController extends BaseController
      */
     public function actionRules()
     {
-        return $this->render('about');
+        return $this->render('rules');
     }
 
     /**
