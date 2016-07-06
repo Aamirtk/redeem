@@ -109,6 +109,15 @@ class HomeController extends BaseController
     }
 
     /**
+     * 积分规则
+     * @return type
+     */
+    public function actionRules()
+    {
+        return $this->render('rules');
+    }
+
+    /**
      * 关于我们
      * @return type
      */
@@ -116,6 +125,8 @@ class HomeController extends BaseController
     {
         return $this->render('about');
     }
+
+
 
 
 }

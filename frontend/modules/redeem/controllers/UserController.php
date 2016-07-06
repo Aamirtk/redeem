@@ -25,8 +25,8 @@ class UserController extends BaseController
             'send-sms',
             'wechat',
             'wechat-auth',
+            'rect',
         ];
-
     }
 
     /**
@@ -81,7 +81,7 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户列表
+     * 微信入口
      * @return type
      */
     public function actionWechat()
@@ -96,8 +96,13 @@ class UserController extends BaseController
         session_destroy();
 
         $user = (new User())->_get_info(['wechat_openid' => $open_id]);
-//        $user = false;//留待开发..
 
+        //有记录，表示已经注册，跳转到首页
+        if($user){
+            return $this->redirect('/redeem/user/rect?uid=' . $user['uid']);
+        }
+
+        //无记录，跳转到登录页
         $sess = new Session();
         $key = md5(microtime() + rand(0, 10000));
         $res = $sess->_save([
@@ -106,18 +111,25 @@ class UserController extends BaseController
             'nick' => $nickname,
             'avatar' => $avatar,
         ]);
-
-        //有记录，表示已经注册，跳转到首页
         if($res){
-            $session = Yii::$app->session;
-            $session->set('user_id', $user['uid']);
-            if($user){
-                $this->redirect('/redeem/home/index?uid=' . $user['uid']);
-            }else{
-                $_url = "/redeem/user/reg?key=" . $key;
-                return $this->redirect($_url);
-            }
+            $_url = "/redeem/user/reg?key=" . $key;
+            return $this->redirect($_url);
         }
+    }
+
+    /**
+     * 中转跳转页面
+     * @return type
+     */
+    public function actionRect()
+    {
+        $uid = $this->_request('uid');
+        if(empty($uid)){
+            return $this->redirect('/redeem/user/reg');
+        }
+        $session = Yii::$app->session;
+        $session->set('user_id', $uid);
+        return $this->redirect('/redeem/home/index');
     }
 
     /**
@@ -185,7 +197,7 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户列表
+     * 微信认证入口
      * @return type
      */
     public function actionWechatAuth()
@@ -221,7 +233,7 @@ class UserController extends BaseController
             }
         }
     }
-
+    
     /**
      * 退出登录
      * @return type

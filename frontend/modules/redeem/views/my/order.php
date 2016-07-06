@@ -48,7 +48,7 @@ use common\models\Order;
                     </div>
                     <div class="bottom">
                         <div class="pic">
-                            <img src="<?php echo yiiParams('backend') . getValue($order, 'goods.thumb', '') ?>">
+                            <img src="<?php echo getValue($order, 'goods.thumb', '') ?>">
                         </div>
                         <div class="state"><?php echo getValue($status_list, [$order['order_status']], '') ?></div>
                         <div class="integral"><span><?php echo $order['points_cost'] ?></span>积分</div>
@@ -80,7 +80,7 @@ use common\models\Order;
                     '        </div>'+
                     '        <div class="bottom">'+
                     '            <div class="pic">'+
-                    '                <img src="<?php echo yiiParams('backend') ?>'+ order.goods.thumb +'">'+
+                    '                <img src="'+ order.goods.thumb +'">'+
                     '            </div>'+
                     '            <div class="state">'+ order.status_name +'</div>'+
                     '            <div class="integral"><span>'+ order.points_cost +'</span>积分</div>'+
