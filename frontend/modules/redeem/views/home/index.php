@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="personal-right">
-                <img src="/images/text.png">
+                <a href="/redeem/home/rules"><img src="/images/text.png"></a>
             </div>
         </div>
     </div>

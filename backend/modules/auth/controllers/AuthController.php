@@ -92,6 +92,7 @@ class AuthController extends BaseController
         }
 
         $_order_by = 'auth_id DESC';
+        $query_count = clone($query);
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)
@@ -128,10 +129,11 @@ class AuthController extends BaseController
                 },
             ],
         ]);
+        $totalCount = $query_count->count();
 
         $_data = [
             'userList' => $authList,
-            'totalCount' => count($authList)
+            'totalCount' => $totalCount
         ];
         exit(json_encode($_data));
     }

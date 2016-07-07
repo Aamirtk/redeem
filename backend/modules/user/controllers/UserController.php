@@ -94,6 +94,7 @@ class UserController extends BaseController
         }
 
         $_order_by = 'uid DESC';
+        $query_count = clone($query);
         $userArr = $query
             ->offset($offset)
             ->limit($pageSize)
@@ -134,10 +135,11 @@ class UserController extends BaseController
                 },
             ],
         ]);
+        $totalCount = $query_count->count();
 
         $_data = [
             'userList' => $userList,
-            'totalCount' => count($userList)
+            'totalCount' => $totalCount
         ];
         exit(json_encode($_data));
     }
