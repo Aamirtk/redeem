@@ -54,7 +54,7 @@
         <p><img src="/images/rules/bottom.png" width="72%" alt=""></p>
         <p><img src="/images/rules/text.png" width="72%" alt=""></p>
     </div>
-    
+
 </div>
 </body>
 <!--微信分享-->

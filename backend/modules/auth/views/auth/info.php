@@ -48,9 +48,13 @@ use common\models\Auth;
                 </div>
             </div>
             <div  class="control-group span10 avatar_content" >
-                <label class="control-label <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>" id="upload_img">
-                    名片：<?php echo $auth['auth_status'] != Auth::CHECK_PASS ? '【点击更改】' : ''  ?>
+<!--                <label class="control-label --><?php //echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?><!--" id="upload_img">-->
+<!--                    名片：--><?php //echo $auth['auth_status'] != Auth::CHECK_PASS ? '【点击更改】' : ''  ?>
+<!--                </label>-->
+                <label class="control-labe id="upload_img">
+                    名片：
                 </label>
+
                 <div  class="controls <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>" >
                     <img id="name_card_img" class="avatar_img" onclick="viewNameCard(this)" src="<?php echo $auth['name_card'] ?>">
                     <input id="name_card_input" type="hidden" value="<?php echo $auth['name_card'] ?>">

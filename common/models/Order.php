@@ -151,6 +151,7 @@ class Order extends \yii\db\ActiveRecord
             $_obj->where($where);
         }
 
+        $_obj->andWhere([self::tableName() . '.is_deleted' => self::NO_DELETE]);
         if(!empty($order)){
             $_obj->orderBy($order);
         }
